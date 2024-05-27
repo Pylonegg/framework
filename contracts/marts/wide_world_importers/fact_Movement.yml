@@ -1,0 +1,55 @@
+dataset:
+    name: Movement
+    description: The Movement table
+    enabled: true
+    type: fact
+    load_style: default
+    load_method: default
+
+columns:
+  - sort_order: 1
+    name: Movement Key
+    data_type: bigint
+    is_primary_key: True
+  
+  - sort_order: 2
+    name: Date Key
+    data_type: int
+    is_natural_key: true
+  
+  - sort_order: 3
+    name: Stock Item Key
+    data_type: int
+  
+  - sort_order: 4
+    name: Customer Key
+    data_type: int
+    is_nullable: true
+  
+  - sort_order: 5
+    name: Supplier Key
+    data_type: int
+    is_nullable: true
+  
+  - sort_order: 6
+    name: Transaction Type Key
+    data_type: int
+  
+  - sort_order: 7
+    name: WWI Stock Item Transaction ID
+    data_type: int
+  
+  - sort_order: 8
+    name: WWI Invoice ID
+    data_type: int
+    is_nullable: true
+  
+  - sort_order: 9
+    name: WWI Purchase Order ID
+    data_type: int
+    is_nullable: true
+  
+  - sort_order: 10
+    name: Quantity
+    data_type: int
+  

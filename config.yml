@@ -1,0 +1,26 @@
+environments:
+ - name: dev
+ - name: test
+ - name: prod
+
+connection_string: 'DRIVER={ODBC Driver 17 for SQL Server};SERVER=localhost;DATABASE=control_table;UID=sa;PWD=Password01234;TrustServerCertificate=yes;'
+
+data_mart_path:  ./contracts/marts
+data_marts:
+ - name: wide_world_importers
+   is_enabled: True
+   type: sql_server
+ 
+ - name: adventure_works
+   is_enabled: False
+   type: sql_server
+
+data_source_path:  ./contracts/sources
+data_sources:
+ - name: wide_world_importers
+   is_enabled: True
+   type: sql_server
+ 
+ - name: adventure_works
+   is_enabled: False
+   type: sql_server

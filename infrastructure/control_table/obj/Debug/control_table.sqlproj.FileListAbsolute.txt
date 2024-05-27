@@ -1,0 +1,9 @@
+/home/chi/projects/atlantis/core/infrastructure/control_table/bin/Debug/control_table.dacpac
+/home/chi/projects/atlantis/core/infrastructure/control_table/obj/Debug/Model.xml
+/home/chi/projects/atlantis/core/infrastructure/control_table/obj/Debug/refactor.xml
+/home/chi/projects/atlantis/core/infrastructure/control_table/obj/Debug/postdeploy.sql
+/home/chi/projects/atlantis/core/infrastructure/control_table/obj/Debug/predeploy.sql
+/home/chi/projects/atlantis/core/infrastructure/control_table/obj/Debug/control_table.dll
+/home/chi/projects/atlantis/core/infrastructure/control_table/obj/Debug/control_table.pdb
+/home/chi/projects/atlantis/core/infrastructure/control_table/bin/Debug/control_table.dll
+/home/chi/projects/atlantis/core/infrastructure/control_table/bin/Debug/control_table.pdb

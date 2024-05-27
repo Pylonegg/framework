@@ -1,0 +1,116 @@
+param networkIsolationMode string
+param resourceLocation string
+
+param dataLakeAccountName string
+param dataLakeContainerNames array
+
+param keyVaultName  string
+param dataShareResourceID string
+param streamAnalyticsJobResourceID string
+param purviewAccountResourceID string
+param azureMLWorkspaceResourceID string
+param anomalyDetectorAccountResourceID string
+param languageServiceAccountResourceID string
+param iotHubResourceID string
+param ctrlDeployStreaming bool
+
+@allowed([
+  'eventhub'
+  'iothub'
+])
+param ctrlStreamIngestionService string = 'eventhub'
+
+var dataShareAccessRule = (dataShareResourceID == '') ? [] : [
+  {
+    tenantId: subscription().tenantId
+    resourceId: dataShareResourceID
+  }
+]
+
+var streamAnalyticsJobAccessRule = (streamAnalyticsJobResourceID == '') ? [] : [
+  {
+    tenantId: subscription().tenantId
+    resourceId: streamAnalyticsJobResourceID
+  }
+]
+
+var purviewAccessRule = (purviewAccountResourceID == '') ? [] : [
+  {
+    tenantId: subscription().tenantId
+    resourceId: purviewAccountResourceID
+  }
+]
+
+var azureMLAccessRule = (azureMLWorkspaceResourceID == '') ? [] : [
+  {
+    tenantId: subscription().tenantId
+    resourceId: azureMLWorkspaceResourceID
+  }
+]
+
+var anomalyDetectorAccessRule = (anomalyDetectorAccountResourceID == '') ? [] : [
+  {
+    tenantId: subscription().tenantId
+    resourceId: anomalyDetectorAccountResourceID
+  }
+]
+
+var languageServiceAccessRule = (languageServiceAccountResourceID == '') ? [] : [
+  {
+    tenantId: subscription().tenantId
+    resourceId: languageServiceAccountResourceID
+  }
+]
+
+var iotHubAccessRule = (iotHubResourceID == '') ? [] : [
+  {
+    tenantId: subscription().tenantId
+    resourceId: iotHubResourceID
+  }
+]
+
+//var dataLakeresourceAccessRules = union(synapseAccessRule, dataShareAccessRule, streamAnalyticsJobAccessRule, purviewAccessRule, azureMLAccessRule, anomalyDetectorAccessRule, languageServiceAccessRule, iotHubAccessRule)
+
+//Raw Data Lake Storage Account
+resource r_dataLakeStorageAccount 'Microsoft.Storage/storageAccounts@2021-02-01' = {
+  name: dataLakeAccountName
+  location: resourceLocation
+  properties:{
+    isHnsEnabled: true
+    accessTier:'Cool'
+    networkAcls: {
+      defaultAction: (networkIsolationMode == 'vNet')? 'Deny' : 'Allow'
+      //bypass: only required for EventHubs. All other services will have specific access rules defined in the resourceAccessRules element below.
+      //Only EventHubs in the same subscription will have access to the storage account: https://docs.microsoft.com/en-us/azure/storage/common/storage-network-security?tabs=azure-portal#trusted-access-for-resources-registered-in-your-subscription
+      bypass: (ctrlDeployStreaming && ctrlStreamIngestionService == 'eventhub') ? 'AzureServices' : 'None' 
+      //resourceAccessRules: dataLakeresourceAccessRules
+    }
+  }
+  kind:'StorageV2'
+  sku: {
+      name: 'Standard_GRS'
+  }
+}
+
+@description('Data Lake zone containers')
+resource r_dataLakeZoneContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2021-02-01' = [for containerName in dataLakeContainerNames: {
+  name:'${r_dataLakeStorageAccount.name}/default/${containerName}'
+}]
+
+@description('Get reference to KV')
+resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
+  name: keyVaultName
+}
+
+@description('Add Storage account secret to KeyVault')
+resource secret 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
+  name: '${dataLakeAccountName}-connectionstring'
+  parent: keyVault
+  properties: {
+    value: '${listKeys(r_dataLakeStorageAccount.id, r_dataLakeStorageAccount.apiVersion).keys[0].value}'
+  }
+}
+
+
+output dataLakeStorageAccountID     string = r_dataLakeStorageAccount.id
+output dataLakeStorageAccountName   string = r_dataLakeStorageAccount.name
