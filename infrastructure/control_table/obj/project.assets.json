@@ -368,11 +368,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/chi/projects/atlantis/core/infrastructure/control_table/control_table.sqlproj",
+      "projectUniqueName": "/home/chi/Projects/framework/infrastructure/control_table/control_table.sqlproj",
       "projectName": "control_table",
-      "projectPath": "/home/chi/projects/atlantis/core/infrastructure/control_table/control_table.sqlproj",
+      "projectPath": "/home/chi/Projects/framework/infrastructure/control_table/control_table.sqlproj",
       "packagesPath": "/home/chi/.nuget/packages/",
-      "outputPath": "/home/chi/projects/atlantis/core/infrastructure/control_table/obj/",
+      "outputPath": "/home/chi/Projects/framework/infrastructure/control_table/obj/",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "configFilePaths": [

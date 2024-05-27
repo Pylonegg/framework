@@ -1,4 +1,4 @@
-﻿CREATE TABLE [audit].[Dependency] (
+﻿CREATE TABLE [audit].[dependency] (
     [DependencyID]          INT              IDENTITY (1, 1) NOT NULL,
     [SourceId]              INT              NOT NULL,
     [DestinationId]         INT              NOT NULL,
