@@ -2,6 +2,7 @@
 <Project DefaultTargets="Build">
   <Sdk Name="Microsoft.Build.Sql" Version="0.1.12-preview" />
   <PropertyGroup>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
     <Name>control_table</Name>
     <ProjectGuid>{479677EB-D200-4933-9DAB-75CF062341C5}</ProjectGuid>
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
