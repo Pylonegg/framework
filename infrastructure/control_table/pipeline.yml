@@ -5,7 +5,7 @@ pool:
   vmImage: 'vs2019-win2022'
 
 variables:
-  solution: '**/*.sln'
+  solution: '**/*.sqlproj'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
