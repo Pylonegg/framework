@@ -2,7 +2,10 @@ trigger:
 - master
 
 pool:
-  vmImage: 'vs2019-win2022'
+  vmImage: windows-2022
+  demands:
+  - msbuild
+  - visualstudio
 
 variables:
   solution: '**/*.sqlproj'
