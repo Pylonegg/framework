@@ -1,19 +1,36 @@
 trigger:
-- main
+- master
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'vs2019-win2022'
 
 variables:
-  solution: '**/*.sqlproj'
+  solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
 steps:
-- task: DotNetCoreCLI@2
+- task: NuGetToolInstaller@1
+
+- task: NuGetCommand@2
   inputs:
-    command: 'build'
-    projects: '**/*.sqlproj'  
+    restoreSolution: '$(solution)'
+
+- task: VSBuild@1
+  inputs:
+    solution: '$(solution)'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+- task: VSTest@2
+  inputs:
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+# Add those tasks to copy and publish the Artifact (.dacpac file)
+- task: CopyFiles@2
+  inputs:
+    targetFolder: '$(Build.ArtifactStagingDirectory)'    
 
 - task: PublishBuildArtifacts@1    
   displayName: 'Publish Artifact: drop'
