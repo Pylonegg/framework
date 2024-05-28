@@ -6,7 +6,7 @@
     <ProjectGuid>{479677EB-D200-4933-9DAB-75CF062341C5}</ProjectGuid>
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
     <ModelCollation>1033, CI</ModelCollation>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworks>.NETFramework,Version=v4.8</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
   </ItemGroup>
