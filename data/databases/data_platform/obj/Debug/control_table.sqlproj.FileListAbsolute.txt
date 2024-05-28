@@ -16,3 +16,12 @@
 /home/chi/Projects/framework/infrastructure/control_table/obj/Debug/control_table.pdb
 /home/chi/Projects/framework/infrastructure/control_table/bin/Debug/control_table.dll
 /home/chi/Projects/framework/infrastructure/control_table/bin/Debug/control_table.pdb
+/home/chi/Projects/framework/data/databases/data_platform/bin/Output/control_table.dacpac
+/home/chi/Projects/framework/data/databases/data_platform/bin/Output/control_table.dll
+/home/chi/Projects/framework/data/databases/data_platform/bin/Output/control_table.pdb
+/home/chi/Projects/framework/data/databases/data_platform/obj/Debug/Model.xml
+/home/chi/Projects/framework/data/databases/data_platform/obj/Debug/refactor.xml
+/home/chi/Projects/framework/data/databases/data_platform/obj/Debug/postdeploy.sql
+/home/chi/Projects/framework/data/databases/data_platform/obj/Debug/predeploy.sql
+/home/chi/Projects/framework/data/databases/data_platform/obj/Debug/control_table.dll
+/home/chi/Projects/framework/data/databases/data_platform/obj/Debug/control_table.pdb

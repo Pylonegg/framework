@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Hf22Mi1/M9Q=",
+  "dgSpecHash": "7o6x2XIVf6w=",
   "success": true,
-  "projectFilePath": "/home/chi/Projects/framework/infrastructure/control_table/control_table.sqlproj",
+  "projectFilePath": "/home/chi/Projects/framework/data/databases/data_platform/control_table.sqlproj",
   "expectedPackageFiles": [
     "/home/chi/.nuget/packages/microsoft.netframework.referenceassemblies/1.0.0/microsoft.netframework.referenceassemblies.1.0.0.nupkg.sha512",
     "/home/chi/.nuget/packages/microsoft.netframework.referenceassemblies.net46/1.0.0/microsoft.netframework.referenceassemblies.net46.1.0.0.nupkg.sha512"
