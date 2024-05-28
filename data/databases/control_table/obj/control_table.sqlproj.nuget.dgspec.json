@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/chi/Projects/framework/data/databases/data_platform/control_table.sqlproj": {}
+    "/home/chi/Projects/framework/data/databases/control_table/control_table.sqlproj": {}
   },
   "projects": {
-    "/home/chi/Projects/framework/data/databases/data_platform/control_table.sqlproj": {
+    "/home/chi/Projects/framework/data/databases/control_table/control_table.sqlproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/chi/Projects/framework/data/databases/data_platform/control_table.sqlproj",
+        "projectUniqueName": "/home/chi/Projects/framework/data/databases/control_table/control_table.sqlproj",
         "projectName": "control_table",
-        "projectPath": "/home/chi/Projects/framework/data/databases/data_platform/control_table.sqlproj",
+        "projectPath": "/home/chi/Projects/framework/data/databases/control_table/control_table.sqlproj",
         "packagesPath": "/home/chi/.nuget/packages/",
-        "outputPath": "/home/chi/Projects/framework/data/databases/data_platform/obj/",
+        "outputPath": "/home/chi/Projects/framework/data/databases/control_table/obj/",
         "projectStyle": "PackageReference",
         "skipContentFileWrite": true,
         "configFilePaths": [
@@ -27,6 +27,11 @@
           "net46": {
             "projectReferences": {}
           }
+        },
+        "warningProperties": {
+          "noWarn": [
+            "NU5128"
+          ]
         },
         "restoreAuditProperties": {
           "enableAudit": "true",
