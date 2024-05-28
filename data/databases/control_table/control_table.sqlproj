@@ -22,7 +22,8 @@
     <Delete Files="$(BaseIntermediateOutputPath)\project.assets.json" />
     <Delete Files="$(BaseIntermediateOutputPath)\project.assets.json" />
   </Target>
-  <Import Condition="'$(NetCoreBuild)' == 'true'" Project="$(NETCoreTargetsPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets"/>
-  <Import Condition="'$(SQLDBExtensionRefPath)' != ''" Project="$(SQLDBExtensionRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets"/>
+<Import Condition="'$(NetCoreBuild)' == 'true'" Project="$(NETCoreTargetsPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets"/> 
+<Import Condition="'$(NetCoreBuild)' != 'true' AND '$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets"/>
+<Import Condition="'$(NetCoreBuild)' != 'true' AND '$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets"/>
 
 </Project>
