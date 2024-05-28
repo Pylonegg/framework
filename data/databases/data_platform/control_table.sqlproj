@@ -19,5 +19,7 @@
     <Delete Files="$(BaseIntermediateOutputPath)\project.assets.json" />
     <Delete Files="$(BaseIntermediateOutputPath)\project.assets.json" />
   </Target>
-  <Import Project="$(NETCoreTargetsPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" Condition="'$(NetCoreBuild)' == 'true'" />
+  <Import Condition="'$(NetCoreBuild)' == 'true'" Project="$(NETCoreTargetsPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets"/>
+  <Import Condition="'$(SQLDBExtensionRefPath)' != ''" Project="$(SQLDBExtensionRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets"/>
+
 </Project>
