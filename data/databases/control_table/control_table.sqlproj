@@ -7,6 +7,7 @@
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
     <ModelCollation>1033, CI</ModelCollation>
     <VisualStudioVersion>17.0</VisualStudioVersion>
+    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <ItemGroup>
