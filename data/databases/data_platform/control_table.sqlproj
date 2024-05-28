@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Sdk Name="Microsoft.Build.Sql" Version="0.1.12-preview" />
   <PropertyGroup>
     <Name>control_table</Name>
     <ProjectGuid>{479677EB-D200-4933-9DAB-75CF062341C5}</ProjectGuid>
