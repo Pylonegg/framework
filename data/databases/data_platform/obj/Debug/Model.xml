@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<DataSchemaModel FileFormatVersion="1.2" SchemaVersion="2.9" DspName="Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider" CollationLcid="1033" CollationCaseSensitive="False" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+<DataSchemaModel FileFormatVersion="1.2" SchemaVersion="2.9" DspName="Microsoft.Data.Tools.Schema.Sql.Sql140DatabaseSchemaProvider" CollationLcid="1033" CollationCaseSensitive="False" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
 	<Header>
 		<CustomData Category="AnsiNulls">
 			<Metadata Name="AnsiNulls" Value="True" />
@@ -8,19 +8,19 @@
 			<Metadata Name="QuotedIdentifier" Value="True" />
 		</CustomData>
 		<CustomData Category="CompatibilityMode">
-			<Metadata Name="CompatibilityMode" Value="160" />
+			<Metadata Name="CompatibilityMode" Value="140" />
 		</CustomData>
 		<CustomData Category="Reference" Type="Assembly">
-			<Metadata Name="LogicalName" Value="control_table.dll" />
-			<Metadata Name="FileName" Value="/home/chi/Projects/framework/data/databases/control_table/obj/Debug/control_table.dll" />
-			<Metadata Name="AssemblyName" Value="control_table" />
+			<Metadata Name="LogicalName" Value="data_platform.dll" />
+			<Metadata Name="FileName" Value="/home/chi/Projects/framework/data/databases/data_platform/obj/Debug/data_platform.dll" />
+			<Metadata Name="AssemblyName" Value="data_platform" />
 			<Metadata Name="PermissionSet" Value="SAFE" />
 			<Metadata Name="Owner" Value="" />
 			<Metadata Name="GenerateSqlClrDdl" Value="True" />
 			<Metadata Name="IsVisible" Value="True" />
 			<Metadata Name="IsModelAware" Value="True" />
 			<Metadata Name="SkipCreationIfEmpty" Value="True" />
-			<Metadata Name="AssemblySymbolsName" Value="/home/chi/Projects/framework/data/databases/control_table/obj/Debug/control_table.pdb" />
+			<Metadata Name="AssemblySymbolsName" Value="/home/chi/Projects/framework/data/databases/data_platform/obj/Debug/data_platform.pdb" />
 		</CustomData>
 		<CustomData Category="SqlCmdVariables" Type="SqlCmdVariable" />
 	</Header>
