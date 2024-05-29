@@ -4,6 +4,7 @@
   <PropertyGroup>
     <Name>data_platform</Name>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <RuntimeIdentifier>win</RuntimeIdentifier>
     <ProjectGuid>{61748C8B-B65E-4E1D-93A1-7AA328D37CA1}</ProjectGuid>
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql140DatabaseSchemaProvider</DSP>
     <ModelCollation>1033, CI</ModelCollation>
