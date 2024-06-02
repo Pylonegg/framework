@@ -76,4 +76,4 @@ stages:
                 $accessToken = az account get-access-token --resource https://database.windows.net/ --query accessToken --output tsv
                 
                 # Deploy DACPAC to Azure SQL Database
-                & C:\Program Files\Microsoft SQL Server\150\DAC\bin\SqlPackage.exe /Action:Publish /SourceFile:$dacpacFilePath /TargetServerName:$sqlServerName /TargetDatabaseName:$databaseName /AccessToken:$accessToken /p:AllowIncompatiblePlatform=true
+                C:\Program Files\Microsoft SQL Server\150\DAC\bin\SqlPackage.exe /Action:Publish /SourceFile:$dacpacFilePath /TargetServerName:$sqlServerName /TargetDatabaseName:$databaseName /AccessToken:$accessToken /p:AllowIncompatiblePlatform=true
