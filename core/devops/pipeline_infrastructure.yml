@@ -25,8 +25,8 @@ stages:
           azureResourceManagerConnection: 'azelia-dev-connection'
           templateLocation: 'Linked artifact'
           location: 'uksouth'
-          csmFile: 'core/bicep/platform.bicep'
-          csmParametersFile: 'core/bicep/infrastructure.bicepparam'
+          csmFile: 'core/devops/platform.bicep'
+          csmParametersFile: 'core/devops/infrastructure.bicepparam'
           deploymentMode: Incremental
           deploymentName: 'InfrastructureDeployment'
 
