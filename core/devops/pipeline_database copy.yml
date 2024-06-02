@@ -2,17 +2,17 @@ trigger:
 - master
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: windows-2019
 
 variables:
   solution: '**/*.sqlproj'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  sqlProjectPath: 'core/data_platform' # Adjust this path
+  sqlProjectPath: 'path/to/your/sql/project' # Adjust this path
   databaseName: 'dev01xctrldb'
   serverName: 'dev01xctrlserver.database.windows.net'
   resourceGroupName: 'dev-az-rg'
-  sqlPackagePath: '$(Build.ArtifactStagingDirectory)/data_platform.dacpac'
+  sqlPackagePath: '$(Build.ArtifactStagingDirectory)/YourDatabase.dacpac'
 
 stages:
 - stage: Build
@@ -20,28 +20,26 @@ stages:
   - job: Build
     displayName: 'Build SQL Project'
     steps:
-    - task: UseDotNet@2
-      inputs:
-        packageType: 'sdk'
-        version: '5.x'
-        installationPath: $(Agent.ToolsDirectory)/dotnet
-
-    - task: NuGetToolInstaller@1
-
-    - task: NuGetCommand@2
-      inputs:
-        restoreSolution: '$(sqlProjectPath)/*.sqlproj'
-
     - task: VSBuild@1
       inputs:
-        solution: '$(sqlProjectPath)/*.sqlproj'
-        msbuildArgs: '/p:Configuration=Release'
-        platform: 'Any CPU'
-        configuration: 'Release'
+        solution: '$(solution)'
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
 
-    - task: PublishBuildArtifacts@1
+    - task: VSTest@2
       inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
+
+    # Add those tasks to copy and publish the Artifact (.dacpac file)
+    - task: CopyFiles@2
+      inputs:
+        targetFolder: '$(Build.ArtifactStagingDirectory)'    
+
+    - task: PublishBuildArtifacts@1    
+      displayName: 'Publish Artifact: drop'
+      inputs:
+        PathtoPublish: '$(build.artifactstagingdirectory)'
         ArtifactName: 'drop'
 
 - stage: Deploy
