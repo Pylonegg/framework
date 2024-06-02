@@ -77,6 +77,11 @@ param deploymentScriptUAMIName      string = toLower('${uniquePrefix}uami${uniqu
 param vNetIPAddressPrefixes         array  = ['10.1.0.0/16'] 
 param vNetSubnetName                string = 'default'
 param vNetSubnetIPAddressPrefix     string = '10.1.0.0/24'
+
+
+@secure()
+param sqlAdminPassword              string = 'Password01234'
+param sqlAdminLogin                 string = 'sqladmin'
 //param existingVNetResourceGroupName string = resourceGroup().name
 
 
@@ -169,7 +174,6 @@ module m_vNet 'modules/vnet.bicep' = if(networkIsolationMode == 'vNet' && ctrlNe
   }
 }
 
-
 //=== MODULES ===============================================================================================
 //-----------------------------------------------------------------------------------------------------------
 // - Control Server
@@ -185,8 +189,8 @@ module m_ControlServerDeploy 'modules/sql_server.bicep' = {
     sqlServerName: controlServerName
     resourceLocation: resourceLocation
     networkIsolationMode:networkIsolationMode
-    sqlAdminLogin: 'sqladmin'
-    sqlAdminPassword: 'Password01234'
+    sqlAdminLogin: 'sqlAdmin'
+    sqlAdminPassword: sqlAdminPassword
 
   }
 }
@@ -431,6 +435,7 @@ module m_Permissions'platform_permissions.bicep' = {
     m_OperationalDatabasesDeploy
   ]
   params: {
+    sqlAdminPassword                           : sqlAdminPassword
     databaseName                               : controlDatabaseName
     serverName                                 : controlServerName
     UAMIPrincipalID                            : v_uamiPrincipalID
