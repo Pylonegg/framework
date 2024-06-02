@@ -1,5 +1,5 @@
 import os
-from utility import error_log, execute, open_yaml
+from utility import error_log, execute, open_yaml, pretty_execute
 from generate_database_scripts import database_sql
 from generate_synapse_scripts import synapse_sql
 
@@ -85,11 +85,7 @@ class Contracts:
                     data['mart_name'] = mart_name
                     data['mart_type'] = mart_type
                     message = f"Loading Contract: {data['dataset']['name']}"
-                    try:
-                        self.contracts.append(Contract(data))
-                        error_log('pass',message)
-                    except Exception as e:
-                        error_log('fail', message, e)
+                    pretty_execute(message=message, function=self.contracts.append(Contract(data)))
             else:
                 print(f"[!] Skipping disabled mart: {mart_name}")
 
@@ -97,14 +93,14 @@ class Contracts:
     def generate_sql(self):
         mart_types = ['synapse', 'database']
         for mart_type in mart_types:
-            print(f"[+] Generating {mart_type} SQL")
-            for contract in self.contracts:             # Maybe add loop [model, curated, enriched]
+            print(f'[+] Generating "{mart_type}" SQL')
+            for contract in self.contracts:
                 if contract.mart_type   == mart_type:
-                    try:
-                        database_sql(contract)
-                        error_log('pass',contract.name)
-                    except Exception as e:
-                        error_log('fail', contract.name, e)
+                    msg = contract.name
+                    pretty_execute(message=msg, function=globals()[f'{mart_type}_sql'](contract))
+
+
+        # NOTE  Maybe add loop [model, curated, enriched]
 
 
 # >>> Refactor ======================================================================================

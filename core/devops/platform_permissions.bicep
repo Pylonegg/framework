@@ -19,6 +19,8 @@ param streamAnalyticsIdentityPrincipalID string
 param ctrlStreamingIngestionService string
 param iotHubPrincipalID string
 
+param databaseName string
+param serverName string
 param cosmosDBAccountName string
 param cosmosDBDatabaseName string
 
@@ -157,6 +159,32 @@ resource r_cosmosDBConnectionString 'Microsoft.KeyVault/vaults/secrets@2021-06-0
 //------------------------------------------------------------------------------------------
 // RBAC
 //------------------------------------------------------------------------------------------
+// Get resource IDs
+resource sqlServer 'Microsoft.Sql/servers@2021-05-01-preview' existing = {
+  name: serverName
+  scope: resourceGroup()
+}
+
+resource sqlDatabase 'Microsoft.Sql/servers/databases@2021-05-01-preview' existing = {
+  parent: sqlServer
+  name: databaseName
+}
+
+// SQL Database Contributor role definition ID
+var sqlDbContributorRoleId = 'f78a3032-8c2a-43f0-883d-29e6b73c06db'
+
+// Assign SQL Database Contributor role to the managed identity
+resource r_sqlDbRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
+  name: guid(sqlDatabase.id, UAMIPrincipalID, sqlDbContributorRoleId)
+  scope: sqlDatabase
+  properties: {
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', sqlDbContributorRoleId)
+    principalId: UAMIPrincipalID
+    principalType: 'ServicePrincipal'
+  }
+}
+
+
 @description('Deployment script UAMI is set as Resource Group owner so it can have authorisation to perform post deployment tasks')
 resource r_deploymentScriptUAMIRGOwner 'Microsoft.Authorization/roleAssignments@2020-08-01-preview' = {
   name: guid('139d07dd-a26c-4b29-9619-8f70ea215795', subscription().subscriptionId, resourceGroup().id)

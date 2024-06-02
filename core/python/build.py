@@ -4,7 +4,7 @@ from utility import deploy_sql
 
 # Run
 contracts = Contracts()
-# contracts.deploy()
+contracts.deploy()
 contracts.generate_sql()
 
 #deploy_sql()

@@ -207,6 +207,7 @@ module m_ControlDatabaseDeploy 'modules/sql_database.bicep' = {
     skuName: 'Basic'
   }
 }
+
 //-----------------------------------------------------------------------------------------------------------
 // - DataLake
 //-----------------------------------------------------------------------------------------------------------
@@ -430,6 +431,8 @@ module m_Permissions'platform_permissions.bicep' = {
     m_OperationalDatabasesDeploy
   ]
   params: {
+    databaseName                               : controlDatabaseName
+    serverName                                 : controlServerName
     UAMIPrincipalID                            : v_uamiPrincipalID
     dataLakeAccountID                          : v_dataLakeAccountID
     dataLakeAccountName                        : v_dataLakeAccountName

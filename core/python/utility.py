@@ -41,6 +41,20 @@ def deploy_sql():
         error_log('fail', message, e)
 
 
+
+
+# = Pretty Call =====================================================================
+def pretty_execute(message:str, function:object):
+    space = (60 - len(message)) * '-' + '>'
+    try:
+        output = function
+        print(f"\033[92m[+]\33[0m - \033[90m{message}\33[0m")
+    except Exception as e:
+        print(f"\033[91m[x]\33[0m - \033[90m{message}\33[0m \033[91m{space}\33[0m {e}")
+        output = None
+    return output
+
+
 # = CREATE FILE =====================================================================
 def error_log(status, action, message=None):
     """

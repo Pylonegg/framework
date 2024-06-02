@@ -1,5 +1,5 @@
 
-USE [wwi_data_mart]
+USE [wide_world_importers]
 GO
 
 IF OBJECT_ID('[curated].[dim_TransactionType]') IS NULL

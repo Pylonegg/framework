@@ -86,8 +86,8 @@ class Contracts:
         logging.info("[+] Deploying Contracts")
         all_datasets = [f"('{contract.code}', '', '{contract.is_enabled}', '{contract.type}')" for contract in self.contracts]
         all_dependencies = [f"('{contract.code}', '{dependency['name']}', '{dependency['type']}')" 
-                            for contract in self.contracts if contract.dependencies 
-                            for dependency in contract.dependencies]
+                            for contract    in self.contracts if contract.dependencies 
+                            for dependency  in contract.dependencies]
 
         query = f"""
         TRUNCATE TABLE [tmp].[datasets]

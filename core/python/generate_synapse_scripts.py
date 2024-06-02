@@ -89,7 +89,7 @@ FROM [curated].[{object_name}]
 
     # == OUTPUT FILE ==============================================================================
     # NOTE Uncommenting enriched in it's current state will erase logic
-    base_path = 'transform/synapse/{mart_name}'
+    base_path = f'transform/synapse/{mart_name}'
     # create_file(enriched, f"{base_path}/{mart_name}/enriched/{object_name}.sql")
     create_file(curated, f"{base_path}/curated/{object_name}.sql")
     create_file(model, f"{base_path}/model/{object_name}.sql")
