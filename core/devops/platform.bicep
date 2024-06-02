@@ -436,8 +436,6 @@ module m_Permissions'platform_permissions.bicep' = {
   ]
   params: {
     sqlAdminPassword                           : sqlAdminPassword
-    databaseName                               : controlDatabaseName
-    serverName                                 : controlServerName
     UAMIPrincipalID                            : v_uamiPrincipalID
     dataLakeAccountID                          : v_dataLakeAccountID
     dataLakeAccountName                        : v_dataLakeAccountName
