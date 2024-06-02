@@ -72,6 +72,8 @@ stages:
                 $sqlServerName = "$(serverName)"
                 $databaseName = "$(databaseName)"
                 
+                dotnet add package Microsoft.SqlServer.DacFx
+
                 # Generate access token for Managed Identity
                 $accessToken = az account get-access-token --resource https://database.windows.net/ --query accessToken --output tsv
                 
