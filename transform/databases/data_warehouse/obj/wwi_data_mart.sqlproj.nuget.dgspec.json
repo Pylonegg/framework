@@ -1,0 +1,55 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/chi/Projects/framework/transform/databases/wwi_data_mart/wwi_data_mart.sqlproj": {}
+  },
+  "projects": {
+    "/home/chi/Projects/framework/transform/databases/wwi_data_mart/wwi_data_mart.sqlproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/chi/Projects/framework/transform/databases/wwi_data_mart/wwi_data_mart.sqlproj",
+        "projectName": "wwi_data_mart",
+        "projectPath": "/home/chi/Projects/framework/transform/databases/wwi_data_mart/wwi_data_mart.sqlproj",
+        "packagesPath": "/home/chi/.nuget/packages/",
+        "outputPath": "/home/chi/Projects/framework/transform/databases/wwi_data_mart/obj/",
+        "projectStyle": "PackageReference",
+        "skipContentFileWrite": true,
+        "configFilePaths": [
+          "/home/chi/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net46"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net46": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "noWarn": [
+            "NU5128"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net46": {
+          "dependencies": {
+            "Microsoft.NETFramework.ReferenceAssemblies": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[1.0.0, )"
+            }
+          }
+        }
+      }
+    }
+  }
+}
