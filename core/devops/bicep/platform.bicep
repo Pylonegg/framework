@@ -16,6 +16,7 @@ param synapseSqlAdminPassword       string = newGuid()
 param dataLakeContainerNames        array  = ['raw','trusted','curated','transient','sandpit']
 param vNetName                      string = '${uniquePrefix}vnet${uniqueSuffix}'
 param controlServerName             string = '${uniquePrefix}ctrlserver${uniqueSuffix}'
+param warehouseServerName           string = '${uniquePrefix}warehouse${uniqueSuffix}'
 param keyVaultName                  string = '${uniquePrefix}akv${uniqueSuffix}'
 param analysisServicesName          string = '${uniquePrefix}aas${uniqueSuffix}'
 param dataLakeAccountName           string = '${uniquePrefix}adls${uniqueSuffix}'
@@ -236,7 +237,7 @@ module m_DatabaseDeploy'modules/sql_server.bicep' = {
   ]
   params: {
     tags:tags
-    sqlServerName         :controlServerName
+    sqlServerName         :warehouseServerName
     resourceLocation      :resourceLocation
     networkIsolationMode  :networkIsolationMode
     sqlAdminLogin         :'sqladmin'
