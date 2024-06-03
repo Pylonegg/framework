@@ -32,6 +32,7 @@ stages:
       inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
         ArtifactName: 'drop'
+        publishLocation: 'pipeline'
 
 
 - stage: Dev
