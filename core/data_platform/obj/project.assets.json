@@ -382,11 +382,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/chi/Projects/framework/data/databases/data_platform/data_platform.sqlproj",
+      "projectUniqueName": "/home/chi/Projects/framework/core/data_platform/data_platform.sqlproj",
       "projectName": "data_platform",
-      "projectPath": "/home/chi/Projects/framework/data/databases/data_platform/data_platform.sqlproj",
+      "projectPath": "/home/chi/Projects/framework/core/data_platform/data_platform.sqlproj",
       "packagesPath": "/home/chi/.nuget/packages/",
-      "outputPath": "/home/chi/Projects/framework/data/databases/data_platform/obj/",
+      "outputPath": "/home/chi/Projects/framework/core/data_platform/obj/",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "configFilePaths": [

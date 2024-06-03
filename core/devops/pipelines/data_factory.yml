@@ -27,9 +27,9 @@ stages:
           customCommand: 'run build export $(Build.Repository.LocalPath)/infrastructure/azure_data_factory /subscriptions/$(SubscriptionId)/resourceGroups/$(ResourceGroup)/providers/Microsoft.DataFactory/factories/$(DataFactoryName) "ArmTemplate"'
         displayName: 'Validate and Generate ARM template'
 
-      - task: PublishPipelineArtifact@1
+      - task: PublishBuildArtifacts@1
         inputs:
-          targetPath: '$(Build.Repository.LocalPath)'
+          targetPath: '$(Build.ArtifactStagingDirectory)'
           artifact: drop
 
   - stage: dev
