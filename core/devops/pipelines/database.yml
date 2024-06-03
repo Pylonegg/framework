@@ -8,8 +8,7 @@ variables:
   solution: '**/*.sqlproj'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  sqlProjectPath: 'core/data_platform' # Adjust this path
-  sqlPackagePath: '$(Build.ArtifactStagingDirectory)/data_platform.dacpac'
+  sqlProjectPath: 'core/data_platform'
 
 stages:
 - stage: Build
@@ -31,8 +30,7 @@ stages:
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: 'drop'
-        publishLocation: 'pipeline'
+        artifact: 'drop'
 
 
 - stage: Dev
@@ -43,6 +41,9 @@ stages:
   - job: 'DeployControlDatabase'
     displayName: 'Deploy SQL Project'
     steps:
+    - download: current
+      artifact: drop
+      
     - task: SqlAzureDacpacDeployment@1
       displayName: 'Deploy DacPac' 
       inputs:
