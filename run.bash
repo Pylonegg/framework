@@ -1,1 +1,0 @@
-python3 infrastructure/python/build.py

@@ -1,0 +1,9 @@
+/home/chi/Projects/framework/data/databases/data_platform/bin/Debug/data_platform.dacpac
+/home/chi/Projects/framework/data/databases/data_platform/bin/Debug/data_platform.dll
+/home/chi/Projects/framework/data/databases/data_platform/bin/Debug/data_platform.pdb
+/home/chi/Projects/framework/data/databases/data_platform/obj/Debug/Model.xml
+/home/chi/Projects/framework/data/databases/data_platform/obj/Debug/refactor.xml
+/home/chi/Projects/framework/data/databases/data_platform/obj/Debug/postdeploy.sql
+/home/chi/Projects/framework/data/databases/data_platform/obj/Debug/predeploy.sql
+/home/chi/Projects/framework/data/databases/data_platform/obj/Debug/data_platform.dll
+/home/chi/Projects/framework/data/databases/data_platform/obj/Debug/data_platform.pdb

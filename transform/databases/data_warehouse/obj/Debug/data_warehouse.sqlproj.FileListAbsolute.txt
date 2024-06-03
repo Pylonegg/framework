@@ -1,0 +1,9 @@
+/home/chi/Projects/framework/transform/databases/data_warehouse/bin/Debug/data_warehouse.dacpac
+/home/chi/Projects/framework/transform/databases/data_warehouse/obj/Debug/Model.xml
+/home/chi/Projects/framework/transform/databases/data_warehouse/obj/Debug/refactor.xml
+/home/chi/Projects/framework/transform/databases/data_warehouse/obj/Debug/postdeploy.sql
+/home/chi/Projects/framework/transform/databases/data_warehouse/obj/Debug/predeploy.sql
+/home/chi/Projects/framework/transform/databases/data_warehouse/obj/Debug/data_warehouse.dll
+/home/chi/Projects/framework/transform/databases/data_warehouse/obj/Debug/data_warehouse.pdb
+/home/chi/Projects/framework/transform/databases/data_warehouse/bin/Debug/data_warehouse.dll
+/home/chi/Projects/framework/transform/databases/data_warehouse/bin/Debug/data_warehouse.pdb

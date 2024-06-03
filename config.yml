@@ -3,17 +3,7 @@ environments:
  - name: test
  - name: prod
 
-connection_string: 'DRIVER={ODBC Driver 17 for SQL Server};SERVER=localhost;DATABASE=control_table;UID=sa;PWD=Password01234;TrustServerCertificate=yes;'
-
-data_mart_path:  ./contracts/marts
-data_marts:
- - name: wide_world_importers
-   is_enabled: True
-   type: sql_server
- 
- - name: adventure_works
-   is_enabled: False
-   type: sql_server
+connection_string: 'DRIVER={ODBC Driver 17 for SQL Server};SERVER=localhost;DATABASE=wwi_data_mart;UID=sa;PWD=Password01234;TrustServerCertificate=yes;'
 
 data_source_path:  ./contracts/sources
 data_sources:
@@ -24,3 +14,20 @@ data_sources:
  - name: adventure_works
    is_enabled: False
    type: sql_server
+
+
+data_mart_path:  ./contracts/marts
+data_marts:
+ - name: wide_world_importers
+   is_enabled: True
+   type: database
+
+ - name: wide_world_importers
+   is_enabled: True
+   type: synapse
+ 
+ - name: adventure_works
+   is_enabled: False
+   type: databricks
+
+
