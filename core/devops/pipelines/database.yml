@@ -40,8 +40,8 @@ stages:
   dependsOn: build
   jobs:
     - deployment: deploymentjobx
-      displayName: Deployment Job ...
-      environment: Deploy to ...
+      displayName: Deployment Jobx
+      environment: Deploy to x
       strategy:
         runOnce:
           deploy:
