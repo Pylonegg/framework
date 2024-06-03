@@ -10,7 +10,7 @@ param uniqueSuffix                  string = ''
 param sqlAdminPassword              string = newGuid()
 param warehouseDatabaseNames        array
 param controlDatabaseNames          array
-param controlEntraAdminObjectIds    array
+param controlEntraAdminObjectIds    object
 @secure()
 param synapseSqlAdminPassword       string = newGuid()
 param dataLakeContainerNames        array  = ['raw','trusted','curated','transient','sandpit']

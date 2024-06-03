@@ -26,7 +26,10 @@
     },
     "controlEntraAdminObjectIds":{
       "value": [
-        "57153cd2-4cbe-40d0-9556-a7339b92ac35"
+        {
+        "login":"AAD-GRP-DATA-PLATFORM-DEV",
+        "sid":  "57153cd2-4cbe-40d0-9556-a7339b92ac35"
+        }
       ]
     }
   }
