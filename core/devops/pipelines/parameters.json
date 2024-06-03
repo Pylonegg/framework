@@ -14,6 +14,11 @@
     "environment": {
       "value": "dev"
     },
+    "warehouseDatabaseNames":{
+      "value": [
+        "data_warehouse"
+      ]
+    },
     "controlDatabaseNames":{
       "value": [
         "dev01xctrldb"

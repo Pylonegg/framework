@@ -34,9 +34,11 @@ This framework is being developed to be highly automated and the below actions s
 |Activity |Resource|Status||
 |---|---|---|---|
 |Deploy Infrastructure      |Control Database           |Completed      || 
-|Generate Code              |Database                   |Completed      || 
-|Deploy Infrastructure      |Database                   |In progress    ||
-|Deploy Code                |Database                   |               || 
+|Deploy Code                |Control Database           |Completed      || 
+|Deploy Infrastructure      |Warehouse Database         |In progress    ||
+|Generate Code              |Warehouse Database         |               || 
+|Deploy Code                |Warehouse Database         |               || 
+|Generate Code              |Control Database           |               || 
 |Deploy Infrastructure      |Azure Data Factory         |               || 
 |Deploy Code                |Azure Data Factory         |               || 
 |Generate Code              |Synapse                    |               ||

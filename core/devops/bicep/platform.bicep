@@ -8,6 +8,7 @@ param uniquePrefix                  string = toLower('${environment}${uniqueName
 param uniqueSuffix                  string = ''
 @secure()
 param sqlAdminPassword              string = newGuid()
+param warehouseDatabaseNames        array
 param controlDatabaseNames          array
 param controlEntraAdminObjectIds    array
 @secure()
@@ -221,6 +222,30 @@ module m_DataLakeDeploy 'modules/datalake.bicep' =  {
     iotHubResourceID                   : v_iotHubID
   }
 }
+
+
+//-----------------------------------------------------------------------------------------------------------
+// - Data Warehouse
+//-----------------------------------------------------------------------------------------------------------
+@description('Data Warehouse')
+module m_DatabaseDeploy'modules/sql_server.bicep' = {
+  name: 'DatabaseDeploy'
+  scope: r_dataPlatformRG
+  dependsOn:[
+    m_keyVault
+  ]
+  params: {
+    tags:tags
+    sqlServerName         :controlServerName
+    resourceLocation      :resourceLocation
+    networkIsolationMode  :networkIsolationMode
+    sqlAdminLogin         :'sqladmin'
+    sqlAdminPassword      :sqlAdminPassword
+    databaseNames         :warehouseDatabaseNames
+    aadAdminObjectIds     :controlEntraAdminObjectIds
+  }
+}
+
 
 //-----------------------------------------------------------------------------------------------------------
 // - Databricks Workspace

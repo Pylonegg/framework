@@ -9,6 +9,7 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   sqlProjectPath: 'core/data_platform'
+  warehousePath: 'transform/databases/data_warehouse'
 
 stages:
 - stage: Build
@@ -19,6 +20,13 @@ stages:
     - task: VSBuild@1
       inputs:
         solution: '$(sqlProjectPath)/*.sqlproj'
+        msbuildArgs: '/p:Configuration=Release'
+        platform: 'Any CPU'
+        configuration: 'Release'
+
+    - task: VSBuild@1
+      inputs:
+        solution: '$(warehousePath)/*.sqlproj'
         msbuildArgs: '/p:Configuration=Release'
         platform: 'Any CPU'
         configuration: 'Release'
@@ -38,40 +46,34 @@ stages:
   - group: DEV
   dependsOn: build
   jobs:
-  - job: 'DeployControlDatabase'
-    displayName: 'Deploy Control Database'
+  - job: 'DeployDatabase'
+    displayName: 'Deploy SQL Databases'
     steps:
     - download: current
       artifact: drop
 
     - task: SqlAzureDacpacDeployment@1
-      displayName: 'Deploy DacPac' 
+      displayName: 'Deploy Control Database' 
       inputs:
         azureSubscription: 'azelia-dev-connection'
         AuthenticationType: 'servicePrincipal'
-        ServerName: '$(serverName).database.windows.net'
-        DatabaseName: '$(databaseName)' 
+        ServerName: '$(controlServerName).database.windows.net'
+        DatabaseName: '$(controlDatabaseName)' 
         deployType: 'DacpacTask'
         DeploymentAction: 'Publish'
         DacpacFile: '$(Pipeline.Workspace)/drop/core/data_platform/bin/debug/data_platform.dacpac'
         # PublishProfile: '$(Pipeline.Workspace)/drop/core/data_platform/data_platform.publish.xml'
         IpDetectionMethod: 'AutoDetect'
 
-#  - job: 'DeployDataWarehouse'
-#    displayName: 'Deploy Data Warehouse'
-#    steps:
-#    - download: current
-#      artifact: drop
-#
-#    - task: SqlAzureDacpacDeployment@1
-#      displayName: 'Deploy DacPac' 
-#      inputs:
-#        azureSubscription: 'azelia-dev-connection'
-#        AuthenticationType: 'servicePrincipal'
-#        ServerName: '$(serverName).database.windows.net'
-#        DatabaseName: '$(databaseName)' 
-#        deployType: 'DacpacTask'
-#        DeploymentAction: 'Publish'
-#        DacpacFile: '$(Pipeline.Workspace)/drop/core/data_platform/bin/debug/data_platform.dacpac'
-#        # PublishProfile: '$(Pipeline.Workspace)/drop/core/data_platform/data_platform.publish.xml'
-#        IpDetectionMethod: 'AutoDetect'
+
+    - task: SqlAzureDacpacDeployment@1
+      displayName: 'Deploy Data Warehouse' 
+      inputs:
+        azureSubscription: 'azelia-dev-connection'
+        AuthenticationType: 'servicePrincipal'
+        ServerName: '$(warehouseServerName).database.windows.net'
+        DatabaseName: '$(warehouseDatabaseName)' 
+        deployType: 'DacpacTask'
+        DeploymentAction: 'Publish'
+        DacpacFile: '$(Pipeline.Workspace)/drop/transform/databases/$(warehouseDatabaseName)/bin/debug/$(warehouseDatabaseName).dacpac'
+        IpDetectionMethod: 'AutoDetect'
