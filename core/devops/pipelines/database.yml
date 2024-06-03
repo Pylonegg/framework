@@ -1,0 +1,60 @@
+trigger:
+- master
+
+pool:
+  vmImage: windows-2019
+
+variables:
+  solution: '**/*.sqlproj'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+  sqlProjectPath: 'core/data_platform' # Adjust this path
+  sqlPackagePath: '$(Build.ArtifactStagingDirectory)/data_platform.dacpac'
+
+stages:
+- stage: build
+  jobs:
+  - job: BuildControlDatabase'
+    displayName: 'Build SQL Project'
+    steps:
+    - task: VSBuild@1
+      inputs:
+        solution: '$(sqlProjectPath)/*.sqlproj'
+        msbuildArgs: '/p:Configuration=Release'
+        platform: 'Any CPU'
+        configuration: 'Release'
+
+    - task: CopyFiles@2
+      inputs:
+        targetFolder: '$(Build.ArtifactStagingDirectory)'    
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
+
+
+- stage: dev
+  variables:
+  - group: DEV
+  dependsOn: build
+  jobs:
+    - deployment: deploymentjobx
+      displayName: Deployment Job ...
+      environment: Deploy to ...
+      strategy:
+        runOnce:
+          deploy:
+            steps:         
+            - task: SqlAzureDacpacDeployment@1
+              displayName: 'Deploy DacPac' 
+              inputs:
+                azureSubscription: 'azelia-dev-connection'
+                AuthenticationType: 'servicePrincipal'
+                ServerName: '$(serverName).database.windows.net'
+                DatabaseName: '$(databaseName)' 
+                deployType: 'DacpacTask'
+                DeploymentAction: 'Publish'
+                DacpacFile: '$(Pipeline.Workspace)/core/data_platform/bin/debug/data_platform.dacpac'
+                PublishProfile: '$(Pipeline.Workspace)/core/data_platform/data_platform.publish.xml'
+                IpDetectionMethod: 'AutoDetect'
