@@ -14,7 +14,7 @@ variables:
 stages:
 - stage: build
   jobs:
-  - job: BuildControlDatabase'
+  - job: 'BuildControlDatabase'
     displayName: 'Build SQL Project'
     steps:
     - task: VSBuild@1
