@@ -12,7 +12,7 @@ variables:
   sqlPackagePath: '$(Build.ArtifactStagingDirectory)/data_platform.dacpac'
 
 stages:
-- stage: build
+- stage: Build
   jobs:
   - job: 'BuildControlDatabase'
     displayName: 'Build SQL Project'
@@ -34,7 +34,7 @@ stages:
         ArtifactName: 'drop'
 
 
-- stage: dev
+- stage: Dev
   variables:
   - group: DEV
   dependsOn: build
@@ -51,6 +51,6 @@ stages:
         DatabaseName: '$(databaseName)' 
         deployType: 'DacpacTask'
         DeploymentAction: 'Publish'
-        DacpacFile: '$(Pipeline.Workspace)/core/data_platform/bin/debug/data_platform.dacpac'
-        PublishProfile: '$(Pipeline.Workspace)/core/data_platform/data_platform.publish.xml'
+        DacpacFile: '$(Pipeline.Workspace)/drop/core/data_platform/bin/debug/data_platform.dacpac'
+        PublishProfile: '$(Pipeline.Workspace)/drop/core/data_platform/data_platform.publish.xml'
         IpDetectionMethod: 'AutoDetect'
