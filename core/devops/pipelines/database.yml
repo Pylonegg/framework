@@ -43,7 +43,7 @@ stages:
     steps:
     - download: current
       artifact: drop
-      
+
     - task: SqlAzureDacpacDeployment@1
       displayName: 'Deploy DacPac' 
       inputs:
@@ -54,5 +54,5 @@ stages:
         deployType: 'DacpacTask'
         DeploymentAction: 'Publish'
         DacpacFile: '$(Pipeline.Workspace)/drop/core/data_platform/bin/debug/data_platform.dacpac'
-        PublishProfile: '$(Pipeline.Workspace)/drop/core/data_platform/data_platform.publish.xml'
+        # PublishProfile: '$(Pipeline.Workspace)/drop/core/data_platform/data_platform.publish.xml'
         IpDetectionMethod: 'AutoDetect'
