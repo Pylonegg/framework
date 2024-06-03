@@ -41,7 +41,7 @@ stages:
   jobs:
     - deployment: deploymentjobx
       displayName: Deployment Jobx
-      environment: Deploy to x
+      environment: DEV
       strategy:
         runOnce:
           deploy:
