@@ -9,49 +9,46 @@ This framework is being developed to be highly automated and the below actions s
 2. Populate config.yml
 3. Add enrich logic
 
-### Features
-1. Auto Generate Contracts
-
-2. Load Contracts
-
-3. Generate SQL      
-3.1. Database SQL          
-3.2. Synapse SQL     
-3.3. Databricks SQL          
-
-4. Deploy SQL (***devops***)   
-4.1. Deploy to Database     
-4.2. Deploy to Synapse  
-4.3. Deploy to Databricks
-
-5. Data Orchestration   
-5.1. Azure Data Factory     
-5.2. Azure Synapse pipelines 
-
-6. Orchestration Control Database   
-6.1. 
-
-6. Generate Initial Model       
-6.1. Generate Power BI Model        
-6.2. Generate Analysis Services Model    
-
 
 ## Table of Contents
 
 1. [Summary]()
-2. [Contracts](docs/contracts.md)     
-3. [Contract Class](#contract-class)  
-4. [Contracts Class](#contracts-class)    
-5. [Formats Class](#formats-class)    
-6. [Utilities](#utilities)    
-7. [Usage](#usage)    
-2. [Contracts](core/contracts.md)     
-3. [Contract Class](#contract-class)  
-4. [Contracts Class](#contracts-class)    
-5. [Formats Class](#formats-class)    
-6. [Utilities](#utilities)    
-7. [Usage](#usage)
+2. [To Do]()
+3. [Contracts](docs/contracts.md)     
+4. [Contract Class](#contract-class)  
+5. [Contracts Class](#contracts-class)    
+6. [Formats Class](#formats-class)    
+7. [Utilities](#utilities)    
+2. [Usage](#usage)    
+3. [Contracts](core/contracts.md)     
+4. [Contract Class](#contract-class)  
+5. [Contracts Class](#contracts-class)    
+6. [Formats Class](#formats-class)    
+7. [Utilities](#utilities)    
+8. [Usage](#usage)
 
 
-Business Intelligence Acelleration Framework 
-by Chi Adiukwu
+
+## Features
+
+|Activity |Resource|Status||
+|---|---|---|---|
+|Deploy Infrastructure      |Control Database           |Completed      || 
+|Generate Code              |Database                   |Completed      || 
+|Deploy Infrastructure      |Database                   |In progress    ||
+|Deploy Code                |Database                   |               || 
+|Deploy Infrastructure      |Azure Data Factory         |               || 
+|Deploy Code                |Azure Data Factory         |               || 
+|Generate Code              |Synapse                    |               ||
+|Deploy Infrastructure      |Synapse                    |               ||
+|Deploy Code                |Synapse                    |               || 
+|Deploy Infrastructure      |Synapse Pipelines          |               || 
+|Deploy Code                |Synapse Pipelines          |               || 
+|Deploy Infrastructure      |Databricks                 |               ||
+|Generate Code              |Databricks                 |               || 
+|Deploy Code                |Databricks                 |               || 
+|Generate Code              |Power BI Model             |               || 
+|Deploy Code                |Power BI Model             |               || 
+|Generate Code              |Analysis Services Model    |               || 
+|Deploy Code                |Azure Synapse pipelines    |               || 
+|
