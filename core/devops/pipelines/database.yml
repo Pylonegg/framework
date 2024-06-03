@@ -41,19 +41,16 @@ stages:
   jobs:
   - job: 'DeployControlDatabase'
     displayName: 'Deploy SQL Project'
-      strategy:
-        runOnce:
-          deploy:
-            steps:         
-            - task: SqlAzureDacpacDeployment@1
-              displayName: 'Deploy DacPac' 
-              inputs:
-                azureSubscription: 'azelia-dev-connection'
-                AuthenticationType: 'servicePrincipal'
-                ServerName: '$(serverName).database.windows.net'
-                DatabaseName: '$(databaseName)' 
-                deployType: 'DacpacTask'
-                DeploymentAction: 'Publish'
-                DacpacFile: '$(Pipeline.Workspace)/core/data_platform/bin/debug/data_platform.dacpac'
-                PublishProfile: '$(Pipeline.Workspace)/core/data_platform/data_platform.publish.xml'
-                IpDetectionMethod: 'AutoDetect'
+    steps:
+    - task: SqlAzureDacpacDeployment@1
+      displayName: 'Deploy DacPac' 
+      inputs:
+        azureSubscription: 'azelia-dev-connection'
+        AuthenticationType: 'servicePrincipal'
+        ServerName: '$(serverName).database.windows.net'
+        DatabaseName: '$(databaseName)' 
+        deployType: 'DacpacTask'
+        DeploymentAction: 'Publish'
+        DacpacFile: '$(Pipeline.Workspace)/core/data_platform/bin/debug/data_platform.dacpac'
+        PublishProfile: '$(Pipeline.Workspace)/core/data_platform/data_platform.publish.xml'
+        IpDetectionMethod: 'AutoDetect'
