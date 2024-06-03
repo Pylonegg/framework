@@ -39,8 +39,8 @@ stages:
   - group: DEV
   dependsOn: build
   jobs:
-    - deployment: deploymentjobx
-      displayName: Deployment Jobx
+  - job: 'DeployControlDatabase'
+    displayName: 'Deploy SQL Project'
       strategy:
         runOnce:
           deploy:
