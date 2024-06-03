@@ -1,4 +1,4 @@
-//=== GLOBAL PARAMETERS =====================================================================================
+//=== PARAMETERS =====================================================================================
 targetScope = 'subscription'
 param resourceLocation              string
 param resourceGroupName             string
@@ -6,44 +6,15 @@ param environment                   string
 param uniqueName                    string
 param uniquePrefix                  string = toLower('${environment}${uniqueName}')
 param uniqueSuffix                  string = ''
-param ctrlDeploySynapse             bool    = true
-param ctrlDeployDataFactory         bool    = true
-param ctrlDeployDatabricks          bool    = false
-param ctrlDeployAnalysisServices    bool    = false
-param ctrlDeployPurview             bool    = false
-param ctrlDeployAI                  bool    = false
-param ctrlDeployStreaming           bool    = false
-param ctrlDeployDataShare           bool    = false
-param ctrlDeployPrivateDNSZones     bool    = false
-param ctrlDeployOperationalDB       bool    = false
-param ctrlDeployCosmosDB            bool    = false
-param ctrlDeploySynapseSQLPool      bool    = false
-param ctrlDeploySynapseADXPool      bool    = false
-param ctrlDeploySynapseSparkPool    bool    = false
-
-param tags object = {
-  tagName1: 'tagValue1'
-  tagName2: 'tagValue2'
-}
-
-@description('Network Isolation Mode')
-@allowed(['default', 'vNet'])
-param networkIsolationMode string = 'default'
-
-@allowed(['new','existing'])
-param ctrlNewOrExistingVNet string = 'new'
-
-@allowed(['eventhub','iothub'])
-param ctrlStreamIngestionService    string  = 'eventhub'
-
-
-//=== NAMING PARAMETERS =====================================================================================
+@secure()
+param sqlAdminPassword              string = newGuid()
+param controlDatabaseNames          array
+param controlEntraAdminObjectIds    array
 @secure()
 param synapseSqlAdminPassword       string = newGuid()
 param dataLakeContainerNames        array  = ['raw','trusted','curated','transient','sandpit']
 param vNetName                      string = '${uniquePrefix}vnet${uniqueSuffix}'
 param controlServerName             string = '${uniquePrefix}ctrlserver${uniqueSuffix}'
-param controlDatabaseName           string = '${uniquePrefix}ctrldb${uniqueSuffix}'
 param keyVaultName                  string = '${uniquePrefix}akv${uniqueSuffix}'
 param analysisServicesName          string = '${uniquePrefix}aas${uniqueSuffix}'
 param dataLakeAccountName           string = '${uniquePrefix}adls${uniqueSuffix}'
@@ -74,16 +45,42 @@ param synapseSqlAdminUserName       string = 'azsynapseadmin'
 param synapseADXDatabaseName        string = 'ADXDB'
 param synapseSparkPoolName          string = 'SparkPool'
 param deploymentScriptUAMIName      string = toLower('${uniquePrefix}uami${uniqueSuffix}')
+//param existingVNetResourceGroupName string = resourceGroup().name
+param tags object = {
+  tagName1: 'tagValue1'
+  tagName2: 'tagValue2'
+}
+
+
+//=== Resource Deployment Controllers =================================================================
+param ctrlDeploySynapse             bool    = true
+param ctrlDeployDataFactory         bool    = true
+param ctrlDeployDatabricks          bool    = false
+param ctrlDeployAnalysisServices    bool    = false
+param ctrlDeployPurview             bool    = false
+param ctrlDeployAI                  bool    = false
+param ctrlDeployStreaming           bool    = false
+param ctrlDeployDataShare           bool    = false
+param ctrlDeployPrivateDNSZones     bool    = false
+param ctrlDeployOperationalDB       bool    = false
+param ctrlDeployCosmosDB            bool    = false
+param ctrlDeploySynapseSQLPool      bool    = false
+param ctrlDeploySynapseADXPool      bool    = false
+param ctrlDeploySynapseSparkPool    bool    = false
+
+//=== Network Related PARAMETERS =====================================================================================
 param vNetIPAddressPrefixes         array  = ['10.1.0.0/16'] 
 param vNetSubnetName                string = 'default'
 param vNetSubnetIPAddressPrefix     string = '10.1.0.0/24'
+@description('Network Isolation Mode')
+@allowed(['default', 'vNet'])
+param networkIsolationMode string = 'default'
 
+@allowed(['new','existing'])
+param ctrlNewOrExistingVNet string = 'new'
 
-@secure()
-param sqlAdminPassword              string = 'Password01234'
-param sqlAdminLogin                 string = 'sqladmin'
-//param existingVNetResourceGroupName string = resourceGroup().name
-
+@allowed(['eventhub','iothub'])
+param ctrlStreamIngestionService    string  = 'eventhub'
 
 //=== VARIABLES  > Conditional ========================================================================================
 var v_dataLakeAccountID                         = m_DataLakeDeploy.outputs.dataLakeStorageAccountID
@@ -174,10 +171,7 @@ module m_vNet 'modules/vnet.bicep' = if(networkIsolationMode == 'vNet' && ctrlNe
   }
 }
 
-//=== MODULES ===============================================================================================
-//-----------------------------------------------------------------------------------------------------------
-// - Control Server
-//-----------------------------------------------------------------------------------------------------------
+@description('Control Server')
 module m_ControlServerDeploy 'modules/sql_server.bicep' = {
   name: 'ControlServerDeploy'
   scope: r_dataPlatformRG
@@ -186,32 +180,18 @@ module m_ControlServerDeploy 'modules/sql_server.bicep' = {
   ]
   params: {
     tags:tags
-    sqlServerName: controlServerName
-    resourceLocation: resourceLocation
-    networkIsolationMode:networkIsolationMode
-    sqlAdminLogin: 'sqlAdmin'
-    sqlAdminPassword: sqlAdminPassword
-
-  }
-}
-//-----------------------------------------------------------------------------------------------------------
-// - Control Database               list skus // az sql db list-editions -l uksouth -o table
-//-----------------------------------------------------------------------------------------------------------
-
-module m_ControlDatabaseDeploy 'modules/sql_database.bicep' = {
-  name: 'ControlDatabaseDeploy'
-  scope: r_dataPlatformRG
-  dependsOn:[
-    m_keyVault
-  ]
-  params: {
-    sqlServerName: controlServerName
-    resourceLocation: resourceLocation
-    sqlDatabaseName: controlDatabaseName
-    skuName: 'Basic'
+    sqlServerName         :controlServerName
+    resourceLocation      :resourceLocation
+    networkIsolationMode  :networkIsolationMode
+    sqlAdminLogin         :'sqladmin'
+    sqlAdminPassword      :sqlAdminPassword
+    databaseNames         :controlDatabaseNames
+    aadAdminObjectIds     :controlEntraAdminObjectIds
   }
 }
 
+
+//=== MODULES ===============================================================================================
 //-----------------------------------------------------------------------------------------------------------
 // - DataLake
 //-----------------------------------------------------------------------------------------------------------

@@ -105,3 +105,10 @@ stages:
 - The managed identity must have the necessary permissions on the Azure SQL Database.
 
 This pipeline provides a clear and structured approach to building and deploying SQL projects to Azure SQL Database using managed identities for secure authentication.
+
+
+
+
+## Notes
+
+Create an AD group with sc added to group and group is admin for server
