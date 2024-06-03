@@ -9,9 +9,6 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   sqlProjectPath: 'core/data_platform' # Adjust this path
-  databaseName: 'dev01xctrldb'
-  serverName: 'dev01xctrlserver.database.windows.net'
-  resourceGroupName: 'dev-az-rg'
   sqlPackagePath: '$(Build.ArtifactStagingDirectory)/data_platform.dacpac'
 
 stages:
@@ -47,33 +44,3 @@ stages:
       inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
         ArtifactName: 'drop'
-
-- stage: Deploy
-  dependsOn: Build
-  jobs:
-  - deployment: Deploy
-    environment: 'production'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - download: current
-            artifact: drop
-
-          - task: AzureCLI@2
-            inputs:
-              azureSubscription: 'azelia-dev-connection'
-              scriptType: 'ps'
-              scriptLocation: 'inlineScript'
-              inlineScript: |
-                $dacpacFilePath = "$(sqlPackagePath)"
-                $managedIdentityClientId = "d3e8813a-a336-4fde-ab4c-67afa86c639e"
-                $resourceGroupName = "$(resourceGroupName)"
-                $sqlServerName = "$(serverName)"
-                $databaseName = "$(databaseName)"
-     
-                # Generate access token for Managed Identity
-                $accessToken = az account get-access-token --resource https://database.windows.net/ --query accessToken --output tsv
-                
-                # Deploy DACPAC to Azure SQL Database
-                & SqlPackage.exe /Action:Publish /SourceFile:$dacpacFilePath /TargetServerName:$sqlServerName /TargetDatabaseName:$databaseName /AccessToken:$accessToken /p:AllowIncompatiblePlatform=true
