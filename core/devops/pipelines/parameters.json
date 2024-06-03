@@ -13,6 +13,16 @@
     },
     "environment": {
       "value": "dev"
+    },
+    "controlDatabaseNames":{
+      "value": [
+        "dev01xctrldb"
+      ]
+    },
+    "controlEntraAdminObjectIds":{
+      "value": [
+        "57153cd2-4cbe-40d0-9556-a7339b92ac35"
+      ]
     }
   }
 }
