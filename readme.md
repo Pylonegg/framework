@@ -31,12 +31,15 @@ This framework is being developed to be highly automated and the below actions s
 
 ## Features
 
-|Activity |Resource|Status||
+|Activity |Resource|Status|Notes|
 |---|---|---|---|
 |Deploy Infrastructure      |Control Database           |Completed      || 
-|Generate Code              |Database                   |Completed      || 
-|Deploy Infrastructure      |Database                   |In progress    ||
-|Deploy Code                |Database                   |               || 
+|Deploy Code                |Control Database           |Completed      || 
+|Deploy Infrastructure      |Warehouse Database         |Completed      ||
+|Generate Code              |Staging Contracts          |               ||
+|Generate Code              |Warehouse Database         |In progress    |Auto Gen "Stage" schema and deploy|
+|Deploy Code                |Warehouse Database         |Completed      |Re-deploy| 
+|Generate Code              |Control Database           |               || 
 |Deploy Infrastructure      |Azure Data Factory         |               || 
 |Deploy Code                |Azure Data Factory         |               || 
 |Generate Code              |Synapse                    |               ||

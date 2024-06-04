@@ -2,7 +2,7 @@ param resourceLocation            string
 param sqlServerName               string
 param networkIsolationMode        string
 param sqlAdminLogin               string
-param aadAdminObjectIds           array
+param aadAdminObjectIds           object
 param databaseNames               array
 param tags                        object
 @secure()
@@ -35,13 +35,13 @@ resource r_sqlDatabase 'Microsoft.Sql/servers/databases@2023-05-01-preview' = [f
 }]
 
 @description('Deploy Sql Server Database Resources')
-resource r_aadAdminRoleAssignment 'Microsoft.Sql/servers/administrators@2023-05-01-preview' = [for aadAdminObjectId in aadAdminObjectIds: {
-  name: 'AD${aadAdminObjectId}'
+resource r_aadAdminRoleAssignment 'Microsoft.Sql/servers/administrators@2023-05-01-preview' = [for item in items(aadAdminObjectIds): {
+  name: 'AD-${item.key}'
   parent: r_sqlServer
   properties: {
     administratorType: 'ActiveDirectory'
-    login: reference('/subscriptions/${subscription().subscriptionId}/resourceGroups/${resourceGroup().name}/providers/Microsoft.AAD/domainServices/domainService', '2021-05-01').properties.adDomain
-    sid: aadAdminObjectId
+    login: item.key
+    sid: item.value
     tenantId: tenant().tenantId
   }
 }]

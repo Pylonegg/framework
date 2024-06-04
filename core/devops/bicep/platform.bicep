@@ -8,13 +8,15 @@ param uniquePrefix                  string = toLower('${environment}${uniqueName
 param uniqueSuffix                  string = ''
 @secure()
 param sqlAdminPassword              string = newGuid()
+param warehouseDatabaseNames        array
 param controlDatabaseNames          array
-param controlEntraAdminObjectIds    array
+param controlEntraAdminObjectIds    object
 @secure()
 param synapseSqlAdminPassword       string = newGuid()
 param dataLakeContainerNames        array  = ['raw','trusted','curated','transient','sandpit']
 param vNetName                      string = '${uniquePrefix}vnet${uniqueSuffix}'
 param controlServerName             string = '${uniquePrefix}ctrlserver${uniqueSuffix}'
+param warehouseServerName           string = '${uniquePrefix}warehouse${uniqueSuffix}'
 param keyVaultName                  string = '${uniquePrefix}akv${uniqueSuffix}'
 param analysisServicesName          string = '${uniquePrefix}aas${uniqueSuffix}'
 param dataLakeAccountName           string = '${uniquePrefix}adls${uniqueSuffix}'
@@ -221,6 +223,30 @@ module m_DataLakeDeploy 'modules/datalake.bicep' =  {
     iotHubResourceID                   : v_iotHubID
   }
 }
+
+
+//-----------------------------------------------------------------------------------------------------------
+// - Data Warehouse
+//-----------------------------------------------------------------------------------------------------------
+@description('Data Warehouse')
+module m_DatabaseDeploy'modules/sql_server.bicep' = {
+  name: 'DatabaseDeploy'
+  scope: r_dataPlatformRG
+  dependsOn:[
+    m_keyVault
+  ]
+  params: {
+    tags:tags
+    sqlServerName         :warehouseServerName
+    resourceLocation      :resourceLocation
+    networkIsolationMode  :networkIsolationMode
+    sqlAdminLogin         :'sqladmin'
+    sqlAdminPassword      :sqlAdminPassword
+    databaseNames         :warehouseDatabaseNames
+    aadAdminObjectIds     :controlEntraAdminObjectIds
+  }
+}
+
 
 //-----------------------------------------------------------------------------------------------------------
 // - Databricks Workspace
