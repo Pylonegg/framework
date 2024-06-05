@@ -6,8 +6,6 @@ param environment                   string
 param uniqueName                    string
 param uniquePrefix                  string = toLower('${environment}${uniqueName}')
 param uniqueSuffix                  string = ''
-@secure()
-param sqlAdminPassword              string = newGuid()
 param warehouseDatabaseNames        array
 param controlDatabaseNames          array
 param controlEntraAdminObjectIds    object
@@ -185,8 +183,6 @@ module m_ControlServerDeploy 'modules/sql_server.bicep' = {
     sqlServerName         :controlServerName
     resourceLocation      :resourceLocation
     networkIsolationMode  :networkIsolationMode
-    sqlAdminLogin         :'sqladmin'
-    sqlAdminPassword      :sqlAdminPassword
     databaseNames         :controlDatabaseNames
     aadAdminObjectIds     :controlEntraAdminObjectIds
   }
@@ -240,8 +236,6 @@ module m_DatabaseDeploy'modules/sql_server.bicep' = {
     sqlServerName         :warehouseServerName
     resourceLocation      :resourceLocation
     networkIsolationMode  :networkIsolationMode
-    sqlAdminLogin         :'sqladmin'
-    sqlAdminPassword      :sqlAdminPassword
     databaseNames         :warehouseDatabaseNames
     aadAdminObjectIds     :controlEntraAdminObjectIds
   }

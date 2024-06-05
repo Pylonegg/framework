@@ -1,12 +1,9 @@
 param resourceLocation            string
 param sqlServerName               string
 param networkIsolationMode        string
-param sqlAdminLogin               string
 param aadAdminObjectIds           object
 param databaseNames               array
 param tags                        object
-@secure()
-param sqlAdminPassword            string
 
 @description('Deploy Sql Server Resource')
 resource r_sqlServer 'Microsoft.Sql/servers@2023-05-01-preview' = {
@@ -17,8 +14,6 @@ resource r_sqlServer 'Microsoft.Sql/servers@2023-05-01-preview' = {
     type: 'SystemAssigned'
   }
   properties: {
-    administratorLogin: sqlAdminLogin
-    administratorLoginPassword: sqlAdminPassword
     publicNetworkAccess: networkIsolationMode == 'vNet' ? 'Disabled' : 'Enabled'
     restrictOutboundNetworkAccess: 'Disabled'
   }
