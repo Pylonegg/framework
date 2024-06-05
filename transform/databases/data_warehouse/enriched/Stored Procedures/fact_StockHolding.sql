@@ -14,7 +14,7 @@ TRUNCATE TABLE [enriched].[fact_StockHolding];
            sih.LastCostPrice 			AS [Last Cost Price],
            sih.ReorderLevel 			AS [Reorder Level],
            sih.TargetStockLevel 		AS [Target Stock Level]
-    FROM [wide_world_importers].[warehouse].[StockItemHoldings] AS sih
+    FROM [stage].[WideWorldImporters_Warehouse_StockItemHoldings] AS sih
 	LEFT JOIN [curated].dim_StockItem si
 		ON si.[WWI Stock Item ID] = sih.StockItemID   
 END

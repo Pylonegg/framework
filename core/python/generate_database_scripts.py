@@ -7,10 +7,16 @@ def database_sql(contract):
     prefix          = contract.prefix
     dataset_name    = contract.code
     object_name     = f"{prefix}_{dataset_name}"
-    datamart        = "wwi_data_mart"
     sql             = contract.format
 
 
+# = STAGING TABLE =================================================================================
+    staging_table = f"""
+CREATE TABLE [stage].[{contract.collection_name}_{dataset_name}]
+    (
+    {sql.npk_type}
+    );
+"""
 # = ENRICHED TABLE =================================================================================
     enriched_table = f"""
 CREATE TABLE [enriched].[{object_name}]
@@ -77,13 +83,15 @@ FROM [curated].[{object_name}]
 # == OUTPUT FILE ==============================================================================
     base_path = "transform/databases/data_warehouse/"
 
-    create_file(enriched_table, f"{base_path}/enriched/Tables/{object_name}.sql")
-    #create_file(enriched_stored_procedure, f"{base_path}/enriched/Stored Procedures/{object_name}.sql")
-
-    create_file(curated_table, f"{base_path}/curated/Tables/{object_name}.sql")
-    create_file(curated_stored_procedure, f"{base_path}/curated/Stored Procedures/{object_name}.sql")
-
-    create_file(model, f"{base_path}/model/Views/{object_name}.sql")
+    if contract.collection_type == 'datasource':
+        create_file(staging_table, f"{base_path}/stage/Tables/{contract.collection_name}_{dataset_name}.sql")
+    else:
+        create_file(enriched_table, f"{base_path}/enriched/Tables/{object_name}.sql")
+        #create_file(enriched_stored_procedure, f"{base_path}/enriched/Stored Procedures/{object_name}.sql")
+        create_file(curated_table, f"{base_path}/curated/Tables/{object_name}.sql")
+        create_file(curated_stored_procedure, f"{base_path}/curated/Stored Procedures/{object_name}.sql")
+        create_file(model, f"{base_path}/model/Views/{object_name}.sql")
+    
 
 
 

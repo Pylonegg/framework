@@ -5,16 +5,17 @@ from utility import create_file
 
 def synapse_sql(contract):
     prefix          = contract.prefix
+    collection_type = contract.collection_type
     dataset_name    = contract.code
     object_name     = f"{prefix}_{dataset_name}"
-    mart_name       = contract.mart_name
+    collection_name = contract.collection_name
     sql             = contract.format
 
 
 
 # = ENRICHED =================================================================================
     enriched = f"""       
-USE [{mart_name}]
+USE [{collection_name}]
 GO
 
 CREATE OR ALTER PROCEDURE [enriched].[sp_{object_name}]
@@ -40,7 +41,7 @@ END
 
 # = CURATED =================================================================================
     curated = f"""
-USE [{mart_name}]
+USE [{collection_name}]
 GO
 
 IF OBJECT_ID('[curated].[{object_name}]') IS NULL
@@ -77,7 +78,7 @@ END
 
 # = MODEL ====================================================================================
     model = f"""
-USE [{mart_name}]
+USE [{collection_name}]
 GO
 
 CREATE OR ALTER VIEW [model].[{object_name}]
@@ -89,7 +90,8 @@ FROM [curated].[{object_name}]
 
     # == OUTPUT FILE ==============================================================================
     # NOTE Uncommenting enriched in it's current state will erase logic
-    base_path = f'transform/synapse/{mart_name}'
-    # create_file(enriched, f"{base_path}/{mart_name}/enriched/{object_name}.sql")
-    create_file(curated, f"{base_path}/curated/{object_name}.sql")
-    create_file(model, f"{base_path}/model/{object_name}.sql")
+    if collection_type != 'datasource':
+        base_path = f'transform/synapse/{collection_name}'
+        # create_file(enriched, f"{base_path}/{collection_name}/enriched/{object_name}.sql")
+        create_file(curated, f"{base_path}/curated/{object_name}.sql")
+        create_file(model, f"{base_path}/model/{object_name}.sql")

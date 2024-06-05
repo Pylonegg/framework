@@ -14,10 +14,10 @@ TRUNCATE TABLE [enriched].[dim_Supplier];
 		,s.SupplierReference          AS  [Supplier Reference]
 		,s.PaymentDays                AS  [Payment Days]
 		,s.DeliveryPostalCode         AS  [Postal Code]
-	FROM [wide_world_importers].[purchasing].[Suppliers] s
-	INNER JOIN [wide_world_importers].[purchasing].[SupplierCategories] sc
+	FROM [stage].[WideWorldImporters_Purchasing_Suppliers] s
+	INNER JOIN [stage].[WideWorldImporters_Purchasing_SupplierCategories] sc
 	ON s.SupplierCategoryID = sc.SupplierCategoryID
-	INNER JOIN [wide_world_importers].[application].[People] p
+	INNER JOIN [stage].[WideWorldImporters_Application_People] p
 	ON s.PrimaryContactPersonID = p.PersonID 
 END
     

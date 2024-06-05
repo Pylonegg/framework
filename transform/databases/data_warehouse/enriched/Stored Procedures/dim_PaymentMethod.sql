@@ -9,6 +9,6 @@ TRUNCATE TABLE [enriched].[dim_PaymentMethod];
 	SELECT        
 		 p.PaymentMethodID      AS [WWI Payment Method ID]
 		,p.PaymentMethodName    AS [Payment Method]
-	FROM [wide_world_importers].[application].[PaymentMethods] p  
+	FROM [stage].[WideWorldImporters_Application_PaymentMethods] p  
 END
     

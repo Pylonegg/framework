@@ -16,7 +16,7 @@ TRUNCATE TABLE [enriched].[fact_Movement];
            sit.InvoiceID 									AS [WWI Invoice ID],
            sit.PurchaseOrderID 								AS [WWI Purchase Order ID],
            CAST(sit.Quantity AS int) 						AS Quantity
-    FROM [wide_world_importers].[warehouse].[StockItemTransactions] AS sit
+    FROM [stage].[WideWorldImporters_Warehouse_StockItemTransactions] AS sit
 	LEFT JOIN [curated].[dim_StockItem] si
 		ON si.[WWI Stock Item ID] = sit.StockItemID
 	LEFT JOIN [curated].[dim_Customer] c

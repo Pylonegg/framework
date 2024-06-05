@@ -1,6 +1,6 @@
 
 dataset:
-    name: Cities
+    name: Application_Cities
     description: Staging table Cities
     enabled: true
     type: staging
@@ -9,38 +9,38 @@ dataset:
 
 columns:
   - sort_order: 1            
-    column_name: CityID            
+    name: CityID            
     data_type: int                                                                        
             
   - sort_order: 2            
-    column_name: CityName            
+    name: CityName            
     data_type: nvarchar            
     length: 50                                                            
             
   - sort_order: 3            
-    column_name: StateProvinceID            
+    name: StateProvinceID            
     data_type: int                                                                        
             
   - sort_order: 4            
-    column_name: Location            
+    name: Location            
     data_type: geography            
     length: -1                                    
     is_nullable: true                        
             
   - sort_order: 5            
-    column_name: LatestRecordedPopulation            
+    name: LatestRecordedPopulation            
     data_type: bigint                                                
     is_nullable: true                        
             
   - sort_order: 6            
-    column_name: LastEditedBy            
+    name: LastEditedBy            
     data_type: int                                                                        
             
   - sort_order: 7            
-    column_name: ValidFrom            
+    name: ValidFrom            
     data_type: datetime2                                                                        
             
   - sort_order: 8            
-    column_name: ValidTo            
+    name: ValidTo            
     data_type: datetime2                                                                        
             

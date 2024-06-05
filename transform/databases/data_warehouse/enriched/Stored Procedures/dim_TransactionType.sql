@@ -9,6 +9,6 @@ TRUNCATE TABLE [enriched].[dim_TransactionType];
 	SELECT
 		p.TransactionTypeID 	AS [WWI Transaction Type ID]
 		,p.TransactionTypeName 	AS [Transaction Type]
-	FROM [wide_world_importers].[application].[TransactionTypes] p   
+	FROM [stage].[WideWorldImporters_Application_TransactionTypes] p   
 END
     

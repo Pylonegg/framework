@@ -1,0 +1,56 @@
+
+dataset:
+    name: Application_StateProvinces
+    description: Staging table StateProvinces
+    enabled: true
+    type: staging
+    load_sytle: default
+    load_method: default
+
+columns:
+  - sort_order: 1            
+    name: StateProvinceID            
+    data_type: int                                                                        
+            
+  - sort_order: 2            
+    name: StateProvinceCode            
+    data_type: nvarchar            
+    length: 5                                                            
+            
+  - sort_order: 3            
+    name: StateProvinceName            
+    data_type: nvarchar            
+    length: 50                                                            
+            
+  - sort_order: 4            
+    name: CountryID            
+    data_type: int                                                                        
+            
+  - sort_order: 5            
+    name: SalesTerritory            
+    data_type: nvarchar            
+    length: 50                                                            
+            
+  - sort_order: 6            
+    name: Border            
+    data_type: geography            
+    length: -1                                    
+    is_nullable: true                        
+            
+  - sort_order: 7            
+    name: LatestRecordedPopulation            
+    data_type: bigint                                                
+    is_nullable: true                        
+            
+  - sort_order: 8            
+    name: LastEditedBy            
+    data_type: int                                                                        
+            
+  - sort_order: 9            
+    name: ValidFrom            
+    data_type: datetime2                                                                        
+            
+  - sort_order: 10            
+    name: ValidTo            
+    data_type: datetime2                                                                        
+            

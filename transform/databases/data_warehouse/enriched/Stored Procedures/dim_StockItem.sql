@@ -22,12 +22,12 @@ SELECT
     ,si.UnitPrice                  AS  [Unit Price]
     ,si.RecommendedRetailPrice     AS  [Recommended Retail Price]
     ,si.TypicalWeightPerUnit       AS  [Typical Weight Per Unit]
-FROM [wide_world_importers].[warehouse].[StockItems] si
-INNER JOIN [wide_world_importers].[warehouse].[PackageTypes] spt
+FROM [stage].[WideWorldImporters_Warehouse_StockItems] si
+INNER JOIN [stage].[WideWorldImporters_Warehouse_PackageTypes] spt
     ON si.UnitPackageID = spt.PackageTypeID
-INNER JOIN [wide_world_importers].[warehouse].[PackageTypes] bpt
+INNER JOIN [stage].[WideWorldImporters_Warehouse_PackageTypes] bpt
     ON si.OuterPackageID = bpt.PackageTypeID
-LEFT OUTER JOIN [wide_world_importers].[warehouse].[Colors] c
+LEFT OUTER JOIN [stage].[WideWorldImporters_Warehouse_Colors] c
         ON si.ColorID = c.ColorID   
 END
     

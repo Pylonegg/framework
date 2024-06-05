@@ -12,6 +12,6 @@ BEGIN
 		,p.PreferredName    AS [Preferred Name]
 		,p.IsSalesperson    AS [Is Salesperson]
 		--,convert(varbinary(max),p.Photo)            AS [Photo]
-	FROM [wide_world_importers].[application].[People] p   
+	FROM [stage].[WideWorldImporters_Application_People] p   
 END
     

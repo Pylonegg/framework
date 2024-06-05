@@ -105,7 +105,7 @@ def format_field(label, value):
 def build_contract(metadata):
     dataset = f"""
 dataset:
-    name: {metadata[0]['name']}
+    name: {metadata[0]['table_name']}
     description: {metadata[0]['description']}
     enabled: {metadata[0]['enabled']}
     type: {metadata[0]['type']}
@@ -117,7 +117,7 @@ columns:
     dataset += "\n".join(
         [
             f"""  - sort_order: {column['sort_order']}\
-            {format_field('column_name'       , column['column_name'])}\
+            {format_field('name'              , column['name'])}\
             {format_field('data_type'         , column['data_type'])}\
             {format_field('length'            , column['length'])}\
             {format_field('precision'         , column['precision'])}\
@@ -138,14 +138,14 @@ def generate_server_contract(database_name, table_schema, table_name, connection
     # query to run against database to obtain metadata
     query = f"""
         SELECT
-             C.TABLE_NAME                               AS name
-            ,CONCAT('Staging table ', C.TABLE_NAME)     AS description
+             concat(C.TABLE_SCHEMA,'_',C.TABLE_NAME)    AS table_name
+            ,concat('Staging table ', C.TABLE_NAME)     AS description
             ,'true'                                     AS enabled
             ,'staging'                                  AS type
             ,'default'                                  AS load_sytle
             ,'default'                                  AS load_method
             ,C.ORDINAL_POSITION                         AS sort_order
-            ,C.COLUMN_NAME                              AS column_name
+            ,C.COLUMN_NAME                              AS name
             ,C.DATA_TYPE                                AS data_type
             ,C.CHARACTER_MAXIMUM_LENGTH                 AS length
             ,case when C.DATA_TYPE in ('decimal','numeric') then C.NUMERIC_PRECISION  else null end AS precision
@@ -165,5 +165,5 @@ def generate_server_contract(database_name, table_schema, table_name, connection
     # execute query and obtain meta data
     metadata    = sql_server_db(connection_string, query)
     yaml_data   = build_contract(metadata)
-    target_path = f"contracts/sources/{database_name}/{table_name}.yml"
+    target_path = f"contracts/datasource/{database_name}/{table_schema}_{table_name}.yml"
     create_file(yaml_data, target_path)

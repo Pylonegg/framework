@@ -14,14 +14,14 @@ INSERT INTO [enriched].[dim_Customer]
 		, bg.[BuyingGroupName]                      AS [Buying Group]
 		,  p.[FullName]                             AS [Primary Contact]
 		,  c.[DeliveryPostalCode]                   AS [Postal Code]
-	FROM [wide_world_importers].[sales].[Customers] 				AS c
-	INNER JOIN [wide_world_importers].[sales].[BuyingGroups] 			AS bg
+	FROM [stage].[WideWorldImporters_Sales_Customers] 				AS c
+	INNER JOIN [stage].[WideWorldImporters_Sales_BuyingGroups] 			AS bg
 		ON c.[BuyingGroupID] = bg.[BuyingGroupID]
-	INNER JOIN [wide_world_importers].[sales].[CustomerCategories] 	AS cc
+	INNER JOIN [stage].[WideWorldImporters_Sales_CustomerCategories] 	AS cc
 		ON c.[CustomerCategoryID] = cc.[CustomerCategoryID]
-	INNER JOIN [wide_world_importers].[sales].[Customers] 			AS bt
+	INNER JOIN [stage].[WideWorldImporters_Sales_Customers] 			AS bt
 		ON c.[BillToCustomerID] = bt.[CustomerID]
-	INNER JOIN [wide_world_importers].[application].[People] 		AS p
+	INNER JOIN [stage].[WideWorldImporters_Application_People] 		AS p
 		ON c.[PrimaryContactPersonID] = p.[PersonID]    
 END
     

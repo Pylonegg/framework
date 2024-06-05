@@ -17,10 +17,10 @@ SELECT
 	,co.[Subregion]                 			AS [Subregion]
 	,CONVERT(nvarchar(50),cc.[Location])        AS [Location]
 	,COALESCE(cc.[LatestRecordedPopulation],0)  AS [Latest Recorded Population]
-FROM [wide_world_importers].[application].[Cities] cc
-INNER JOIN [wide_world_importers].[application].[StateProvinces] sp
+FROM [stage].[WideWorldImporters_Application_Cities] cc
+INNER JOIN [stage].[WideWorldImporters_Application_StateProvinces] sp
 	ON cc.StateProvinceID = sp.StateProvinceID
-INNER JOIN [wide_world_importers].[application].[Countries] co
+INNER JOIN [stage].[WideWorldImporters_Application_Countries] co
 	ON sp.CountryID = co.CountryID
 END
     
