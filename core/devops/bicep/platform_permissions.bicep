@@ -19,7 +19,6 @@ param streamAnalyticsIdentityPrincipalID string
 param ctrlStreamingIngestionService string
 param iotHubPrincipalID string
 
-param sqlAdminPassword string
 param cosmosDBAccountName string
 param cosmosDBDatabaseName string
 
@@ -112,13 +111,13 @@ resource r_keyVault 'Microsoft.KeyVault/vaults@2021-04-01-preview' existing = {
   name: keyVaultName
 }
 
-resource db_secret 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
-  parent: r_keyVault
-  name: 'sqlAdmin'
-  properties: {
-    value: sqlAdminPassword
-  }
-}
+//resource db_secret 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
+//  parent: r_keyVault
+//  name: 'sqlAdmin'
+//  properties: {
+//    value: sqlAdminPassword
+//  }
+//}
 
 
 @description('Lookup ')

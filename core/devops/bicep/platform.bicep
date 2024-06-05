@@ -435,7 +435,6 @@ module m_Permissions'platform_permissions.bicep' = {
     m_OperationalDatabasesDeploy
   ]
   params: {
-    sqlAdminPassword                           : sqlAdminPassword
     UAMIPrincipalID                            : v_uamiPrincipalID
     dataLakeAccountID                          : v_dataLakeAccountID
     dataLakeAccountName                        : v_dataLakeAccountName
