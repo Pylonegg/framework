@@ -18,3 +18,5 @@ resource myRgs 'Microsoft.Resources/resourceGroups@2021-04-01' = [for item in it
   }
 }]
 ```
+
+Connot have spaced in the 'login' name for aad authentication with sql server.
