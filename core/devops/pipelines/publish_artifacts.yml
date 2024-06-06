@@ -24,6 +24,7 @@ stages:
         displayName: 'Install npm package'
 
       - task: Npm@1
+        displayName: 'Build DataFactory Artifacts' 
         inputs:
           command: 'custom'
           workingDir: '$(Build.Repository.LocalPath)\core\data_factory'
@@ -31,12 +32,17 @@ stages:
         displayName: 'Validate and Generate ARM template'
 
       - task: VSBuild@1
+        displayName: 'Build Control Database Artifacts' 
         inputs:
           solution: 'core/data_platform/*.sqlproj'
           msbuildArgs: '/p:Configuration=Release'
           platform: 'Any CPU'
           configuration: 'Release'     
 
+      - task: CopyFiles@2
+        inputs:
+          targetFolder: '$(Build.ArtifactStagingDirectory)'   
+           
       - task: PublishBuildArtifacts@1
         inputs:
           targetPath: '$(Build.ArtifactStagingDirectory)'
