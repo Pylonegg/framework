@@ -8,7 +8,7 @@ param uniquePrefix                  string = toLower('${environment}${uniqueName
 param uniqueSuffix                  string = ''
 param warehouseDatabaseNames        array
 param controlDatabaseNames          array
-param controlEntraAdminObjectIds    object
+param controlEntraAdminObjectId     string
 @secure()
 param synapseSqlAdminPassword       string = newGuid()
 param dataLakeContainerNames        array  = ['raw','trusted','curated','transient','sandpit']
@@ -184,7 +184,7 @@ module m_ControlServerDeploy 'modules/sql_server.bicep' = {
     resourceLocation      :resourceLocation
     networkIsolationMode  :networkIsolationMode
     databaseNames         :controlDatabaseNames
-    aadAdminObjectIds     :controlEntraAdminObjectIds
+    aadAdminObjectId      :controlEntraAdminObjectId
   }
 }
 
@@ -237,7 +237,7 @@ module m_DatabaseDeploy'modules/sql_server.bicep' = {
     resourceLocation      :resourceLocation
     networkIsolationMode  :networkIsolationMode
     databaseNames         :warehouseDatabaseNames
-    aadAdminObjectIds     :controlEntraAdminObjectIds
+    aadAdminObjectId      :controlEntraAdminObjectId
   }
 }
 

@@ -1,7 +1,7 @@
 param resourceLocation            string
 param sqlServerName               string
 param networkIsolationMode        string
-param aadAdminObjectIds           object
+param aadAdminObjectId            string
 param databaseNames               array
 param tags                        object
 
@@ -19,8 +19,8 @@ resource r_sqlServer 'Microsoft.Sql/servers@2023-05-01-preview' = {
     administrators: {
       administratorType: 'ActiveDirectory'
       principalType: 'Group'
-      login: 'AADPLATFORMDEV'
-      sid: '57153cd2-4cbe-40d0-9556-a7339b92ac35'
+      login: 'AADServerAdmin'
+      sid: aadAdminObjectId
       tenantId: tenant().tenantId
       azureADOnlyAuthentication: true
     }
@@ -36,16 +36,3 @@ resource r_sqlDatabase 'Microsoft.Sql/servers/databases@2023-05-01-preview' = [f
     name: 'basic'
   }
 }]
-
-
-// @description('Deploy Sql Server Database Resources')
-// resource r_aadAdminRoleAssignment 'Microsoft.Sql/servers/administrators@2023-05-01-preview' = [for item in items(aadAdminObjectIds): {
-//   name: 'AD-${item.key}'
-//   parent: r_sqlServer
-//   properties: {
-//     administratorType: 'ActiveDirectory'
-//     login: item.key
-//     sid: '57153cd2-4cbe-40d0-9556-a7339b92ac35'
-//     tenantId: tenant().tenantId
-//   }
-// }]

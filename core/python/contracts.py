@@ -1,7 +1,7 @@
 import os
 from utility import error_log, execute, open_yaml, pretty_execute
-from generate_database_scripts import database_sql
-from generate_synapse_scripts import synapse_sql
+from generate_scripts_database import database_sql
+from generate_scripts_synapse import synapse_sql
 
 class Contracts:
     def __init__(self):

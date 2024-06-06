@@ -36,15 +36,17 @@ This framework is being developed to be highly automated and the below actions s
 |Deploy Infrastructure      |Control Database           |Completed      || 
 |Deploy Code                |Control Database           |Completed      || 
 |Deploy Infrastructure      |Warehouse Database         |Completed      ||
-|Generate Code              |Staging Contracts          |               ||
-|Generate Code              |Warehouse Database         |In progress    |Auto Gen "Stage" schema and deploy|
-|Deploy Code                |Warehouse Database         |Completed      |Re-deploy| 
-|Generate Code              |Control Database           |               || 
-|Deploy Infrastructure      |Azure Data Factory         |               || 
+|Generate Code              |Staging Contracts          |Completed      ||
+|Generate Code              |Warehouse Database         |Completed      |Auto Gen "Stage" schema and deploy|
+|Deploy Code                |Warehouse Database         |Completed      || 
+|Deploy Infrastructure      |Azure Data Factory         |Completed      || 
+|Build Pipelines            |Azure Data Factory         |In progress    || 
 |Deploy Code                |Azure Data Factory         |               || 
+|Generate Code              |Control Database           |               || 
 |Generate Code              |Synapse                    |               ||
 |Deploy Infrastructure      |Synapse                    |               ||
 |Deploy Code                |Synapse                    |               || 
+|Build Pipelines            |Synapse Pipelines          |               || 
 |Deploy Infrastructure      |Synapse Pipelines          |               || 
 |Deploy Code                |Synapse Pipelines          |               || 
 |Deploy Infrastructure      |Databricks                 |               ||

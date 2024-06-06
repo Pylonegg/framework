@@ -24,12 +24,8 @@
         "dev01xctrldb"
       ]
     },
-    "controlEntraAdminObjectIds":{
-      "value":
-        {
-        "AADGroupPlatformDev":"57153cd2-4cbe-40d0-9556-a7339b92ac35"
-        }
-
+    "controlEntraAdminObjectId":{
+      "value":"57153cd2-4cbe-40d0-9556-a7339b92ac35"
     }
   }
 }
