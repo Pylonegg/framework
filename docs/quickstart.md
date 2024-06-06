@@ -1,6 +1,15 @@
-# Manual Inputs
+# Quick Start
+Lorem ipsum
+- Populate excel file.
+- Populate config.yml
+- Add enrich logic
+- Build
 
-#### 
+
+## Populate Excel file
+## Populate config.yml
+## Add enrich logic
+
 |Status|Task |
 |---|---|
 |Done | Include ad group as Server Admin|

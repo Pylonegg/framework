@@ -1,0 +1,82 @@
+trigger:
+- none
+
+pool:
+  vmImage: windows-2019
+
+stages:
+  - stage: Build
+    variables:
+    - group: DEV
+    jobs:
+    - job: BuildDataFactoryArtifacts
+      steps:
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '14.x'
+        displayName: 'Install Node.js'
+
+      - task: Npm@1
+        inputs:
+          command: 'install'
+          workingDir: '$(Build.Repository.LocalPath)/core/data_factory'
+          verbose: true
+        displayName: 'Install npm package'
+
+      - task: Npm@1
+        inputs:
+          command: 'custom'
+          workingDir: '$(Build.Repository.LocalPath)/core/data_factory'
+          customCommand: 'run build export $(Build.Repository.LocalPath)/core/data_factory /subscriptions/$(SubscriptionId)/resourceGroups/$(ResourceGroup)/providers/Microsoft.DataFactory/factories/$(DataFactoryName) "ArmTemplate"'
+        displayName: 'Validate and Generate ARM template'
+
+      - task: VSBuild@1
+        inputs:
+          solution: 'core/data_platform/*.sqlproj'
+          msbuildArgs: '/p:Configuration=Release'
+          platform: 'Any CPU'
+          configuration: 'Release'     
+
+      - task: PublishBuildArtifacts@1
+        inputs:
+          targetPath: '$(Build.ArtifactStagingDirectory)'
+          artifact: drop
+
+
+
+  - stage: Dev
+    variables:
+    - group: DEV
+    dependsOn: build
+    jobs:
+    - job: DeployArtifacts
+      steps:
+      - download: current
+        artifact: drop
+
+      - task: AzureResourceManagerTemplateDeployment@3
+        displayName: 'Deploy DataFactory Artifacts' 
+        inputs:
+          deploymentName: 'PublishADF'
+          deploymentScope: 'Resource Group'
+          resourceGroupName: '$(ResourceGroup)'
+          azureResourceManagerConnection: 'azelia-dev-connection'
+          templateLocation: 'Linked artifact'
+          location: '$(Location)'
+          csmFile: '$(Pipeline.Workspace)/drop/core/data_factory/ArmTemplate/ARMTemplateForFactory.json'
+          csmParametersFile: '$(Pipeline.Workspace)/drop/core/data_factory/ArmTemplate/ARMTemplateParametersForFactory.json'
+          deploymentMode: Incremental
+
+
+      - task: SqlAzureDacpacDeployment@1
+        displayName: 'Deploy Control Database Artifacts' 
+        inputs:
+          azureSubscription: 'azelia-dev-connection'
+          AuthenticationType: 'servicePrincipal'
+          ServerName: '$(controlServerName).database.windows.net'
+          DatabaseName: '$(controlDatabaseName)' 
+          deployType: 'DacpacTask'
+          DeploymentAction: 'Publish'
+          DacpacFile: '$(Pipeline.Workspace)/drop/core/data_platform/bin/debug/data_platform.dacpac'
+          # PublishProfile: '$(Pipeline.Workspace)/drop/core/data_platform/data_platform.publish.xml'
+          IpDetectionMethod: 'AutoDetect'

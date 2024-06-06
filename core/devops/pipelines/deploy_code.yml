@@ -1,15 +1,8 @@
 trigger:
-- master
+- none
 
 pool:
   vmImage: windows-2019
-
-variables:
-  solution: '**/*.sqlproj'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
-  sqlProjectPath: 'core/data_platform'
-  warehousePath: 'transform/databases/data_warehouse'
 
 stages:
 - stage: Build
@@ -19,14 +12,7 @@ stages:
     steps:
     - task: VSBuild@1
       inputs:
-        solution: '$(sqlProjectPath)/*.sqlproj'
-        msbuildArgs: '/p:Configuration=Release'
-        platform: 'Any CPU'
-        configuration: 'Release'
-
-    - task: VSBuild@1
-      inputs:
-        solution: '$(warehousePath)/*.sqlproj'
+        solution: 'transform/databases/data_warehouse/*.sqlproj'
         msbuildArgs: '/p:Configuration=Release'
         platform: 'Any CPU'
         configuration: 'Release'
@@ -51,20 +37,6 @@ stages:
     steps:
     - download: current
       artifact: drop
-
-    - task: SqlAzureDacpacDeployment@1
-      displayName: 'Deploy Control Database' 
-      inputs:
-        azureSubscription: 'azelia-dev-connection'
-        AuthenticationType: 'servicePrincipal'
-        ServerName: '$(controlServerName).database.windows.net'
-        DatabaseName: '$(controlDatabaseName)' 
-        deployType: 'DacpacTask'
-        DeploymentAction: 'Publish'
-        DacpacFile: '$(Pipeline.Workspace)/drop/core/data_platform/bin/debug/data_platform.dacpac'
-        # PublishProfile: '$(Pipeline.Workspace)/drop/core/data_platform/data_platform.publish.xml'
-        IpDetectionMethod: 'AutoDetect'
-
 
     - task: SqlAzureDacpacDeployment@1
       displayName: 'Deploy Data Warehouse' 
