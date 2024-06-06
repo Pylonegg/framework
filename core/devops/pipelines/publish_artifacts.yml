@@ -19,15 +19,15 @@ stages:
       - task: Npm@1
         inputs:
           command: 'install'
-          workingDir: '$(Build.Repository.LocalPath)/core/data_factory'
+          workingDir: '$(Build.Repository.LocalPath)\core\data_factory'
           verbose: true
         displayName: 'Install npm package'
 
       - task: Npm@1
         inputs:
           command: 'custom'
-          workingDir: '$(Build.Repository.LocalPath)/core/data_factory'
-          customCommand: 'run build export $(Build.Repository.LocalPath)/core/data_factory /subscriptions/$(SubscriptionId)/resourceGroups/$(ResourceGroup)/providers/Microsoft.DataFactory/factories/$(DataFactoryName) "ArmTemplate"'
+          workingDir: '$(Build.Repository.LocalPath)\core\data_factory'
+          customCommand: 'run build export $(Build.Repository.LocalPath)\core\data_factory /subscriptions/$(SubscriptionId)/resourceGroups/$(ResourceGroup)/providers/Microsoft.DataFactory/factories/$(DataFactoryName) "ArmTemplate"'
         displayName: 'Validate and Generate ARM template'
 
       - task: VSBuild@1
@@ -47,7 +47,7 @@ stages:
   - stage: Dev
     variables:
     - group: DEV
-    dependsOn: build
+    dependsOn: Build
     jobs:
     - job: DeployArtifacts
       steps:

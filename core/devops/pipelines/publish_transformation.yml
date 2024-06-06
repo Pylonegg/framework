@@ -30,7 +30,7 @@ stages:
 - stage: Dev
   variables:
   - group: DEV
-  dependsOn: build
+  dependsOn: Build
   jobs:
   - job: 'DeployDatabase'
     displayName: 'Deploy SQL Databases'
