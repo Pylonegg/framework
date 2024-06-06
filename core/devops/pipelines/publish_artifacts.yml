@@ -12,24 +12,23 @@ stages:
     - job: BuildDataFactoryArtifacts
       steps:
       - task: NodeTool@0
+        displayName: 'Install Node.js'
         inputs:
           versionSpec: '14.x'
-        displayName: 'Install Node.js'
 
       - task: Npm@1
+        displayName: 'Install npm package'
         inputs:
           command: 'install'
           workingDir: '$(Build.Repository.LocalPath)\core\data_factory'
           verbose: true
-        displayName: 'Install npm package'
 
       - task: Npm@1
-        displayName: 'Build DataFactory Artifacts' 
+        displayName: 'Generate ARM template DataFactory' 
         inputs:
           command: 'custom'
           workingDir: '$(Build.Repository.LocalPath)\core\data_factory'
           customCommand: 'run build export $(Build.Repository.LocalPath)\core\data_factory /subscriptions/$(SubscriptionId)/resourceGroups/$(ResourceGroup)/providers/Microsoft.DataFactory/factories/$(DataFactoryName) "ArmTemplate"'
-        displayName: 'Validate and Generate ARM template'
 
       - task: VSBuild@1
         displayName: 'Build Control Database Artifacts' 
@@ -42,7 +41,7 @@ stages:
       - task: CopyFiles@2
         inputs:
           targetFolder: '$(Build.ArtifactStagingDirectory)'   
-           
+
       - task: PublishBuildArtifacts@1
         inputs:
           targetPath: '$(Build.ArtifactStagingDirectory)'
