@@ -1,15 +1,15 @@
 {
-	"name": "pipeline1",
+	"name": "Main",
 	"properties": {
 		"activities": [
 			{
-				"name": "Switch1",
+				"name": "Execute Task",
 				"type": "Switch",
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
 					"on": {
-						"value": "@string('default')",
+						"value": "@string('API')",
 						"type": "Expression"
 					},
 					"cases": [
@@ -26,7 +26,7 @@
 									"userProperties": [],
 									"typeProperties": {
 										"pipeline": {
-											"referenceName": "L3 - SQL Server",
+											"referenceName": "Task - SQL Server",
 											"type": "PipelineReference"
 										},
 										"waitOnCompletion": true
