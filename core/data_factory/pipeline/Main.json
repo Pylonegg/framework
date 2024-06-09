@@ -17,7 +17,28 @@
 							"value": "API",
 							"activities": [
 								{
-									"name": "Execute SQL Server",
+									"name": "Execute Task - API",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"policy": {
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "Task - API",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true
+									}
+								}
+							]
+						},
+						{
+							"value": "SQL Server",
+							"activities": [
+								{
+									"name": "Execute Task - SQL Server",
 									"type": "ExecutePipeline",
 									"dependsOn": [],
 									"policy": {
