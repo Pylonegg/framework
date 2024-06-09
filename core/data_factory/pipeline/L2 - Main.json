@@ -26,6 +26,20 @@
 								}
 							]
 						}
+					],
+					"defaultActivities": [
+						{
+							"name": "Execute SQL Server",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"policy": {
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"waitOnCompletion": true
+							}
+						}
 					]
 				}
 			}
