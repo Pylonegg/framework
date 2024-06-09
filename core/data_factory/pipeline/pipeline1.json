@@ -3,25 +3,38 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Set variable1",
-				"type": "SetVariable",
+				"name": "Switch1",
+				"type": "Switch",
 				"dependsOn": [],
-				"policy": {
-					"secureOutput": false,
-					"secureInput": false
-				},
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "pipelineReturnValue",
-					"value": [
+					"on": {
+						"value": "@string('default')",
+						"type": "Expression"
+					},
+					"cases": [
 						{
-							"key": "1",
-							"value": {
-								"type": "String"
-							}
+							"value": "1",
+							"activities": [
+								{
+									"name": "Execute Pipeline1",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"policy": {
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "L3 - SQL Server",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true
+									}
+								}
+							]
 						}
-					],
-					"setSystemVariable": true
+					]
 				}
 			}
 		],
