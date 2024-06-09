@@ -9,7 +9,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"on": {
-						"value": "API",
+						"value": "@string(rand(0,1))",
 						"type": "Expression"
 					},
 					"cases": [
