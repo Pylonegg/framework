@@ -8,6 +8,10 @@
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
+					"on": {
+						"value": "API",
+						"type": "Expression"
+					},
 					"cases": [
 						{
 							"value": "API",
