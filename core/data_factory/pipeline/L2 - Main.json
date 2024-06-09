@@ -1,6 +1,35 @@
 {
-	"name": "L2 - P",
+	"name": "L2 - Main",
 	"properties": {
+		"activities": [
+			{
+				"name": "Switch1",
+				"type": "Switch",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"cases": [
+						{
+							"value": "API",
+							"activities": [
+								{
+									"name": "Execute API",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"policy": {
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"waitOnCompletion": true
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
 		"annotations": []
 	}
 }
