@@ -3,60 +3,90 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Execute Task",
-				"type": "Switch",
-				"dependsOn": [],
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Lookup1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
-					"on": {
-						"value": "@string('API')",
-						"type": "Expression"
-					},
-					"cases": [
+					"activities": [
 						{
-							"value": "API",
-							"activities": [
-								{
-									"name": "Execute Task - API",
-									"type": "ExecutePipeline",
-									"dependsOn": [],
-									"policy": {
-										"secureInput": false
+							"name": "Execute Task",
+							"type": "Switch",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"on": {
+									"value": "@string('API')",
+									"type": "Expression"
+								},
+								"cases": [
+									{
+										"value": "API",
+										"activities": [
+											{
+												"name": "Execute Task - API",
+												"type": "ExecutePipeline",
+												"dependsOn": [],
+												"policy": {
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "Task - API",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": true
+												}
+											}
+										]
 									},
-									"userProperties": [],
-									"typeProperties": {
-										"pipeline": {
-											"referenceName": "Task - API",
-											"type": "PipelineReference"
-										},
-										"waitOnCompletion": true
+									{
+										"value": "SQL Server",
+										"activities": [
+											{
+												"name": "Execute Task - SQL Server",
+												"type": "ExecutePipeline",
+												"dependsOn": [],
+												"policy": {
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "Task - SQL Server",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": true
+												}
+											}
+										]
 									}
-								}
-							]
-						},
-						{
-							"value": "SQL Server",
-							"activities": [
-								{
-									"name": "Execute Task - SQL Server",
-									"type": "ExecutePipeline",
-									"dependsOn": [],
-									"policy": {
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"pipeline": {
-											"referenceName": "Task - SQL Server",
-											"type": "PipelineReference"
-										},
-										"waitOnCompletion": true
-									}
-								}
-							]
+								]
+							}
 						}
 					]
 				}
+			},
+			{
+				"name": "Lookup1",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
 			}
 		],
 		"annotations": []
