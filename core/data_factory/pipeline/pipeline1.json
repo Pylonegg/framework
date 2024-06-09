@@ -14,7 +14,7 @@
 					},
 					"cases": [
 						{
-							"value": "1",
+							"value": "API",
 							"activities": [
 								{
 									"name": "Execute SQL Server",
