@@ -243,12 +243,12 @@ module m_rbacStorageAccount 'modules/rbac.bicep' = {
         roleDefinitionId: rbacStorageBlobDataReaderRoleID
         principalId: ''//r_azureMLSynapseLinkedService.identity.principalId
       }      
-      {
-        target: dataLakeAccountName
-        condition: ctrlDeployDataShare
-        roleDefinitionId: rbacStorageBlobDataReaderRoleID
-        principalId: ctrlDeployDataShare ? m_DataShareDeploy.outputs.dataShareAccountPrincipalID: ''
-      }   
+      //{
+      //  target: dataLakeAccountName
+      //  condition: ctrlDeployDataShare
+      //  roleDefinitionId: rbacStorageBlobDataReaderRoleID
+      //  principalId: ctrlDeployDataShare ? m_DataShareDeploy.outputs.dataShareAccountPrincipalID: ''
+      //}   
       {
         target: dataLakeAccountName
         condition: ctrlDeployStreaming
