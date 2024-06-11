@@ -235,7 +235,7 @@ module m_rbacStorageAccount 'modules/rbac.bicep' = {
         target: dataLakeAccountName
         condition: ctrlDeploySynapse
         roleDefinitionId: rbacStorageBlobDataContributorRoleID
-        principalId: m_SynapseDeploy.outputs.synapseWorkspaceIdentityPrincipalID
+        principalId: ctrlDeploySynapse ? m_SynapseDeploy.outputs.synapseWorkspaceIdentityPrincipalID: ''
       }
       {
         target: dataLakeAccountName
@@ -247,19 +247,19 @@ module m_rbacStorageAccount 'modules/rbac.bicep' = {
         target: dataLakeAccountName
         condition: ctrlDeployDataShare
         roleDefinitionId: rbacStorageBlobDataReaderRoleID
-        principalId: m_DataShareDeploy.outputs.dataShareAccountPrincipalID
+        principalId: ctrlDeployDataShare ? m_DataShareDeploy.outputs.dataShareAccountPrincipalID: ''
       }   
       {
         target: dataLakeAccountName
         condition: ctrlDeployStreaming
         roleDefinitionId: rbacStorageBlobDataContributorRoleID
-        principalId: m_StreamingServicesDeploy.outputs.streamAnalyticsIdentityPrincipalID
+        principalId: ctrlDeployStreaming ? m_StreamingServicesDeploy.outputs.streamAnalyticsIdentityPrincipalID: ''
       }   
       {
         target: (ctrlDeployStreaming == true && ctrlStreamIngestionService == 'iothub')
         condition: ctrlDeployDataShare
         roleDefinitionId: rbacStorageBlobDataContributorRoleID
-        principalId: m_StreamingServicesDeploy.outputs.iotHubPrincipalID
+        principalId: ctrlDeployStreaming ? m_StreamingServicesDeploy.outputs.iotHubPrincipalID: ''
       }   
     ]
   }
@@ -389,7 +389,7 @@ module m_rbacSynapseWorkspace 'modules/rbac.bicep' = {
         target: synapseWorkspaceName
         condition: ctrlDeployPurview
         roleDefinitionId: rbacReaderRoleID
-        principalId: m_PurviewDeploy.outputs.purviewIdentityPrincipalID
+        principalId: ctrlDeployPurview ? m_PurviewDeploy.outputs.purviewIdentityPrincipalID: ''
       }      
     ]
   }
