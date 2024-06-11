@@ -128,15 +128,44 @@ var v_subnetID                                  = (networkIsolationMode == 'vNet
 var v_vnetID                                    = (networkIsolationMode == 'vNet' && ctrlNewOrExistingVNet == 'new') ? m_vNet.outputs.vNetID : ''
 
 
-//=== Platform Services ========================================================================================
 
+//=== ROLES ========================================================================================
+param  rbacStorageBlobDataReaderRoleID      string = '2a2b9908-6ea1-4ae2-8e65-a410df84e7d1'
+param  rbacStorageBlobDataContributorRoleID string = 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
+param  rbacContributorRoleID                string = 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+param  rbacOwnerRoleID                      string = '8e3af657-a8ff-443c-a75c-2fe8c4bcb635'
+param  rbacReaderRoleID                     string = 'acdd72a7-3385-48ef-bd42-f606fba81ae7'
+param  cosmosDBDataContributorRoleID        string = '00000000-0000-0000-0000-000000000002'
+
+//=== Platform Services ========================================================================================
+//-----------------------------------------------------------------------------------------------------------
+// - RESOURCE GROUP
+//-----------------------------------------------------------------------------------------------------------
 @description('Create Platform resource group')
 resource r_dataPlatformRG 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: resourceGroupName
   location: resourceLocation
 }
+@description('Assign Roles to Resource Group')
+module m_rbacRescourceGroup 'modules/rbac.bicep' = {
+  name: 'resourceGroupRBAC'
+  scope: r_dataPlatformRG
+  params:{
+    referencedResource: synapseWorkspaceName
+    roleAssignments:[
+      {
+        target: resourceGroupName
+        condition: true
+        roleDefinitionId: rbacOwnerRoleID
+        principalId: v_uamiPrincipalID
+      } 
+    ]
+  }
+}
 
-//-- Key Vault -----------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------
+// - KEYVAULT
+//-----------------------------------------------------------------------------------------------------------
 @description('Create Platform Keyvault')
 module m_keyVault 'modules/keyvault.bicep' = {
   name: 'KeyVaultDeploy'
@@ -177,7 +206,9 @@ module m_KeyVaultServiceConnectionAccessPolicy 'modules/keyvault_policy.bicep' =
   ]
   }
 }
-//-- Key Vault -----------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------
+// - UAMI
+//-----------------------------------------------------------------------------------------------------------
 @description('User-Assignment Managed Identity used to execute deployment scripts')
 module m_UAMI 'modules/uami.bicep' = {
   name: 'UAMIDeploy'
@@ -188,20 +219,9 @@ module m_UAMI 'modules/uami.bicep' = {
   }
 }
 
-@description('vNet created for network protected environments if networkIsolationMode is vNet')
-module m_vNet 'modules/vnet.bicep' = if(networkIsolationMode == 'vNet' && ctrlNewOrExistingVNet == 'new'){
-  name:'vNetDeploy'
-  scope: r_dataPlatformRG
-  params: {
-    vNetName: vNetName
-    vNetSubnetName: vNetSubnetName
-    resourceLocation: resourceLocation
-    vNetIPAddressPrefixes: vNetIPAddressPrefixes
-    vNetSubnetIPAddressPrefix: vNetSubnetIPAddressPrefix
-    ctrlNewOrExistingVNet: ctrlNewOrExistingVNet
-  }
-}
-
+//-----------------------------------------------------------------------------------------------------------
+// - CONTROL SERVER
+//-----------------------------------------------------------------------------------------------------------
 @description('Control Server')
 module m_ControlServerDeploy 'modules/sql_server.bicep' = {
   name: 'ControlServerDeploy'
@@ -218,6 +238,27 @@ module m_ControlServerDeploy 'modules/sql_server.bicep' = {
     aadAdminObjectId      :controlEntraAdminObjectId
   }
 }
+//-----------------------------------------------------------------------------------------------------------
+// - VNET
+//-----------------------------------------------------------------------------------------------------------
+@description('vNet created for network protected environments if networkIsolationMode is vNet')
+module m_vNet 'modules/vnet.bicep' = if(networkIsolationMode == 'vNet' && ctrlNewOrExistingVNet == 'new'){
+  name:'vNetDeploy'
+  scope: r_dataPlatformRG
+  params: {
+    vNetName: vNetName
+    vNetSubnetName: vNetSubnetName
+    resourceLocation: resourceLocation
+    vNetIPAddressPrefixes: vNetIPAddressPrefixes
+    vNetSubnetIPAddressPrefix: vNetSubnetIPAddressPrefix
+    ctrlNewOrExistingVNet: ctrlNewOrExistingVNet
+  }
+}
+
+
+
+
+
 
 
 //=== MODULES ===============================================================================================
@@ -248,6 +289,46 @@ module m_DataLakeDeploy 'modules/datalake.bicep' =  {
     anomalyDetectorAccountResourceID   : v_anomalyDetectorAccountResourceID
     languageServiceAccountResourceID   : v_languageServiceAccountResourceID
     iotHubResourceID                   : v_iotHubID
+  }
+}
+@description('Assign Storage Blob Data Roles')
+module m_rbacStorageAccount 'modules/rbac.bicep' = {
+  name: 'storageAccountRBAC'
+  scope: r_dataPlatformRG
+  params:{
+    referencedResource: dataLakeAccountName
+    roleAssignments:[
+      {
+        target: dataLakeAccountName
+        condition: ctrlDeploySynapse
+        roleDefinitionId: rbacStorageBlobDataContributorRoleID
+        principalId: m_SynapseDeploy.outputs.synapseWorkspaceIdentityPrincipalID
+      }
+      {
+        target: dataLakeAccountName
+        condition: (ctrlDeployAI == true && ctrlDeploySynapse == true)
+        roleDefinitionId: rbacStorageBlobDataReaderRoleID
+        principalId: ''//r_azureMLSynapseLinkedService.identity.principalId
+      }      
+      {
+        target: dataLakeAccountName
+        condition: ctrlDeployDataShare
+        roleDefinitionId: rbacStorageBlobDataReaderRoleID
+        principalId: m_DataShareDeploy.outputs.dataShareAccountPrincipalID
+      }   
+      {
+        target: dataLakeAccountName
+        condition: ctrlDeployStreaming
+        roleDefinitionId: rbacStorageBlobDataContributorRoleID
+        principalId: v_streamAnalyticsIdentityPrincipalID
+      }   
+      {
+        target: (ctrlDeployStreaming == true && ctrlStreamIngestionService == 'iothub')
+        condition: ctrlDeployDataShare
+        roleDefinitionId: rbacStorageBlobDataContributorRoleID
+        principalId: m_StreamingServicesDeploy.outputs.iotHubPrincipalID
+      }   
+    ]
   }
 }
 
@@ -358,6 +439,28 @@ module m_SynapseDeploy 'modules/synapse.bicep' = if (ctrlDeploySynapse == true) 
     purviewAccountID                 : v_purviewAccountResourceID
   }
 }
+@description('Assign Storage Blob Data Roles')
+module m_rbacSynapseWorkspace 'modules/rbac.bicep' = {
+  name: 'synapseRBAC'
+  scope: r_dataPlatformRG
+  params:{
+    referencedResource: synapseWorkspaceName
+    roleAssignments:[
+      {
+        target: synapseWorkspaceName
+        condition: ctrlDeploySynapse
+        roleDefinitionId: rbacOwnerRoleID
+        principalId: m_UAMI.outputs.principalId
+      }
+      {
+        target: synapseWorkspaceName
+        condition: ctrlDeployPurview
+        roleDefinitionId: rbacReaderRoleID
+        principalId: m_PurviewDeploy.outputs.purviewIdentityPrincipalID
+      }      
+    ]
+  }
+}
 
 //-----------------------------------------------------------------------------------------------------------
 // - Purview
@@ -449,106 +552,3 @@ module m_OperationalDatabasesDeploy 'modules/cosmos_database.bicep' = if(ctrlDep
     synapseWorkspaceID             : v_synapseWorkspaceID
   }
 }
-
-//-----------------------------------------------------------------------------------------------------------
-// - RBAC - Storage Accounts
-//-----------------------------------------------------------------------------------------------------------
-@description('Assign Storage Blob Data Roles')
-module m_rbacStorageAccount 'modules/rbac.bicep' = {
-  name: 'storageAccountRBAC'
-  scope: r_dataPlatformRG
-  params:{
-    referencedResource: dataLakeAccountName
-    roleAssignments:[
-      {
-        target: dataLakeAccountName
-        condition: ctrlDeploySynapse
-        roleDefinitionId: rbacStorageBlobDataContributorRoleID
-        principalResourceId: v_synapseWorkspaceIdentityPrincipalID
-      }
-      //{
-      //  target: dataLakeAccountName
-      //  condition: (ctrlDeployAI == true && ctrlDeploySynapse == true)
-      //  roleDefinitionId: rbacStorageBlobDataReaderRoleID
-      //  principalId: r_azureMLSynapseLinkedService.identity.principalId
-      //}      
-      {
-        target: dataLakeAccountName
-        condition: ctrlDeployDataShare
-        roleDefinitionId: rbacStorageBlobDataReaderRoleID
-        principalId: v_dataShareAccountPrincipalID
-      }   
-      {
-        target: dataLakeAccountName
-        condition: ctrlDeployStreaming
-        roleDefinitionId: rbacStorageBlobDataContributorRoleID
-        principalId: v_streamAnalyticsIdentityPrincipalID
-      }   
-      {
-        target: (ctrlDeployStreaming == true && ctrlStreamIngestionService == 'iothub')
-        condition: ctrlDeployDataShare
-        roleDefinitionId: rbacStorageBlobDataContributorRoleID
-        principalId: v_iotHubPrincipalID
-      }   
-    ]
-  }
-}
-
-
-//-----------------------------------------------------------------------------------------------------------
-// - RBAC - Synapse Workspace
-//-----------------------------------------------------------------------------------------------------------
-@description('Assign Storage Blob Data Roles')
-module m_rbacSynapseWorkspace 'modules/rbac.bicep' = {
-  name: 'synapseRBAC'
-  scope: r_dataPlatformRG
-  params:{
-    referencedResource: synapseWorkspaceName
-    roleAssignments:[
-      {
-        target: synapseWorkspaceName
-        condition: ctrlDeploySynapse
-        roleDefinitionId: rbacOwnerRoleID
-        principalId: v_uamiPrincipalID
-      }
-      {
-        target: synapseWorkspaceName
-        condition: ctrlDeployPurview
-        roleDefinitionId: rbacReaderRoleID
-        principalId: v_purviewIdentityPrincipalID
-      }      
-    ]
-  }
-}
-
-//-----------------------------------------------------------------------------------------------------------
-// - RBAC - RG
-//-----------------------------------------------------------------------------------------------------------
-@description('Assign Storage Blob Data Roles')
-module m_rbacRescourceGroup 'modules/rbac.bicep' = {
-  name: 'resourceGroupRBAC'
-  scope: r_dataPlatformRG
-  params:{
-    referencedResource: synapseWorkspaceName
-    roleAssignments:[
-      {
-        target: resourceGroupName
-        condition: true
-        roleDefinitionId: rbacOwnerRoleID
-        principalId: v_uamiPrincipalID
-      } 
-    ]
-  }
-}
-
-
-
-
-
-param  rbacStorageBlobDataReaderRoleID      string = '2a2b9908-6ea1-4ae2-8e65-a410df84e7d1'
-param  rbacStorageBlobDataContributorRoleID string = 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
-param  rbacContributorRoleID                string = 'b24988ac-6180-42a0-ab88-20f7382dd24c'
-param  rbacOwnerRoleID                      string = '8e3af657-a8ff-443c-a75c-2fe8c4bcb635'
-param  rbacReaderRoleID                     string = 'acdd72a7-3385-48ef-bd42-f606fba81ae7'
-param  cosmosDBDataContributorRoleID        string = '00000000-0000-0000-0000-000000000002'
-
