@@ -249,12 +249,12 @@ module m_rbacStorageAccount 'modules/rbac.bicep' = {
       //  roleDefinitionId: rbacStorageBlobDataReaderRoleID
       //  principalId: ctrlDeployDataShare ? m_DataShareDeploy.outputs.dataShareAccountPrincipalID: ''
       //}   
-      {
-        target: dataLakeAccountName
-        condition: ctrlDeployStreaming
-        roleDefinitionId: rbacStorageBlobDataContributorRoleID
-        principalId: ctrlDeployStreaming ? m_StreamingServicesDeploy.outputs.streamAnalyticsIdentityPrincipalID: ''
-      }   
+      //{
+      //  target: dataLakeAccountName
+      //  condition: ctrlDeployStreaming
+      //  roleDefinitionId: rbacStorageBlobDataContributorRoleID
+      //  principalId: ctrlDeployStreaming ? m_StreamingServicesDeploy.outputs.streamAnalyticsIdentityPrincipalID: ''
+      //}   
       //{
       //  target: (ctrlDeployStreaming == true && ctrlStreamIngestionService == 'iothub')
       //  condition: ctrlDeployDataShare
