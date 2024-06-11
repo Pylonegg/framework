@@ -255,12 +255,12 @@ module m_rbacStorageAccount 'modules/rbac.bicep' = {
         roleDefinitionId: rbacStorageBlobDataContributorRoleID
         principalId: ctrlDeployStreaming ? m_StreamingServicesDeploy.outputs.streamAnalyticsIdentityPrincipalID: ''
       }   
-      {
-        target: (ctrlDeployStreaming == true && ctrlStreamIngestionService == 'iothub')
-        condition: ctrlDeployDataShare
-        roleDefinitionId: rbacStorageBlobDataContributorRoleID
-        principalId: ctrlDeployStreaming ? m_StreamingServicesDeploy.outputs.iotHubPrincipalID: ''
-      }   
+      //{
+      //  target: (ctrlDeployStreaming == true && ctrlStreamIngestionService == 'iothub')
+      //  condition: ctrlDeployDataShare
+      //  roleDefinitionId: rbacStorageBlobDataContributorRoleID
+      //  principalId: ctrlDeployStreaming ? m_StreamingServicesDeploy.outputs.iotHubPrincipalID: ''
+      //}   
     ]
   }
 }
