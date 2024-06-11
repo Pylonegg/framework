@@ -136,6 +136,7 @@ resource r_dataPlatformRG 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: resourceLocation
 }
 
+//-- Key Vault -----------------------------------------------------------------------
 @description('Create Platform Keyvault')
 module m_keyVault 'modules/keyvault.bicep' = {
   name: 'KeyVaultDeploy'
@@ -146,7 +147,37 @@ module m_keyVault 'modules/keyvault.bicep' = {
     networkIsolationMode: networkIsolationMode
   }
 }
+@description('Set Keyvault Access Policy for Service Connection')
+module m_KeyVaultServiceConnectionAccessPolicy 'modules/keyvault_policy.bicep' = {
+  name: 'KeyVaultAccessPolicies'
+  scope: r_dataPlatformRG
+  params: {
+    keyVaultName: keyVaultName
+    policies: [{
+      condition: true
+      principalId: '3809d824-2e13-4883-a19c-dfd86ec9e012'
+      secrets: ['all']
+    }
+    {
+      condition: true
+      principalId: '57153cd2-4cbe-40d0-9556-a7339b92ac35'
+      secrets: ['all']
+    }
+    {
+      condition: ctrlDeploySynapse
+      principalId: v_synapseWorkspaceIdentityPrincipalID
+      secrets: ['get', 'list']
 
+    }
+    //{
+    //  condition: ctrlDeployPurview
+    //  principalId: v_purviewIdentityPrincipalID
+    //  secrets: ['get', 'list']
+    //}
+  ]
+  }
+}
+//-- Key Vault -----------------------------------------------------------------------
 @description('User-Assignment Managed Identity used to execute deployment scripts')
 module m_UAMI 'modules/uami.bicep' = {
   name: 'UAMIDeploy'
@@ -511,36 +542,7 @@ module m_rbacRescourceGroup 'modules/rbac.bicep' = {
 }
 
 
-@description('Set Keyvault Access Policy for Service Connection')
-module m_KeyVaultServiceConnectionAccessPolicy 'modules/keyvault_policy.bicep' = {
-  name: 'KeyVaultSPAccessPolicy'
-  scope: r_dataPlatformRG
-  params: {
-    keyVaultName: keyVaultName
-    policies: [{
-      condition: true
-      principalId: '3809d824-2e13-4883-a19c-dfd86ec9e012'
-      secrets: ['all']
-    }
-    {
-      condition: true
-      principalId: '57153cd2-4cbe-40d0-9556-a7339b92ac35'
-      secrets: ['all']
-    }
-    {
-      condition: ctrlDeploySynapse
-      principalId: v_synapseWorkspaceIdentityPrincipalID
-      secrets: ['get', 'list']
 
-    }
-    //{
-    //  condition: ctrlDeployPurview
-    //  principalId: v_purviewIdentityPrincipalID
-    //  secrets: ['get', 'list']
-    //}
-  ]
-  }
-}
 
 
 param  rbacStorageBlobDataReaderRoleID      string = '2a2b9908-6ea1-4ae2-8e65-a410df84e7d1'
