@@ -1,17 +1,8 @@
 param networkIsolationMode string
 param resourceLocation string
-
 param dataLakeAccountName string
 param dataLakeContainerNames array
-
 param keyVaultName  string
-param dataShareResourceID string
-param streamAnalyticsJobResourceID string
-param purviewAccountResourceID string
-param azureMLWorkspaceResourceID string
-param anomalyDetectorAccountResourceID string
-param languageServiceAccountResourceID string
-param iotHubResourceID string
 param ctrlDeployStreaming bool
 
 @allowed([
@@ -19,55 +10,6 @@ param ctrlDeployStreaming bool
   'iothub'
 ])
 param ctrlStreamIngestionService string = 'eventhub'
-
-var dataShareAccessRule = (dataShareResourceID == '') ? [] : [
-  {
-    tenantId: subscription().tenantId
-    resourceId: dataShareResourceID
-  }
-]
-
-var streamAnalyticsJobAccessRule = (streamAnalyticsJobResourceID == '') ? [] : [
-  {
-    tenantId: subscription().tenantId
-    resourceId: streamAnalyticsJobResourceID
-  }
-]
-
-var purviewAccessRule = (purviewAccountResourceID == '') ? [] : [
-  {
-    tenantId: subscription().tenantId
-    resourceId: purviewAccountResourceID
-  }
-]
-
-var azureMLAccessRule = (azureMLWorkspaceResourceID == '') ? [] : [
-  {
-    tenantId: subscription().tenantId
-    resourceId: azureMLWorkspaceResourceID
-  }
-]
-
-var anomalyDetectorAccessRule = (anomalyDetectorAccountResourceID == '') ? [] : [
-  {
-    tenantId: subscription().tenantId
-    resourceId: anomalyDetectorAccountResourceID
-  }
-]
-
-var languageServiceAccessRule = (languageServiceAccountResourceID == '') ? [] : [
-  {
-    tenantId: subscription().tenantId
-    resourceId: languageServiceAccountResourceID
-  }
-]
-
-var iotHubAccessRule = (iotHubResourceID == '') ? [] : [
-  {
-    tenantId: subscription().tenantId
-    resourceId: iotHubResourceID
-  }
-]
 
 //var dataLakeresourceAccessRules = union(synapseAccessRule, dataShareAccessRule, streamAnalyticsJobAccessRule, purviewAccessRule, azureMLAccessRule, anomalyDetectorAccessRule, languageServiceAccessRule, iotHubAccessRule)
 
