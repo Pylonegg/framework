@@ -424,7 +424,7 @@ module m_OperationalDatabasesDeploy 'modules/cosmos_database.bicep' = if(ctrlDep
 //-----------------------------------------------------------------------------------------------------------
 @description('Assign Storage Blob Data Roles')
 module m_rbacStorageAccount 'modules/rbac.bicep' = {
-  name: '${dataLakeAccountName}RBAC'
+  name: 'storageAccountRBAC'
   scope: r_dataPlatformRG
   params:{
     referencedResource: dataLakeAccountName
@@ -469,7 +469,7 @@ module m_rbacStorageAccount 'modules/rbac.bicep' = {
 //-----------------------------------------------------------------------------------------------------------
 @description('Assign Storage Blob Data Roles')
 module m_rbacSynapseWorkspace 'modules/rbac.bicep' = {
-  name: '${synapseWorkspaceName}RBAC'
+  name: 'synapseRBAC'
   scope: r_dataPlatformRG
   params:{
     referencedResource: synapseWorkspaceName
@@ -478,7 +478,7 @@ module m_rbacSynapseWorkspace 'modules/rbac.bicep' = {
         target: synapseWorkspaceName
         condition: ctrlDeploySynapse
         roleDefinitionId: rbacOwnerRoleID
-        principalResourceId: v_uamiPrincipalID
+        principalId: v_uamiPrincipalID
       }
       {
         target: synapseWorkspaceName
@@ -495,7 +495,7 @@ module m_rbacSynapseWorkspace 'modules/rbac.bicep' = {
 //-----------------------------------------------------------------------------------------------------------
 @description('Assign Storage Blob Data Roles')
 module m_rbacRescourceGroup 'modules/rbac.bicep' = {
-  name: '${synapseWorkspaceName}RBAC'
+  name: 'resourceGroupRBAC'
   scope: r_dataPlatformRG
   params:{
     referencedResource: synapseWorkspaceName
@@ -504,7 +504,7 @@ module m_rbacRescourceGroup 'modules/rbac.bicep' = {
         target: resourceGroupName
         condition: true
         roleDefinitionId: rbacOwnerRoleID
-        principalResourceId: v_uamiPrincipalID
+        principalId: v_uamiPrincipalID
       } 
     ]
   }
