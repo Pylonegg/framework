@@ -533,11 +533,12 @@ module m_KeyVaultServiceConnectionAccessPolicy 'modules/keyvault_policy.bicep' =
       secrets: ['get', 'list']
 
     }
-    {
-      condition: ctrlDeployPurview
-      principalId: v_purviewIdentityPrincipalID
-      secrets: ['get', 'list']
-    }]
+    //{
+    //  condition: ctrlDeployPurview
+    //  principalId: v_purviewIdentityPrincipalID
+    //  secrets: ['get', 'list']
+    //}
+  ]
   }
 }
 
