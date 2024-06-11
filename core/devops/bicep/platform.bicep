@@ -212,9 +212,6 @@ module m_DataLakeDeploy 'modules/datalake.bicep' =  {
   name: 'DataLakeDeploy'
   scope: r_dataPlatformRG
   dependsOn: [
-    m_DataShareDeploy
-    m_PurviewDeploy
-    m_StreamingServicesDeploy
     m_AIServicesDeploy
   ]
   params: {
