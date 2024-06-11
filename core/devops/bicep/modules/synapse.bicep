@@ -8,7 +8,7 @@ param ctrlDeployPurview bool
 
 param dataLakeAccountName string
 param synapseDefaultContainerName string
-
+param UAMIPrincipalID string
 param synapseWorkspaceName string
 param synapseSqlAdminUserName string
 param synapseSqlAdminPassword string
@@ -54,6 +54,16 @@ resource r_synapseWorkspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
       purviewResourceId: purviewAccountID
     }: null
   }
+
+  resource r_workspaceAADAdmin 'administrators' = {
+    name:'activeDirectory'
+    properties:{
+      administratorType:'ActiveDirectory'
+      tenantId: subscription().tenantId
+      sid: UAMIPrincipalID
+    }
+  }
+
 
   //Dedicated SQL Pool
   resource r_sqlPool 'sqlPools' = if (ctrlDeploySynapseSQLPool == true){

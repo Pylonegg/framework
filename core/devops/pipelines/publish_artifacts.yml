@@ -30,13 +30,13 @@ stages:
           workingDir: '$(Build.Repository.LocalPath)\core\data_factory'
           customCommand: 'run build export $(Build.Repository.LocalPath)\core\data_factory /subscriptions/$(SubscriptionId)/resourceGroups/$(ResourceGroup)/providers/Microsoft.DataFactory/factories/$(DataFactoryName) "ArmTemplate"'
 
-      - task: VSBuild@1
-        displayName: 'Build Control Database Artifacts' 
-        inputs:
-          solution: 'core/data_platform/*.sqlproj'
-          msbuildArgs: '/p:Configuration=Release'
-          platform: 'Any CPU'
-          configuration: 'Release'     
+    #  - task: VSBuild@1
+    #    displayName: 'Build Control Database Artifacts' 
+    #    inputs:
+    #      solution: 'core/data_platform/*.sqlproj'
+    #      msbuildArgs: '/p:Configuration=Release'
+    #      platform: 'Any CPU'
+    #      configuration: 'Release'     
 
       - task: CopyFiles@2
         inputs:
@@ -73,15 +73,15 @@ stages:
           deploymentMode: Incremental
 
 
-      - task: SqlAzureDacpacDeployment@1
-        displayName: 'Deploy Control Database Artifacts' 
-        inputs:
-          azureSubscription: 'azelia-dev-connection'
-          AuthenticationType: 'servicePrincipal'
-          ServerName: '$(controlServerName).database.windows.net'
-          DatabaseName: '$(controlDatabaseName)' 
-          deployType: 'DacpacTask'
-          DeploymentAction: 'Publish'
-          DacpacFile: '$(Pipeline.Workspace)/drop/core/data_platform/bin/debug/data_platform.dacpac'
-          # PublishProfile: '$(Pipeline.Workspace)/drop/core/data_platform/data_platform.publish.xml'
-          IpDetectionMethod: 'AutoDetect'
+    #  - task: SqlAzureDacpacDeployment@1
+    #    displayName: 'Deploy Control Database Artifacts' 
+    #    inputs:
+    #      azureSubscription: 'azelia-dev-connection'
+    #      AuthenticationType: 'servicePrincipal'
+    #      ServerName: '$(controlServerName).database.windows.net'
+    #      DatabaseName: '$(controlDatabaseName)' 
+    #      deployType: 'DacpacTask'
+    #      DeploymentAction: 'Publish'
+    #      DacpacFile: '$(Pipeline.Workspace)/drop/core/data_platform/bin/debug/data_platform.dacpac'
+    #      # PublishProfile: '$(Pipeline.Workspace)/drop/core/data_platform/data_platform.publish.xml'
+    #      IpDetectionMethod: 'AutoDetect'

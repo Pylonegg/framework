@@ -84,7 +84,7 @@ param ctrlStreamIngestionService    string  = 'eventhub'
 
 //=== VARIABLES  > Conditional ========================================================================================
 var v_dataLakeAccountID                         = m_DataLakeDeploy.outputs.dataLakeStorageAccountID
-var v_uamiPrincipalID                           = m_UAMI.outputs.deploymentScriptUAMIPrincipalID
+var v_uamiPrincipalID                           = m_UAMI.outputs.principalId
 var v_dataLakeAccountName                       = m_DataLakeDeploy.outputs.dataLakeStorageAccountName
 var v_keyVaultID                                = m_keyVault.outputs.keyVaultID
 var v_dataShareResourceID                       = ctrlDeployDataShare ? m_DataShareDeploy.outputs.dataShareAccountID : ''
@@ -98,7 +98,7 @@ var v_azureMLContainerRegistryID                = ctrlDeployAI ? m_AIServicesDep
 var v_azureMLContainerRegistryName              = ctrlDeployAI ? m_AIServicesDeploy.outputs.containerRegistryName : ''
 var v_azureMLStorageAccountID                   = ctrlDeployAI ? m_AIServicesDeploy.outputs.storageAccountID : ''
 var v_azureMLStorageAccountName                 = ctrlDeployAI ? m_AIServicesDeploy.outputs.storageAccountName : ''
-var v_azureMLSynapseLinkedServicePrincipalID    = ctrlDeployAI ? m_Permissions.outputs.azureMLSynapseLinkedServicePrincipalID : ''
+//var v_azureMLSynapseLinkedServicePrincipalID    = ctrlDeployAI ? m_Permissions.outputs.azureMLSynapseLinkedServicePrincipalID : ''
 var v_azureMLWorkspaceID                        = ctrlDeployAI ? m_AIServicesDeploy.outputs.azureMLWorkspaceID : ''
 var v_azureMLWorkspaceName                      = ctrlDeployAI ? m_AIServicesDeploy.outputs.azureMLWorkspaceName : azureMLWorkspaceName
 var v_eventHubNamespaceID                       = ctrlDeployStreaming ? m_StreamingServicesDeploy.outputs.eventHubNamespaceID : ''
@@ -148,7 +148,7 @@ module m_keyVault 'modules/keyvault.bicep' = {
 }
 
 @description('User-Assignment Managed Identity used to execute deployment scripts')
-module m_UAMI 'modules/managed_identity.bicep' = {
+module m_UAMI 'modules/uami.bicep' = {
   name: 'UAMIDeploy'
   scope: r_dataPlatformRG
   params: {
@@ -300,6 +300,7 @@ module m_SynapseDeploy 'modules/synapse.bicep' = if (ctrlDeploySynapse == true) 
     m_DataLakeDeploy
   ]
   params: {
+    UAMIPrincipalID                  : m_UAMI.outputs.principalId
     dataLakeAccountName              : m_DataLakeDeploy.outputs.dataLakeStorageAccountName
     networkIsolationMode             : networkIsolationMode
     resourceLocation                 : resourceLocation
@@ -419,136 +420,132 @@ module m_OperationalDatabasesDeploy 'modules/cosmos_database.bicep' = if(ctrlDep
 }
 
 //-----------------------------------------------------------------------------------------------------------
-// - Add Permissions Assignments
+// - RBAC - Storage Accounts
 //-----------------------------------------------------------------------------------------------------------
-module m_Permissions'platform_permissions.bicep' = {
-  name: 'PermissionsDeploy'
+@description('Assign Storage Blob Data Roles')
+module m_rbacStorageAccount 'modules/rbac.bicep' = {
+  name: '${dataLakeAccountName}RBAC'
   scope: r_dataPlatformRG
-  dependsOn:[
-    m_keyVault
-    m_SynapseDeploy
-    m_PurviewDeploy
-    m_DataLakeDeploy
-    m_AIServicesDeploy
-    m_StreamingServicesDeploy
-    m_OperationalDatabasesDeploy
-    m_OperationalDatabasesDeploy
-  ]
-  params: {
-    UAMIPrincipalID                            : v_uamiPrincipalID
-    dataLakeAccountID                          : v_dataLakeAccountID
-    dataLakeAccountName                        : v_dataLakeAccountName
-    keyVaultName                               : keyVaultName
-    ctrlDeploySynapse                          : ctrlDeploySynapse 
-    ctrlDeployPurview                          : ctrlDeployPurview
-    ctrlDeployAI                               : ctrlDeployAI
-    ctrlDeployStreaming                        : ctrlDeployStreaming
-    ctrlStreamIngestionService                 : ctrlStreamIngestionService
-    ctrlSynapseDeploySparkPool                 : ctrlDeploySynapseSparkPool
-    purviewIdentityPrincipalID                 : v_purviewIdentityPrincipalID
-    synapseWorkspaceIdentityPrincipalID        : v_synapseWorkspaceIdentityPrincipalID
-    azureMLWorkspaceName                       : v_azureMLWorkspaceName
-    dataLakeContainerNames                     : dataLakeContainerNames
-    eventHubName                               : eventHubName
-    eventHubNamespaceName                      : eventHubNamespaceName
-    eventHubPartitionCount                     : 1 // Azure EventHub Partition Count
-    anomalyDetectorAccountName                 : anomalyDetectorName
-    resourceLocation                           : resourceLocation
-    synapseWorkspaceID                         : v_synapseWorkspaceID
-    synapseWorkspaceName                       : v_synapseWorkspaceName
-    synapseSparkPoolID                         : v_synapseSparkPoolID
-    synapseSparkPoolName                       : synapseSparkPoolName
-    textAnalyticsAccountName                   : textAnalyticsAccountName
-    cosmosDBAccountName                        : v_cosmosDBAccountName
-    ctrlDeployCosmosDB                         : ctrlDeployCosmosDB
-    ctrlDeployDataShare                        : ctrlDeployDataShare
-    ctrlDeployOperationalDB                    : ctrlDeployOperationalDB
-    ctrlStreamingIngestionService              : ctrlStreamIngestionService
-    cosmosDBDatabaseName                       : cosmosDBDatabaseName
-    purviewAccountName                         : v_purviewAccountName
-    iotHubPrincipalID                          : v_iotHubPrincipalID
-    dataShareAccountPrincipalID                : v_dataShareAccountPrincipalID
-    streamAnalyticsIdentityPrincipalID         : v_streamAnalyticsIdentityPrincipalID
+  params:{
+    referencedResource: dataLakeAccountName
+    roleAssignments:[
+      {
+        target: dataLakeAccountName
+        condition: ctrlDeploySynapse
+        roleDefinitionId: rbacStorageBlobDataContributorRoleID
+        principalResourceId: v_synapseWorkspaceIdentityPrincipalID
+      }
+      //{
+      //  target: dataLakeAccountName
+      //  condition: (ctrlDeployAI == true && ctrlDeploySynapse == true)
+      //  roleDefinitionId: rbacStorageBlobDataReaderRoleID
+      //  principalId: r_azureMLSynapseLinkedService.identity.principalId
+      //}      
+      {
+        target: dataLakeAccountName
+        condition: ctrlDeployDataShare
+        roleDefinitionId: rbacStorageBlobDataReaderRoleID
+        principalId: v_dataShareAccountPrincipalID
+      }   
+      {
+        target: dataLakeAccountName
+        condition: ctrlDeployStreaming
+        roleDefinitionId: rbacStorageBlobDataContributorRoleID
+        principalId: v_streamAnalyticsIdentityPrincipalID
+      }   
+      {
+        target: (ctrlDeployStreaming == true && ctrlStreamIngestionService == 'iothub')
+        condition: ctrlDeployDataShare
+        roleDefinitionId: rbacStorageBlobDataContributorRoleID
+        principalId: v_iotHubPrincipalID
+      }   
+    ]
+  }
+}
+
+
+//-----------------------------------------------------------------------------------------------------------
+// - RBAC - Synapse Workspace
+//-----------------------------------------------------------------------------------------------------------
+@description('Assign Storage Blob Data Roles')
+module m_rbacSynapseWorkspace 'modules/rbac.bicep' = {
+  name: '${synapseWorkspaceName}RBAC'
+  scope: r_dataPlatformRG
+  params:{
+    referencedResource: synapseWorkspaceName
+    roleAssignments:[
+      {
+        target: synapseWorkspaceName
+        condition: ctrlDeploySynapse
+        roleDefinitionId: rbacOwnerRoleID
+        principalResourceId: v_uamiPrincipalID
+      }
+      {
+        target: synapseWorkspaceName
+        condition: ctrlDeployPurview
+        roleDefinitionId: rbacReaderRoleID
+        principalId: v_purviewIdentityPrincipalID
+      }      
+    ]
   }
 }
 
 //-----------------------------------------------------------------------------------------------------------
-// - Virtual Network Integration
+// - RBAC - RG
 //-----------------------------------------------------------------------------------------------------------
-//module m_VirtualNetworkIntegration 'platform_vnet_integration.bicep' = if(networkIsolationMode == 'vNet') {
-//  name: 'VirtualNetworkIntegration'
-//  scope: r_dataPlatformRG
-//  dependsOn:[
-//    m_vNet
-//    m_SynapseDeploy
-//    m_PurviewDeploy
-//    m_AIServicesDeploy
-//    m_StreamingServicesDeploy
-//    m_DataLakeDeploy
-//  ]
-//  params: {
-//    ctrlDeployAI                             : ctrlDeployAI
-//    ctrlDeployPrivateDNSZones                : ctrlDeployPrivateDNSZones
-//    ctrlDeployPurview                        : ctrlDeployPurview
-//    ctrlDeployStreaming                      : ctrlDeployStreaming
-//    ctrlStreamIngestionService               : ctrlStreamIngestionService
-//    ctrlDeployCosmosDB                       : ctrlDeployCosmosDB
-//    vNetName                                 : vNetName
-//    resourceLocation                         : resourceLocation
-//    synapsePrivateLinkHubName                : synapsePrivateLinkHubName
-//    subnetID                                 : v_subnetID
-//    vNetID                                   : v_vnetID
-//    dataLakeAccountID                        : m_DataLakeDeploy.outputs.dataLakeStorageAccountID
-//    dataLakeAccountName                      : m_DataLakeDeploy.outputs.dataLakeStorageAccountName
-//    keyVaultID                               : m_keyVault.outputs.keyVaultID
-//    keyVaultName                             : keyVaultName
-//    anomalyDetectorAccountID                 : v_anomalyDetectorAccountID
-//    anomalyDetectorAccountName               : v_anomalyDetectorAccountName
-//    azureMLContainerRegistryID               : v_azureMLContainerRegistryID
-//    azureMLContainerRegistryName             : v_azureMLContainerRegistryName
-//    azureMLStorageAccountID                  : v_azureMLStorageAccountID
-//    azureMLStorageAccountName                : v_azureMLStorageAccountName
-//    azureMLWorkspaceID                       : v_azureMLWorkspaceID
-//    azureMLWorkspaceName                     : v_azureMLWorkspaceName
-//    eventHubNamespaceID                      : v_eventHubNamespaceID
-//    eventHubNamespaceName                    : v_eventHubNamespaceName
-//    iotHubID                                 : v_iotHubID
-//    iotHubName                               : v_iotHubName
-//    purviewAccountID                         : v_purviewAccountID
-//    purviewAccountName                       : v_purviewAccountName
-//    purviewManagedEventHubNamespaceID        : v_purviewManagedEventHubNamespaceID
-//    purviewManagedStorageAccountID           : v_purviewManagedStorageAccountID
-//    synapseWorkspaceID                       : v_synapseWorkspaceID
-//    synapseWorkspaceName                     : v_synapseWorkspaceName
-//    textAnalyticsAccountID                   : v_textAnalyticsAccountID
-//    textAnalyticsAccountName                 : v_textAnalyticsAccountName
-//    cosmosDBAccountID                        : v_cosmosDBAccountID
-//    cosmosDBAccountName                      : v_cosmosDBAccountName
-//  }
-//}
+@description('Assign Storage Blob Data Roles')
+module m_rbacRescourceGroup 'modules/rbac.bicep' = {
+  name: '${synapseWorkspaceName}RBAC'
+  scope: r_dataPlatformRG
+  params:{
+    referencedResource: synapseWorkspaceName
+    roleAssignments:[
+      {
+        target: resourceGroupName
+        condition: true
+        roleDefinitionId: rbacOwnerRoleID
+        principalResourceId: v_uamiPrincipalID
+      } 
+    ]
+  }
+}
 
 
-//=== OUTPUTS ===============================================================================================
+@description('Set Keyvault Access Policy for Service Connection')
+module m_KeyVaultServiceConnectionAccessPolicy 'modules/keyvault_policy.bicep' = {
+  name: 'KeyVaultSPAccessPolicy'
+  scope: r_dataPlatformRG
+  params: {
+    keyVaultName: keyVaultName
+    policies: [{
+      condition: true
+      principalId: '3809d824-2e13-4883-a19c-dfd86ec9e012'
+      secrets: ['all']
+    }
+    {
+      condition: true
+      principalId: '57153cd2-4cbe-40d0-9556-a7339b92ac35'
+      secrets: ['all']
+    }
+    {
+      condition: ctrlDeploySynapse
+      principalId: v_synapseWorkspaceIdentityPrincipalID
+      secrets: ['get', 'list']
 
-output synapseArguments string = join([
-  '$networkIsolationMode            ="${networkIsolationMode}"'
-  '$dataLakeAccountName             ="${dataLakeAccountName}"'
-  '$cosmosDBDatabaseName            ="${cosmosDBDatabaseName}"'
-  '$synapseWorkspaceName            ="${v_synapseWorkspaceName}"'
-  '$synapseWorkspaceID              ="${v_synapseWorkspaceID}"'
-  '$keyVaultName                    ="${keyVaultName}"'
-  '$keyVaultID                      ="${v_keyVaultID}"'
-  '$dataLakeAccountID               ="${v_dataLakeAccountID}"'
-  '$uamiPrincipalID                 ="${v_uamiPrincipalID}"'
-  '$azureMLWorkspaceName            ="${v_azureMLWorkspaceName}"'
-  '$textAnalyticsAccountID          ="${v_textAnalyticsAccountID}"'
-  '$textAnalyticsAccountName        ="${v_textAnalyticsAccountName}"'
-  '$textAnalyticsEndpoint           ="${v_textAnalyticsEndpoint}"'
-  '$anomalyDetectorAccountID        ="${v_anomalyDetectorAccountID}"'
-  '$anomalyDetectorAccountName      ="${v_anomalyDetectorAccountName}"'
-  '$anomalyDetectorEndpoint         ="${v_anomalyDetectorEndpoint}"'
-  '$cosmosDBAccountID               ="${v_cosmosDBAccountID}"'
-  '$cosmosDBAccountName             ="${v_cosmosDBAccountName}"'
-  //v_AzMLSynapseLinkedServiceIdentityID
-], ';')
+    }
+    {
+      condition: ctrlDeployPurview
+      principalId: v_purviewIdentityPrincipalID
+      secrets: ['get', 'list']
+    }]
+  }
+}
+
+
+param  rbacStorageBlobDataReaderRoleID      string = '2a2b9908-6ea1-4ae2-8e65-a410df84e7d1'
+param  rbacStorageBlobDataContributorRoleID string = 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
+param  rbacContributorRoleID                string = 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+param  rbacOwnerRoleID                      string = '8e3af657-a8ff-443c-a75c-2fe8c4bcb635'
+param  rbacReaderRoleID                     string = 'acdd72a7-3385-48ef-bd42-f606fba81ae7'
+param  cosmosDBDataContributorRoleID        string = '00000000-0000-0000-0000-000000000002'
 

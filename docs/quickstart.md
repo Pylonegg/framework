@@ -10,11 +10,11 @@ Lorem ipsum
 ## Populate config.yml
 ## Add enrich logic
 
-|Status|Task |
-|---|---|
-|Done | Include ad group as Server Admin|
-|Todo | Add Service Connection (Application Pricipal) to above AD group |
-||Microsoft.AAD/DomainServices/domainService|
+- Include ad group as Server Admin|
+- Add Service Connection (Application Pricipal) to above AD group
+- Microsoft.AAD/DomainServices/domainService
+- Grant ADF permision to Key Vault
+- Connot have spaced in the 'login' name for aad authentication with sql server.
 
 
 Change arrays to objects
@@ -28,4 +28,3 @@ resource myRgs 'Microsoft.Resources/resourceGroups@2021-04-01' = [for item in it
 }]
 ```
 
-Connot have spaced in the 'login' name for aad authentication with sql server.

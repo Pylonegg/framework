@@ -7,6 +7,6 @@ resource r_deploymentScriptUAMI 'Microsoft.ManagedIdentity/userAssignedIdentitie
 }
 
 
-output deploymentScriptUAMIID string = r_deploymentScriptUAMI.id
-output deploymentScriptUAMIPrincipalID string = r_deploymentScriptUAMI.properties.principalId
+output Id string = r_deploymentScriptUAMI.id
+output principalId string = r_deploymentScriptUAMI.properties.principalId
 

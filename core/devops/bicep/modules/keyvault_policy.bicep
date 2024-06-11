@@ -1,6 +1,5 @@
 param keyVaultName string
-param PrincipalID string
-param secrets array
+param policies array
 
 resource r_keyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' existing = {
   name: keyVaultName
@@ -9,14 +8,13 @@ resource r_keyVaultAccessPolicy 'Microsoft.KeyVault/vaults/accessPolicies@2021-0
   name: 'add'
   parent: r_keyVault
   properties:{
-    accessPolicies: [
-      {
-        objectId: PrincipalID
+    accessPolicies: [for policy in policies: (policy.condition) ? {
+        objectId: policy.principalId
         tenantId: subscription().tenantId
         permissions: {
-          secrets: secrets
+          secrets: policy.secrets
         }
-      }
+      }:[]
     ]
   }
 }
