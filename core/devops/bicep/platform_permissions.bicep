@@ -71,22 +71,30 @@ module m_keyvaultPermissions 'modules/keyvault_permissions.bicep' = {
   params:{
     keyVaultName: keyVaultName
     policies: [
-      ctrlDeployDataFactory ? {
-        principalId: ctrlDeployDataFactory ? r_dataFactory.identity.principalId : ''
-        secrets: ['get', 'list']
-      } : ctrlDeploySynapse ? {
-        principalId: ctrlDeploySynapse ? r_synapseWorkspace.identity.principalId : ''
-        secrets: ['get', 'list']
-      } : ctrlDeployPurview? {
-        principalId: ctrlDeployPurview ? r_purviewAccount.identity.principalId :''
-        secrets: ['get', 'list']
-      } : {
+      {
+        condition: true
         principalId: '3809d824-2e13-4883-a19c-dfd86ec9e012'
         secrets: ['all']
       }
       {
+        condition: true
         principalId: '57153cd2-4cbe-40d0-9556-a7339b92ac35'
         secrets: ['all']
+      }
+      {
+        condition: ctrlDeployDataFactory
+        principalId: ctrlDeployDataFactory ? r_dataFactory.identity.principalId : ''
+        secrets: ['get', 'list']
+      }
+      {
+        condition: ctrlDeploySynapse
+        principalId: ctrlDeploySynapse ? r_synapseWorkspace.identity.principalId : ''
+        secrets: ['get', 'list']
+      }
+      {
+        condition: ctrlDeployPurview
+        principalId: ctrlDeployPurview ? r_purviewAccount.identity.principalId :''
+        secrets: ['get', 'list']
       }
 
     ]

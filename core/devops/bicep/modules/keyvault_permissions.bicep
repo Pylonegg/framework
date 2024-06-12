@@ -15,16 +15,22 @@ resource r_textAnalyticsAccountKey 'Microsoft.KeyVault/vaults/secrets@2021-06-01
   }
 }]
 
+
+var filteredPolicies = [for p in policies: p.condition ? {
+  principalId: p.principalId
+  secrets: p.secrets
+} : []]
+
 resource r_keyVaultAccessPolicy 'Microsoft.KeyVault/vaults/accessPolicies@2021-06-01-preview' = {
   name: 'add'
   parent: r_keyVault
   properties:{
-    accessPolicies: [for policy in policies: {
+    accessPolicies: [for policy in filteredPolicies: {
         objectId: policy.principalId
         tenantId: subscription().tenantId
         permissions: {
           secrets: policy.secrets
-        }
+        } 
       }
     ]
   }
