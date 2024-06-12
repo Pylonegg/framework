@@ -137,7 +137,7 @@ module m_ControlServerDeploy 'modules/sql_server.bicep' = {
     networkIsolationMode  :networkIsolationMode
     databaseNames         :controlDatabaseNames
     aadAdminObjectId      :controlEntraAdminObjectId
-    admin_login           :'sqladmin'
+    admin_login           :'sa'
     admin_password        :sqlAdminPassword
   }
 }
@@ -185,7 +185,7 @@ module m_DatabaseDeploy'modules/sql_server.bicep' = if (ctrlDeployDatabase) {
     networkIsolationMode  :networkIsolationMode
     databaseNames         :warehouseDatabaseNames
     aadAdminObjectId      :controlEntraAdminObjectId
-    admin_login           :'sqladmin'
+    admin_login           :'sa'
     admin_password        :sqlAdminPassword
   }
 }
