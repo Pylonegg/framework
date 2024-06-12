@@ -64,29 +64,29 @@ module m_keyvaultPermissions 'modules/keyvault_permissions.bicep' = {
   name: '${keyVaultName}Permissions'
   params:{
     keyVaultName: keyVaultName
-    policies: [{
-      condition: true
-      principalId: '3809d824-2e13-4883-a19c-dfd86ec9e012'
-      secrets: ['all']
-    }
-    {
-      condition: true
-      principalId: '57153cd2-4cbe-40d0-9556-a7339b92ac35'
-      secrets: ['all']
-    }
-    {
-      condition: ctrlDeploySynapse
-      principalId: ctrlDeploySynapse ? r_synapseWorkspace.identity.principalId : ''
-      secrets: ['get', 'list']
-
-    }
-    //{
-    //  condition: ctrlDeployPurview
-    //  principalId: ctrlDeployPurview ? m_PurviewDeploy.outputs.purviewIdentityPrincipalID :''
-    //  secrets: ['get', 'list']
-    //}
-  ]
-    secrets:[
+    policies: [
+      {
+        condition: true
+        principalId: '3809d824-2e13-4883-a19c-dfd86ec9e012'
+        secrets: ['all']
+      }
+      {
+        condition: true
+        principalId: '57153cd2-4cbe-40d0-9556-a7339b92ac35'
+        secrets: ['all']
+      }
+      //{
+      //  condition: ctrlDeploySynapse
+      //  principalId: ctrlDeploySynapse ? r_synapseWorkspace.identity.principalId : ''
+      //  secrets: ['get', 'list']
+      //}
+      //{
+      //  condition: ctrlDeployPurview
+      //  principalId: ctrlDeployPurview ? m_PurviewDeploy.outputs.purviewIdentityPrincipalID :''
+      //  secrets: ['get', 'list']
+      //}
+    ]
+  secrets:[
       {
         condition: ctrlDeployAI
         name: textAnalyticsAccountName
