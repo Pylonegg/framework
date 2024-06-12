@@ -1,0 +1,24 @@
+{
+	"name": "AzureSqlDatabase1",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"server": "dev01xctrlserver.database.windows.net",
+			"database": "dev01xctrldb",
+			"encrypt": "optional",
+			"trustServerCertificate": false,
+			"hostNameInCertificate": "",
+			"authenticationType": "SQL",
+			"userName": "corleone",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "Platform_AzureKeyVault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "corleone-Key"
+			}
+		}
+	}
+}
