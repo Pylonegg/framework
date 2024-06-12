@@ -217,6 +217,143 @@
 			</Relationship>
 			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="3" />
 		</Element>
+		<Element Type="SqlProcedure" Name="[audit].[activity_end]">
+			<Property Name="BodyScript">
+				<Value><![CDATA[
+BEGIN
+
+    UPDATE [audit].[activity]
+    SET 
+        [PipelineEnd]  = getdate()
+        ,[PipelineStatus] = @State
+    WHERE [ActivityID] = @ActivityID
+END]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="BodyDependencies">
+				<Entry>
+					<References Name="[audit].[activity]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[activity].[PipelineEnd]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[activity].[PipelineStatus]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[activity_end].[@State]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[activity].[ActivityID]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[activity_end].[@ActivityID]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Parameters">
+				<Entry>
+					<Element Type="SqlSubroutineParameter" Name="[audit].[activity_end].[@ActivityID]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSubroutineParameter" Name="[audit].[activity_end].[@State]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References Name="[audit]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="CreateOffset" Value="1" />
+				<Property Name="Length" Value="236" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="&#xA;CREATE PROCEDURE [audit].[activity_end]&#xA;    @ActivityID INT,&#xA;    @State INT&#xA;AS" />
+			</Annotation>
+		</Element>
+		<Element Type="SqlProcedure" Name="[audit].[activity_start]">
+			<Property Name="BodyScript">
+				<Value><![CDATA[
+BEGIN
+
+    UPDATE [audit].[activity]
+    SET 
+        [PipelineStart]  = getdate()
+        ,[PipelineStatus] = 'In Progress'
+    WHERE [ActivityID] = @ActivityID
+END]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="BodyDependencies">
+				<Entry>
+					<References Name="[audit].[activity]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[activity].[PipelineStart]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[activity].[PipelineStatus]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[activity].[ActivityID]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[activity_start].[@ActivityID]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Parameters">
+				<Entry>
+					<Element Type="SqlSubroutineParameter" Name="[audit].[activity_start].[@ActivityID]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References Name="[audit]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="230" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="CREATE PROCEDURE [audit].[activity_start]&#xA;    @ActivityID INT&#xA;AS" />
+			</Annotation>
+		</Element>
 		<Element Type="SqlTable" Name="[audit].[dataset]">
 			<Property Name="IsAnsiNullsOn" Value="True" />
 			<Relationship Name="Columns">
@@ -385,6 +522,34 @@
 				</Entry>
 			</Relationship>
 			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="5" />
+		</Element>
+		<Element Type="SqlProcedure" Name="[audit].[get_activity]">
+			<Property Name="BodyScript">
+				<Value><![CDATA[
+BEGIN
+
+    SELECT
+        *
+    FROM [audit].[activity]
+END]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="BodyDependencies">
+				<Entry>
+					<References Name="[audit].[activity]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References Name="[audit]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="102" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="CREATE PROCEDURE [audit].[get_activity]&#xA;AS" />
+			</Annotation>
 		</Element>
 		<Element Type="SqlTable" Name="[audit].[logs]">
 			<Property Name="IsAnsiNullsOn" Value="True" />
