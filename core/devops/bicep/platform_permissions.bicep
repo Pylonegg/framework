@@ -85,6 +85,7 @@ module m_keyvaultPermissions 'modules/keyvault_permissions.bicep' = {
       //  principalId: ctrlDeployPurview ? m_PurviewDeploy.outputs.purviewIdentityPrincipalID :''
       //  secrets: ['get', 'list']
       //}
+      //  Conditions do not work here implement an alternative!!
     ]
   secrets:[
       {
@@ -112,14 +113,16 @@ module m_keyvaultPermissions 'modules/keyvault_permissions.bicep' = {
 }
 
 //==============================================================================================================
-// == ROLE BASED ACCESS CONTROL ======================================================
+// == ROLE BASED ACCESS CONTROL =====================================================
+//==============================================================================================================
 var azureRBACStorageBlobDataReaderRoleID      = '2a2b9908-6ea1-4ae2-8e65-a410df84e7d1'  
 var azureRBACStorageBlobDataContributorRoleID = 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'  
 var azureRBACContributorRoleID                = 'b24988ac-6180-42a0-ab88-20f7382dd24c'  
 var azureRBACOwnerRoleID                      = '8e3af657-a8ff-443c-a75c-2fe8c4bcb635'  
 var azureRBACReaderRoleID                     = 'acdd72a7-3385-48ef-bd42-f606fba81ae7' 
 var cosmosDBDataContributorRoleID             = '00000000-0000-0000-0000-000000000002' 
-//==============================================================================================================
+
+
 @description('Assign Storage Blob Data Contributor Role to Synapse Workspace in the Raw Data Lake Account as per https://docs.microsoft.com/en-us/azure/synapse-analytics/security/how-to-grant-workspace-managed-identity-permissions#grant-the-managed-identity-permissions-to-adls-gen2-storage-account')
 resource r_synapseWorkspaceStorageBlobDataContributor 'Microsoft.Authorization/roleAssignments@2020-08-01-preview' = if (ctrlDeploySynapse == true) {
   name: guid('a1fb98aa-4c53-4a4d-951f-3ac730a27a5b', subscription().subscriptionId, resourceGroup().id)
@@ -244,7 +247,7 @@ resource r_synapseAzureMLContributor 'Microsoft.Authorization/roleAssignments@20
 resource r_SynapseSQLRoleAssignment 'Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments@2021-10-15' = if (ctrlDeployOperationalDB && ctrlDeployCosmosDB){
   name: '${cosmosDBAccountName}/${guid('d9b6b1c6-7e97-4693-b58a-5d1a567d413f', subscription().subscriptionId, resourceGroup().id)}'
   properties:{
-    principalId: r_synapseWorkspace.identity.principalId
+    principalId: ctrlDeploySynapse ? r_synapseWorkspace.identity.principalId : ''
     roleDefinitionId: '${ctrlDeployCosmosDB ? r_cosmosDBAccount.id : ''}/sqlRoleDefinitions/${cosmosDBDataContributorRoleID}' // Cosmos DB Built-in Data Contributor
     scope: '${ctrlDeployCosmosDB ? r_cosmosDBAccount.id : ''}/dbs/${cosmosDBDatabaseName}'
   }

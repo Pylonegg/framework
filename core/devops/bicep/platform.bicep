@@ -393,10 +393,10 @@ module m_Permissions'platform_permissions.bicep' = {
     azureMLWorkspaceName                       : azureMLWorkspaceName
     synapseWorkspaceName                       : synapseWorkspaceName
     cosmosDBAccountName                        : cosmosDBAccountName
-    UAMIPrincipalID                            : m_UAMI.outputs.principalId
     keyVaultName                               : keyVaultName
     textAnalyticsAccountName                   : textAnalyticsAccountName
     anomalyDetectorAccountName                 : anomalyDetectorName
+    UAMIPrincipalID                            : m_UAMI.outputs.principalId
     iotHubPrincipalID                          : ctrlDeployStreaming? m_StreamingServicesDeploy.outputs.iotHubPrincipalID : ''
     dataShareAccountPrincipalID                : ctrlDeployDataShare? m_DataShareDeploy.outputs.dataShareAccountPrincipalID : ''
     streamAnalyticsIdentityPrincipalID         : ctrlDeployStreaming? m_StreamingServicesDeploy.outputs.streamAnalyticsIdentityPrincipalID : ''
