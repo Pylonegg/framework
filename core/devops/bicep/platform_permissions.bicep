@@ -64,7 +64,7 @@ resource r_dataFactory 'Microsoft.DataFactory/factories@2018-06-01' existing = {
 }
 
 //==============================================================================================================
-//== KEYVAULT                                ===================================================================
+//==>>>> KEYVAULT    <<<<<<<<<<<<<<<<<<<<<<<<<<<<===============================================================
 //==============================================================================================================
 module m_keyvaultPermissions 'modules/keyvault_permissions.bicep' = {
   name: '${keyVaultName}Permissions'
@@ -72,30 +72,26 @@ module m_keyvaultPermissions 'modules/keyvault_permissions.bicep' = {
     keyVaultName: keyVaultName
     policies: [
       {
-        condition: true
         principalId: '3809d824-2e13-4883-a19c-dfd86ec9e012'
         secrets: ['all']
       }
       {
-        condition: true
         principalId: '57153cd2-4cbe-40d0-9556-a7339b92ac35'
         secrets: ['all']
       }
-      {
+      ctrlDeployDataFactory ? {
         condition: ctrlDeployDataFactory
         principalId: ctrlDeployDataFactory ? r_dataFactory.identity.principalId : ''
         secrets: ['get', 'list']
-      }
-      {
-        condition: ctrlDeploySynapse
+      } : ''
+      ctrlDeploySynapse ? {
         principalId: ctrlDeploySynapse ? r_synapseWorkspace.identity.principalId : ''
         secrets: ['get', 'list']
-      }
-      {
-        condition: ctrlDeployPurview
+      } : ''
+      ctrlDeployPurview? {
         principalId: ctrlDeployPurview ? r_purviewAccount.identity.principalId :''
         secrets: ['get', 'list']
-      }
+      } : ''
 
     ]
   secrets:[

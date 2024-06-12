@@ -20,10 +20,10 @@ resource r_keyVaultAccessPolicy 'Microsoft.KeyVault/vaults/accessPolicies@2021-0
   parent: r_keyVault
   properties:{
     accessPolicies: [for policy in policies: {
-        objectId: policy.condition ? policy.principalId : ''
+        objectId: policy.principalId
         tenantId: subscription().tenantId
         permissions: {
-          secrets: policy.condition ? policy.secrets : ''
+          secrets: policy.secrets
         }
       }
     ]
