@@ -401,6 +401,5 @@ module m_Permissions'platform_permissions.bicep' = {
     dataShareAccountPrincipalID                : ctrlDeployDataShare? m_DataShareDeploy.outputs.dataShareAccountPrincipalID : ''
     streamAnalyticsIdentityPrincipalID         : ctrlDeployStreaming? m_StreamingServicesDeploy.outputs.streamAnalyticsIdentityPrincipalID : ''
     purviewIdentityPrincipalID                 : ctrlDeployPurview ? m_PurviewDeploy.outputs.purviewIdentityPrincipalID :''
-    synapseWorkspaceIdentityPrincipalID        : ctrlDeploySynapse? m_SynapseDeploy.outputs.synapseWorkspaceIdentityPrincipalID : ''
   }
 }

@@ -1,26 +1,28 @@
-param ctrlDeploySynapse bool
-param ctrlDeployPurview bool
-param ctrlDeployAI bool
-param ctrlDeployDataShare bool 
-param ctrlDeployStreaming bool
-param ctrlDeployOperationalDB bool
-param ctrlDeployCosmosDB bool
-param dataLakeAccountName string
-param purviewAccountName string
-param synapseWorkspaceName string
-param synapseWorkspaceIdentityPrincipalID string
-param purviewIdentityPrincipalID string
+param ctrlDeploySynapse             bool
+param ctrlDeployPurview             bool
+param ctrlDeployAI                  bool
+param ctrlDeployDataShare           bool 
+param ctrlDeployStreaming           bool
+param ctrlDeployOperationalDB       bool
+param ctrlDeployCosmosDB            bool
+param ctrlStreamingIngestionService string
+
+param cosmosDBAccountName           string
+param cosmosDBDatabaseName          string
+param azureMLWorkspaceName          string
+param textAnalyticsAccountName      string
+param anomalyDetectorAccountName    string
+param keyVaultName string
+param dataLakeAccountName           string
+param purviewAccountName            string
+param synapseWorkspaceName          string
+
 param UAMIPrincipalID string
+param purviewIdentityPrincipalID string
 param dataShareAccountPrincipalID string
 param streamAnalyticsIdentityPrincipalID string
-param ctrlStreamingIngestionService string
 param iotHubPrincipalID string
-param cosmosDBAccountName string
-param cosmosDBDatabaseName string
-param azureMLWorkspaceName string
-param textAnalyticsAccountName string
-param anomalyDetectorAccountName string
-param keyVaultName string
+
 
 //==============================================================================================================
 //== Get Existing Resources ===================================================================
@@ -74,7 +76,7 @@ module m_keyvaultPermissions 'modules/keyvault_permissions.bicep' = {
     }
     {
       condition: ctrlDeploySynapse
-      principalId: r_synapseWorkspace.identity.principalId
+      principalId: ctrlDeploySynapse ? r_synapseWorkspace.identity.principalId : ''
       secrets: ['get', 'list']
 
     }
@@ -88,17 +90,17 @@ module m_keyvaultPermissions 'modules/keyvault_permissions.bicep' = {
       {
         condition: ctrlDeployAI
         name: textAnalyticsAccountName
-        value: ctrlDeployAI ? listKeys(r_textAnalytics.id, r_textAnalytics.apiVersion).key1 : ''
+        value: ctrlDeployAI ? r_textAnalytics.listKeys().key1 : ''
       }
       {
         condition: anomalyDetectorAccountName
         name: ctrlDeployAI
-        value: ctrlDeployAI ? listKeys(r_anomalyDetector.id, r_anomalyDetector.apiVersion).key1 : ''
+        value: ctrlDeployAI ? r_anomalyDetector.listKeys().key1 : ''
       }
       {
         condition: ctrlDeployCosmosDB
         name: cosmosDBAccountName
-        value: ctrlDeployCosmosDB ? listConnectionStrings(r_cosmosDBAccount.id, r_cosmosDBAccount.apiVersion).connectionStrings[0].connectionString : ''
+        value: ctrlDeployCosmosDB ? r_cosmosDBAccount.listConnectionStrings().connectionStrings[0].connectionString : ''
       }
       {
         condition: false
@@ -124,7 +126,7 @@ resource r_synapseWorkspaceStorageBlobDataContributor 'Microsoft.Authorization/r
   scope: r_dataLakeStorageAccount
   properties:{
     roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', azureRBACStorageBlobDataContributorRoleID)
-    principalId: ctrlDeploySynapse ? synapseWorkspaceIdentityPrincipalID : '' 
+    principalId: ctrlDeploySynapse ? r_synapseWorkspace.identity.principalId : ''
     principalType:'ServicePrincipal'
   }
 }
@@ -233,7 +235,7 @@ resource r_synapseAzureMLContributor 'Microsoft.Authorization/roleAssignments@20
   scope: r_azureMLWorkspace
   properties:{
     roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', azureRBACContributorRoleID)
-    principalId: ctrlDeploySynapse ? synapseWorkspaceIdentityPrincipalID : '' 
+    principalId: ctrlDeploySynapse ? r_synapseWorkspace.identity.principalId : ''
     principalType:'ServicePrincipal'
   }
 }
