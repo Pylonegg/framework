@@ -400,6 +400,5 @@ module m_Permissions'platform_permissions.bicep' = {
     iotHubPrincipalID                          : ctrlDeployStreaming? m_StreamingServicesDeploy.outputs.iotHubPrincipalID : ''
     dataShareAccountPrincipalID                : ctrlDeployDataShare? m_DataShareDeploy.outputs.dataShareAccountPrincipalID : ''
     streamAnalyticsIdentityPrincipalID         : ctrlDeployStreaming? m_StreamingServicesDeploy.outputs.streamAnalyticsIdentityPrincipalID : ''
-    purviewIdentityPrincipalID                 : ctrlDeployPurview ? m_PurviewDeploy.outputs.purviewIdentityPrincipalID :''
   }
 }

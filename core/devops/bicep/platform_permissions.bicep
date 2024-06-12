@@ -18,21 +18,20 @@ param purviewAccountName            string
 param synapseWorkspaceName          string
 
 param UAMIPrincipalID string
-param purviewIdentityPrincipalID string
 param dataShareAccountPrincipalID string
 param streamAnalyticsIdentityPrincipalID string
 param iotHubPrincipalID string
 
 
 //==============================================================================================================
-//== Get Existing Resources ===================================================================
+//== Get Existing Resources                  ===================================================================
 //==============================================================================================================
 resource r_dataLakeStorageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
   name: dataLakeAccountName
 }
-// resource r_purviewAccount 'Microsoft.Purview/accounts@2021-07-01' existing = {
-//   name: purviewAccountName
-// }
+resource r_purviewAccount 'Microsoft.Purview/accounts@2021-07-01' existing = {
+  name: purviewAccountName
+}
 resource r_azureMLWorkspace 'Microsoft.MachineLearningServices/workspaces@2021-07-01' existing = {
   name: azureMLWorkspaceName
 }
@@ -58,7 +57,7 @@ resource r_anomalyDetector 'Microsoft.CognitiveServices/accounts@2021-10-01' exi
 }
 
 //==============================================================================================================
-//== KEYVAULT ===================================================================
+//== KEYVAULT                                ===================================================================
 //==============================================================================================================
 module m_keyvaultPermissions 'modules/keyvault_permissions.bicep' = {
   name: '${keyVaultName}Permissions'
@@ -113,7 +112,7 @@ module m_keyvaultPermissions 'modules/keyvault_permissions.bicep' = {
 }
 
 //==============================================================================================================
-// == ROLE BASED ACCESS CONTROL =====================================================
+// == ROLE BASED ACCESS CONTROL                            =====================================================
 //==============================================================================================================
 var azureRBACStorageBlobDataReaderRoleID      = '2a2b9908-6ea1-4ae2-8e65-a410df84e7d1'  
 var azureRBACStorageBlobDataContributorRoleID = 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'  
@@ -122,18 +121,7 @@ var azureRBACOwnerRoleID                      = '8e3af657-a8ff-443c-a75c-2fe8c4b
 var azureRBACReaderRoleID                     = 'acdd72a7-3385-48ef-bd42-f606fba81ae7' 
 var cosmosDBDataContributorRoleID             = '00000000-0000-0000-0000-000000000002' 
 
-
-@description('Assign Storage Blob Data Contributor Role to Synapse Workspace in the Raw Data Lake Account as per https://docs.microsoft.com/en-us/azure/synapse-analytics/security/how-to-grant-workspace-managed-identity-permissions#grant-the-managed-identity-permissions-to-adls-gen2-storage-account')
-resource r_synapseWorkspaceStorageBlobDataContributor 'Microsoft.Authorization/roleAssignments@2020-08-01-preview' = if (ctrlDeploySynapse == true) {
-  name: guid('a1fb98aa-4c53-4a4d-951f-3ac730a27a5b', subscription().subscriptionId, resourceGroup().id)
-  scope: r_dataLakeStorageAccount
-  properties:{
-    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', azureRBACStorageBlobDataContributorRoleID)
-    principalId: ctrlDeploySynapse ? r_synapseWorkspace.identity.principalId : ''
-    principalType:'ServicePrincipal'
-  }
-}
-
+// -- DataLake ==============================================================================================
 @description('Assign Storage Blob Data Reader Role to Azure Data Share in the Raw Data Lake Account as per https://docs.microsoft.com/en-us/azure/data-share/concepts-roles-permissions')
 resource r_azureDataShareStorageBlobDataReader 'Microsoft.Authorization/roleAssignments@2020-08-01-preview' = if (ctrlDeployDataShare == true) {
   name: guid('bbcbc4e3-e2bb-4cde-97c8-02636e6f1632', subscription().subscriptionId, resourceGroup().id)
@@ -196,7 +184,18 @@ resource r_purviewSynapseReader 'Microsoft.Authorization/roleAssignments@2020-08
   scope: r_synapseWorkspace
   properties:{
     roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', azureRBACReaderRoleID)
-    principalId: ctrlDeployPurview ? purviewIdentityPrincipalID : ''
+    principalId: ctrlDeployPurview ? r_purviewAccount.identity.principalId : ''
+    principalType:'ServicePrincipal'
+  }
+}
+
+@description('Assign Storage Blob Data Contributor Role to Synapse Workspace in the Raw Data Lake Account as per https://docs.microsoft.com/en-us/azure/synapse-analytics/security/how-to-grant-workspace-managed-identity-permissions#grant-the-managed-identity-permissions-to-adls-gen2-storage-account')
+resource r_synapseWorkspaceStorageBlobDataContributor 'Microsoft.Authorization/roleAssignments@2020-08-01-preview' = if (ctrlDeploySynapse == true) {
+  name: guid('a1fb98aa-4c53-4a4d-951f-3ac730a27a5b', subscription().subscriptionId, resourceGroup().id)
+  scope: r_dataLakeStorageAccount
+  properties:{
+    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', azureRBACStorageBlobDataContributorRoleID)
+    principalId: ctrlDeploySynapse ? r_synapseWorkspace.identity.principalId : ''
     principalType:'ServicePrincipal'
   }
 }
@@ -217,7 +216,7 @@ resource r_purviewRGStorageBlobDataReader 'Microsoft.Authorization/roleAssignmen
   name: guid('3f2019ca-ce91-4153-920a-19e6dae191a8', subscription().subscriptionId, resourceGroup().id)
   properties:{
     roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', azureRBACStorageBlobDataReaderRoleID)
-    principalId: ctrlDeployPurview ? purviewIdentityPrincipalID : ''
+    principalId: ctrlDeployPurview ? r_purviewAccount.identity.principalId  : ''
     principalType:'ServicePrincipal'
   }
 }
@@ -227,7 +226,7 @@ resource r_purviewRGReaderRoleAssignment 'Microsoft.Authorization/roleAssignment
   name: guid(resourceGroup().name, purviewAccountName, 'Reader')
   properties:{
     roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', azureRBACReaderRoleID)
-    principalId: ctrlDeployPurview ? purviewIdentityPrincipalID : ''
+    principalId: ctrlDeployPurview ? r_purviewAccount.identity.principalId  : ''
     principalType:'ServicePrincipal'
   }
 }
