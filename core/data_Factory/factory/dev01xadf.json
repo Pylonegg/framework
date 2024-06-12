@@ -1,0 +1,9 @@
+{
+	"name": "dev01xadf",
+	"location": "uksouth",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "39942e64-c6b9-4c37-b491-dfbf3cd53cf3",
+		"tenantId": "6a55206e-5c4c-4364-8c6c-883aad4be3ab"
+	}
+}
