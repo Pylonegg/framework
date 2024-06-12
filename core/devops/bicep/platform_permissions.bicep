@@ -86,17 +86,17 @@ module m_keyvaultPermissions 'modules/keyvault_permissions.bicep' = {
         principalId: ctrlDeployDataFactory ? r_dataFactory.identity.principalId : ''
         secrets: ['get', 'list']
       }
-      //{
-      //  condition: ctrlDeploySynapse
-      //  principalId: ctrlDeploySynapse ? r_synapseWorkspace.identity.principalId : ''
-      //  secrets: ['get', 'list']
-      //}
-      //{
-      //  condition: ctrlDeployPurview
-      //  principalId: ctrlDeployPurview ? m_PurviewDeploy.outputs.purviewIdentityPrincipalID :''
-      //  secrets: ['get', 'list']
-      //}
-      //  Conditions do not work here implement an alternative!!
+      {
+        condition: ctrlDeploySynapse
+        principalId: ctrlDeploySynapse ? r_synapseWorkspace.identity.principalId : ''
+        secrets: ['get', 'list']
+      }
+      {
+        condition: ctrlDeployPurview
+        principalId: ctrlDeployPurview ? r_purviewAccount.identity.principalId :''
+        secrets: ['get', 'list']
+      }
+
     ]
   secrets:[
       {
@@ -116,7 +116,7 @@ module m_keyvaultPermissions 'modules/keyvault_permissions.bicep' = {
       }
       {
         condition: true
-        name: 'sqlAdmin'
+        name: 'corleone'
         value: sqlAdminPassword
       }
     ]
