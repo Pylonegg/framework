@@ -5,8 +5,11 @@ param ctrlDeployDataShare           bool
 param ctrlDeployStreaming           bool
 param ctrlDeployOperationalDB       bool
 param ctrlDeployCosmosDB            bool
+param ctrlDeployDataFactory         bool
 param ctrlStreamingIngestionService string
 
+@secure()
+param sqlAdminPassword              string
 param cosmosDBAccountName           string
 param cosmosDBDatabaseName          string
 param azureMLWorkspaceName          string
@@ -16,6 +19,7 @@ param keyVaultName string
 param dataLakeAccountName           string
 param purviewAccountName            string
 param synapseWorkspaceName          string
+param dataFactoryName               string
 
 param UAMIPrincipalID string
 param dataShareAccountPrincipalID string
@@ -55,6 +59,9 @@ resource r_textAnalytics 'Microsoft.CognitiveServices/accounts@2021-10-01' exist
 resource r_anomalyDetector 'Microsoft.CognitiveServices/accounts@2021-10-01' existing = {
   name: anomalyDetectorAccountName
 }
+resource r_dataFactory 'Microsoft.DataFactory/factories@2018-06-01' existing = {
+  name: dataFactoryName
+}
 
 //==============================================================================================================
 //== KEYVAULT                                ===================================================================
@@ -73,6 +80,11 @@ module m_keyvaultPermissions 'modules/keyvault_permissions.bicep' = {
         condition: true
         principalId: '57153cd2-4cbe-40d0-9556-a7339b92ac35'
         secrets: ['all']
+      }
+      {
+        condition: ctrlDeployDataFactory
+        principalId: ctrlDeployDataFactory ? r_dataFactory.identity.principalId : ''
+        secrets: ['get', 'list']
       }
       //{
       //  condition: ctrlDeploySynapse
@@ -103,9 +115,9 @@ module m_keyvaultPermissions 'modules/keyvault_permissions.bicep' = {
         value: ctrlDeployCosmosDB ? r_cosmosDBAccount.listConnectionStrings().connectionStrings[0].connectionString : ''
       }
       {
-        condition: false
+        condition: true
         name: 'sqlAdmin'
-        value: 'sqlAdminPassword'
+        value: sqlAdminPassword
       }
     ]
   }

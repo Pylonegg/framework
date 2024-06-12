@@ -23,3 +23,4 @@ stages:
           csmParametersFile: 'core/devops/pipelines/parameters.json'
           deploymentMode: Incremental
           deploymentName: 'InfrastructureDeployment'
+          overrideParameters: '-sqlAdminPassword $(sqlAdminPassword)'

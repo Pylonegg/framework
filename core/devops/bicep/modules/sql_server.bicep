@@ -4,6 +4,10 @@ param networkIsolationMode        string
 param aadAdminObjectId            string
 param databaseNames               array
 param tags                        object
+param admin_login                 string
+@secure()
+param admin_password              string
+
 
 @description('Deploy Sql Server Resource')
 resource r_sqlServer 'Microsoft.Sql/servers@2023-05-01-preview' = {
@@ -14,6 +18,8 @@ resource r_sqlServer 'Microsoft.Sql/servers@2023-05-01-preview' = {
     type: 'SystemAssigned'
   }
   properties: {
+    administratorLogin: admin_login
+    administratorLoginPassword: admin_password
     publicNetworkAccess: networkIsolationMode == 'vNet' ? 'Disabled' : 'Enabled'
     restrictOutboundNetworkAccess: 'Disabled'
     administrators: {
@@ -22,7 +28,6 @@ resource r_sqlServer 'Microsoft.Sql/servers@2023-05-01-preview' = {
       login: 'AADServerAdmin'
       sid: aadAdminObjectId
       tenantId: tenant().tenantId
-      azureADOnlyAuthentication: true
     }
   }
 }

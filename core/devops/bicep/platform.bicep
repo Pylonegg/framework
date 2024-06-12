@@ -26,6 +26,8 @@ param warehouseDatabaseNames        array
 param controlDatabaseNames          array
 param controlEntraAdminObjectId     string
 @secure()
+param sqlAdminPassword                string
+@secure()
 param synapseSqlAdminPassword       string = newGuid()
 param dataLakeContainerNames        array  = ['raw','trusted','curated','transient','sandpit']
 param vNetName                      string = '${uniquePrefix}vnet${uniqueSuffix}'
@@ -135,6 +137,8 @@ module m_ControlServerDeploy 'modules/sql_server.bicep' = {
     networkIsolationMode  :networkIsolationMode
     databaseNames         :controlDatabaseNames
     aadAdminObjectId      :controlEntraAdminObjectId
+    admin_login           :'sqladmin'
+    admin_password        :sqlAdminPassword
   }
 }
 
@@ -181,6 +185,8 @@ module m_DatabaseDeploy'modules/sql_server.bicep' = if (ctrlDeployDatabase) {
     networkIsolationMode  :networkIsolationMode
     databaseNames         :warehouseDatabaseNames
     aadAdminObjectId      :controlEntraAdminObjectId
+    admin_login           :'sqladmin'
+    admin_password        :sqlAdminPassword
   }
 }
 
@@ -387,6 +393,9 @@ module m_Permissions'platform_permissions.bicep' = {
     ctrlDeployDataShare                        : ctrlDeployDataShare
     ctrlDeployOperationalDB                    : ctrlDeployOperationalDB
     ctrlStreamingIngestionService              : ctrlStreamIngestionService
+    ctrlDeployDataFactory                      : ctrlDeployDataFactory
+    sqlAdminPassword                           : sqlAdminPassword
+    dataFactoryName                            : dataFactoryName   
     dataLakeAccountName                        : dataLakeAccountName
     cosmosDBDatabaseName                       : cosmosDBDatabaseName
     purviewAccountName                         : purviewAccountName
