@@ -96,36 +96,6 @@ module m_keyVault 'modules/keyvault.bicep' = {
     networkIsolationMode: networkIsolationMode
   }
 }
-@description('Set Keyvault Access Policies')
-module m_KeyVaultServiceConnectionAccessPolicy 'modules/keyvault_policy.bicep' = {
-  name: 'KeyVaultAccessPolicies'
-  scope: r_dataPlatformRG
-  params: {
-    keyVaultName: keyVaultName
-    policies: [{
-      condition: true
-      principalId: '3809d824-2e13-4883-a19c-dfd86ec9e012'
-      secrets: ['all']
-    }
-    {
-      condition: true
-      principalId: '57153cd2-4cbe-40d0-9556-a7339b92ac35'
-      secrets: ['all']
-    }
-    {
-      condition: ctrlDeploySynapse
-      principalId: m_SynapseDeploy.outputs.synapseWorkspaceIdentityPrincipalID
-      secrets: ['get', 'list']
-
-    }
-    //{
-    //  condition: ctrlDeployPurview
-    //  principalId: ctrlDeployPurview ? m_PurviewDeploy.outputs.purviewIdentityPrincipalID :''
-    //  secrets: ['get', 'list']
-    //}
-  ]
-  }
-}
 
 @description('User-Assignment Managed Identity used to execute deployment scripts')
 module m_UAMI 'modules/uami.bicep' = {
@@ -395,7 +365,7 @@ module m_OperationalDatabasesDeploy 'modules/cosmos_database.bicep' = if (ctrlDe
 //-----------------------------------------------------------------------------------------------------------
 // - Add Permissions Assignments
 //-----------------------------------------------------------------------------------------------------------
-module m_Permissions'modules/platform_rbac.bicep' = {
+module m_Permissions'platform_permissions.bicep' = {
   name: 'rbacDeploy'
   scope: r_dataPlatformRG
   dependsOn:[
@@ -424,6 +394,9 @@ module m_Permissions'modules/platform_rbac.bicep' = {
     synapseWorkspaceName                       : synapseWorkspaceName
     cosmosDBAccountName                        : cosmosDBAccountName
     UAMIPrincipalID                            : m_UAMI.outputs.principalId
+    keyVaultName                               : keyVaultName
+    textAnalyticsAccountName                   : textAnalyticsAccountName
+    anomalyDetectorAccountName                 : anomalyDetectorName
     iotHubPrincipalID                          : ctrlDeployStreaming? m_StreamingServicesDeploy.outputs.iotHubPrincipalID : ''
     dataShareAccountPrincipalID                : ctrlDeployDataShare? m_DataShareDeploy.outputs.dataShareAccountPrincipalID : ''
     streamAnalyticsIdentityPrincipalID         : ctrlDeployStreaming? m_StreamingServicesDeploy.outputs.streamAnalyticsIdentityPrincipalID : ''

@@ -18,16 +18,13 @@ param iotHubPrincipalID string
 param cosmosDBAccountName string
 param cosmosDBDatabaseName string
 param azureMLWorkspaceName string
+param textAnalyticsAccountName string
+param anomalyDetectorAccountName string
+param keyVaultName string
 
-var azureRBACStorageBlobDataReaderRoleID      = '2a2b9908-6ea1-4ae2-8e65-a410df84e7d1'  // Storage Blob Data Reader Role: https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#storage-blob-data-reader
-var azureRBACStorageBlobDataContributorRoleID = 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'  // Storage Blob Data Contributor Role: https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#storage-blob-data-contributor
-var azureRBACContributorRoleID                = 'b24988ac-6180-42a0-ab88-20f7382dd24c'  // Contributor: https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#contributor
-var azureRBACOwnerRoleID                      = '8e3af657-a8ff-443c-a75c-2fe8c4bcb635'  // Owner: https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#owner
-var azureRBACReaderRoleID                     = 'acdd72a7-3385-48ef-bd42-f606fba81ae7'  // Reader: https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#reader
-var cosmosDBDataContributorRoleID             = '00000000-0000-0000-0000-000000000002'  // Cosmos DB Built-in Data Contributor: https://docs.microsoft.com/en-us/azure/cosmos-db/how-to-setup-rbac#built-in-role-definitions
-
+//==============================================================================================================
 //== Get Existing Resources ===================================================================
-//Reference existing resources for permission assignment scope
+//==============================================================================================================
 resource r_dataLakeStorageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
   name: dataLakeAccountName
 }
@@ -44,13 +41,83 @@ resource r_azureMLSynapseLinkedService 'Microsoft.MachineLearningServices/worksp
 resource r_synapseWorkspace 'Microsoft.Synapse/workspaces@2021-06-01' existing = {
   name: synapseWorkspaceName
 }
+
 @description('Lookup cosmos db account')
 resource r_cosmosDBAccount 'Microsoft.DocumentDB/databaseAccounts@2021-11-15-preview' existing = {
   name: cosmosDBAccountName
 }
+@description('Lookup ')
+resource r_textAnalytics 'Microsoft.CognitiveServices/accounts@2021-10-01' existing = {
+  name: textAnalyticsAccountName
+}
+@description('Lookup Anomaly Detector account')
+resource r_anomalyDetector 'Microsoft.CognitiveServices/accounts@2021-10-01' existing = {
+  name: anomalyDetectorAccountName
+}
 
-// == ROLE BASED ACCESS CONTROL ============================================================
-// scope Datalake ==============================================================================================
+//==============================================================================================================
+//== KEYVAULT ===================================================================
+//==============================================================================================================
+module m_keyvaultPermissions 'modules/keyvault_permissions.bicep' = {
+  name: '${keyVaultName}Permissions'
+  params:{
+    keyVaultName: keyVaultName
+    policies: [{
+      condition: true
+      principalId: '3809d824-2e13-4883-a19c-dfd86ec9e012'
+      secrets: ['all']
+    }
+    {
+      condition: true
+      principalId: '57153cd2-4cbe-40d0-9556-a7339b92ac35'
+      secrets: ['all']
+    }
+    {
+      condition: ctrlDeploySynapse
+      principalId: r_synapseWorkspace.identity.principalId
+      secrets: ['get', 'list']
+
+    }
+    //{
+    //  condition: ctrlDeployPurview
+    //  principalId: ctrlDeployPurview ? m_PurviewDeploy.outputs.purviewIdentityPrincipalID :''
+    //  secrets: ['get', 'list']
+    //}
+  ]
+    secrets:[
+      {
+        condition: ctrlDeployAI
+        name: textAnalyticsAccountName
+        value: ctrlDeployAI ? listKeys(r_textAnalytics.id, r_textAnalytics.apiVersion).key1 : ''
+      }
+      {
+        condition: anomalyDetectorAccountName
+        name: ctrlDeployAI
+        value: ctrlDeployAI ? listKeys(r_anomalyDetector.id, r_anomalyDetector.apiVersion).key1 : ''
+      }
+      {
+        condition: ctrlDeployCosmosDB
+        name: cosmosDBAccountName
+        value: ctrlDeployCosmosDB ? listConnectionStrings(r_cosmosDBAccount.id, r_cosmosDBAccount.apiVersion).connectionStrings[0].connectionString : ''
+      }
+      {
+        condition: false
+        name: 'sqlAdmin'
+        value: 'sqlAdminPassword'
+      }
+    ]
+  }
+}
+
+//==============================================================================================================
+// == ROLE BASED ACCESS CONTROL ======================================================
+var azureRBACStorageBlobDataReaderRoleID      = '2a2b9908-6ea1-4ae2-8e65-a410df84e7d1'  
+var azureRBACStorageBlobDataContributorRoleID = 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'  
+var azureRBACContributorRoleID                = 'b24988ac-6180-42a0-ab88-20f7382dd24c'  
+var azureRBACOwnerRoleID                      = '8e3af657-a8ff-443c-a75c-2fe8c4bcb635'  
+var azureRBACReaderRoleID                     = 'acdd72a7-3385-48ef-bd42-f606fba81ae7' 
+var cosmosDBDataContributorRoleID             = '00000000-0000-0000-0000-000000000002' 
+//==============================================================================================================
 @description('Assign Storage Blob Data Contributor Role to Synapse Workspace in the Raw Data Lake Account as per https://docs.microsoft.com/en-us/azure/synapse-analytics/security/how-to-grant-workspace-managed-identity-permissions#grant-the-managed-identity-permissions-to-adls-gen2-storage-account')
 resource r_synapseWorkspaceStorageBlobDataContributor 'Microsoft.Authorization/roleAssignments@2020-08-01-preview' = if (ctrlDeploySynapse == true) {
   name: guid('a1fb98aa-4c53-4a4d-951f-3ac730a27a5b', subscription().subscriptionId, resourceGroup().id)
@@ -185,7 +252,7 @@ resource r_SynapseSQLRoleAssignment 'Microsoft.DocumentDB/databaseAccounts/sqlRo
 
 
 
-//==========================================================================================================
+//==============================================================================================================
 // -- OUTPUTS ==============================================================================================
-//==========================================================================================================
+//==============================================================================================================
 output azureMLSynapseLinkedServicePrincipalID string = ctrlDeployAI ? r_azureMLSynapseLinkedService.identity.principalId : ''
