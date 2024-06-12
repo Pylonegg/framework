@@ -86,16 +86,16 @@ module m_keyvaultPermissions 'modules/keyvault_permissions.bicep' = {
         principalId: ctrlDeployDataFactory ? r_dataFactory.identity.principalId : ''
         secrets: ['get', 'list']
       }
-      {
-        condition: ctrlDeploySynapse
-        principalId: ctrlDeploySynapse ? r_synapseWorkspace.identity.principalId : ''
-        secrets: ['get', 'list']
-      }
-      {
-        condition: ctrlDeployPurview
-        principalId: ctrlDeployPurview ? r_purviewAccount.identity.principalId :''
-        secrets: ['get', 'list']
-      }
+      //{
+      //  condition: ctrlDeploySynapse
+      //  principalId: ctrlDeploySynapse ? r_synapseWorkspace.identity.principalId : ''
+      //  secrets: ['get', 'list']
+      //}
+      //{
+      //  condition: ctrlDeployPurview
+      //  principalId: ctrlDeployPurview ? r_purviewAccount.identity.principalId :''
+      //  secrets: ['get', 'list']
+      //}
 
     ]
   secrets:[
