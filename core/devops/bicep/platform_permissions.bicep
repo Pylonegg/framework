@@ -72,28 +72,23 @@ module m_keyvaultPermissions 'modules/keyvault_permissions.bicep' = {
     keyVaultName: keyVaultName
     policies: [
       {
-        condition: true
         principalId: '3809d824-2e13-4883-a19c-dfd86ec9e012'
         secrets: ['all']
       }
       {
-        condition: true
         principalId: '57153cd2-4cbe-40d0-9556-a7339b92ac35'
         secrets: ['all']
       }
       {
-        condition: ctrlDeployDataFactory
-        principalId: ctrlDeployDataFactory ? r_dataFactory.identity.principalId : ''
+        principalId: ctrlDeployDataFactory ? r_dataFactory.identity.principalId :'00000000-0000-0000-0000-000000000000'
         secrets: ['get', 'list']
       }
       {
-        condition: ctrlDeploySynapse
-        principalId: ctrlDeploySynapse ? r_synapseWorkspace.identity.principalId : ''
+        principalId: ctrlDeployPurview ? r_purviewAccount.identity.principalId :'00000000-0000-0000-0000-000000000000'
         secrets: ['get', 'list']
       }
       {
-        condition: ctrlDeployPurview
-        principalId: ctrlDeployPurview ? r_purviewAccount.identity.principalId :''
+        principalId: ctrlDeploySynapse ? r_synapseWorkspace.identity.principalId :'00000000-0000-0000-0000-000000000000'
         secrets: ['get', 'list']
       }
 
