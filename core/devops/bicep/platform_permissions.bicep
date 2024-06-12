@@ -80,7 +80,6 @@ module m_keyvaultPermissions 'modules/keyvault_permissions.bicep' = {
         secrets: ['all']
       }
       ctrlDeployDataFactory ? {
-        condition: ctrlDeployDataFactory
         principalId: ctrlDeployDataFactory ? r_dataFactory.identity.principalId : ''
         secrets: ['get', 'list']
       } : ''
