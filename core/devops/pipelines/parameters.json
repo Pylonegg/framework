@@ -14,9 +14,6 @@
     "environment": {
       "value": "dev"
     },
-    "sqlAdminPassword": {
-      "value": ""
-    },
     "warehouseDatabaseNames":{
       "value": [
         "data_warehouse"
