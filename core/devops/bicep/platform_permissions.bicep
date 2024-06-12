@@ -93,8 +93,8 @@ module m_keyvaultPermissions 'modules/keyvault_permissions.bicep' = {
         value: ctrlDeployAI ? r_textAnalytics.listKeys().key1 : ''
       }
       {
-        condition: anomalyDetectorAccountName
-        name: ctrlDeployAI
+        condition: ctrlDeployAI
+        name: anomalyDetectorAccountName
         value: ctrlDeployAI ? r_anomalyDetector.listKeys().key1 : ''
       }
       {
