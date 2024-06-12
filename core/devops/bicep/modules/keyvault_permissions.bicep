@@ -25,7 +25,7 @@ resource r_keyVaultAccessPolicy 'Microsoft.KeyVault/vaults/accessPolicies@2021-0
         permissions: {
           secrets: policy.secrets
         }
-      }: {}
+      }: ''
     ]
   }
 }
