@@ -130,3 +130,32 @@ columns:
         ]
     )
     return dataset
+
+
+# = DEPLOY CONTRACTS TO CONTROL DB ====================================================================
+def deploy(contracts, connection_string):
+    print("\n[+] Deploying Contracts")
+    all_datasets = []
+    all_dependencies = []
+    for contract in contracts:
+        all_datasets.append(f"('{contract.code}', '{contract.collection_name}', '{contract.is_enabled}','{contract.type}')")
+
+        if contract.dependencies is not None:
+            for dependency in contract.dependencies:
+                split_dependency = dependency['name'].split('.')
+                all_dependencies.append(f"('{contract.code}','{contract.collection_name}','{split_dependency[1]}','{split_dependency[0]}','{dependency['type']}')")
+
+
+    query = f"""
+    TRUNCATE TABLE [tmp].[datasets]
+    INSERT INTO [tmp].[datasets] 
+    VALUES  {','.join(all_datasets)}
+    GO
+
+    TRUNCATE TABLE tmp.dependency
+    INSERT INTO tmp.dependency VALUES  {','.join(all_dependencies)}
+    GO
+
+    EXEC [audit].[setup]
+    """
+    execute(connection_string, query, "Writing datasets to control database")

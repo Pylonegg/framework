@@ -7,8 +7,8 @@ BEGIN
 
     UPDATE [audit].[activity]
     SET 
-        [PipelineEnd]  = getdate()
-        ,[PipelineStatus] = @State
-    WHERE [ActivityID] = @ActivityID
+        [pipeline_end]  = getdate()
+        ,[pipeline_status] = @State
+    WHERE [activity_id] = @ActivityID
 END
 GO

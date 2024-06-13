@@ -37,8 +37,6 @@ class Contracts:
             else:
                 print(f"[!] Skipping disabled collection {collection_type}: {collection_name}")
 
-
-
     def generate_sql(self):
         for collection_system in ['synapse', 'database']:
             print(f'[+] Generating "{collection_system}" SQL')
@@ -46,29 +44,8 @@ class Contracts:
                 if contract.collection_system   == collection_system or contract.collection_type == 'datasource' :
                     msg = contract.name
                     pretty_execute(message=msg, function=globals()[f'{collection_system}_sql'](contract))
-
-
         # NOTE  Maybe add loop [model, curated, enriched]
 
-
-# >>> Refactor ======================================================================================
-    def deploy(self):
-        print("\n[+] Deploying Contracts")
-        all_datasets = []
-        all_dependencies = []
-        for contract in self.contracts:
-            all_datasets.append(f"('{contract.code}', '', '{contract.is_enabled}','{contract.type}')")
-
-            if contract.dependencies is not None:
-                for dependency in contract.dependencies:
-                    all_dependencies.append(f"('{contract.code}','{dependency['name']}','{dependency['type']}')")
-
-    
-        query = f"TRUNCATE TABLE [tmp].[datasets]\nGO\nINSERT INTO [tmp].[datasets] VALUES  {','.join(all_datasets)}\nGO\n"
-        # query += f"TRUNCATE TABLE tmp.dependencies\nGO\nINSERT INTO tmp.dependencies VALUES  {','.join(all_dependencies)}\nGO\n"
-        query += "EXEC [audit].[setup]"
-        execute((self.config['connection_string']), query, "Writing datasets to control database")
-# <<< Refactor ======================================================================================
 
 
 class Contract:

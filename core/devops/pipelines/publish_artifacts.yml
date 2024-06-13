@@ -33,7 +33,7 @@ stages:
       - task: VSBuild@1
         displayName: 'Build Control Database Artifacts' 
         inputs:
-          solution: 'core/data_platform/*.sqlproj'
+          solution: 'core/control_table/*.sqlproj'
           msbuildArgs: '/p:Configuration=Release'
           platform: 'Any CPU'
           configuration: 'Release'     
@@ -82,6 +82,6 @@ stages:
           DatabaseName: '$(controlDatabaseName)' 
           deployType: 'DacpacTask'
           DeploymentAction: 'Publish'
-          DacpacFile: '$(Pipeline.Workspace)/drop/core/data_platform/bin/debug/data_platform.dacpac'
-          # PublishProfile: '$(Pipeline.Workspace)/drop/core/data_platform/data_platform.publish.xml'
+          DacpacFile: '$(Pipeline.Workspace)/drop/core/control_table/bin/debug/control_table.dacpac'
+          # PublishProfile: '$(Pipeline.Workspace)/drop/core/control_table/control_table.publish.xml'
           IpDetectionMethod: 'AutoDetect'
