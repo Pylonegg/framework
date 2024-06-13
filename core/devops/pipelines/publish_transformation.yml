@@ -1,0 +1,51 @@
+trigger:
+- none
+
+pool:
+  vmImage: windows-2019
+
+stages:
+- stage: Build
+  jobs:
+  - job: 'BuildControlDatabase'
+    displayName: 'Build SQL Project'
+    steps:
+    - task: VSBuild@1
+      inputs:
+        solution: 'transform/databases/data_warehouse/*.sqlproj'
+        msbuildArgs: '/p:Configuration=Release'
+        platform: 'Any CPU'
+        configuration: 'Release'
+
+    - task: CopyFiles@2
+      inputs:
+        targetFolder: '$(Build.ArtifactStagingDirectory)'    
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        artifact: 'drop'
+
+
+- stage: Dev
+  variables:
+  - group: DEV
+  dependsOn: Build
+  jobs:
+  - job: 'DeployDatabase'
+    displayName: 'Deploy SQL Databases'
+    steps:
+    - download: current
+      artifact: drop
+
+    - task: SqlAzureDacpacDeployment@1
+      displayName: 'Deploy Data Warehouse' 
+      inputs:
+        azureSubscription: 'azelia-dev-connection'
+        AuthenticationType: 'servicePrincipal'
+        ServerName: '$(warehouseServerName).database.windows.net'
+        DatabaseName: '$(warehouseDatabaseName)' 
+        deployType: 'DacpacTask'
+        DeploymentAction: 'Publish'
+        DacpacFile: '$(Pipeline.Workspace)/drop/transform/databases/$(warehouseDatabaseName)/bin/debug/$(warehouseDatabaseName).dacpac'
+        IpDetectionMethod: 'AutoDetect'

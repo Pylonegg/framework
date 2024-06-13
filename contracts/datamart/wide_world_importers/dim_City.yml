@@ -63,11 +63,11 @@ columns:
     data_type: bigint
 
 depends_on:
-  - name: world_wide_importers.cities
+  - name: WideWorldImporters.Application_Cities
     type: Hard
   
-  - name: world_wide_importers.colors
+  - name: WideWorldImporters.Warehouse_Colors
     type: Hard
 
-  - name: world_wide_importers.suppliers
+  - name: WideWorldImporters.Purchasing_Suppliers
     type: Hard
