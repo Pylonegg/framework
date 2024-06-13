@@ -1,5 +1,6 @@
 {
 	"name": "control_database",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"annotations": [],
 		"type": "AzureSqlDatabase",
@@ -7,8 +8,7 @@
 			"server": "dev01xctrlserver.database.windows.net",
 			"database": "dev01xctrldb",
 			"encrypt": "mandatory",
-			"trustServerCertificate": false,
-			"hostNameInCertificate": "",
+			"trustServerCertificate": true,
 			"authenticationType": "SQL",
 			"userName": "corleone",
 			"password": {
@@ -18,6 +18,9 @@
 					"type": "LinkedServiceReference"
 				},
 				"secretName": "corleone-Key"
+			},
+			"alwaysEncryptedSettings": {
+				"alwaysEncryptedAkvAuthType": "ManagedIdentity"
 			}
 		}
 	}

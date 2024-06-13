@@ -1,5 +1,6 @@
 {
 	"name": "AzureBlobStorage1",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"annotations": [],
 		"type": "AzureBlobStorage",
@@ -14,6 +15,5 @@
 				"secretName": "dev01xadls-connectionstring"
 			}
 		}
-	},
-	"type": "Microsoft.DataFactory/factories/linkedservices"
+	}
 }
