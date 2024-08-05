@@ -1,0 +1,1234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DataSchemaModel FileFormatVersion="1.2" SchemaVersion="3.5" DspName="Microsoft.Data.Tools.Schema.Sql.SqlAzureV12DatabaseSchemaProvider" CollationLcid="1033" CollationCaseSensitive="False" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+	<Header>
+		<CustomData Category="AnsiNulls">
+			<Metadata Name="AnsiNulls" Value="True" />
+		</CustomData>
+		<CustomData Category="QuotedIdentifier">
+			<Metadata Name="QuotedIdentifier" Value="True" />
+		</CustomData>
+		<CustomData Category="CompatibilityMode">
+			<Metadata Name="CompatibilityMode" Value="150" />
+		</CustomData>
+		<CustomData Category="Reference" Type="Assembly">
+			<Metadata Name="LogicalName" Value="control_table.dll" />
+			<Metadata Name="FileName" Value="/home/chi/Projects/azure/core/control_table/obj/Debug/control_table.dll" />
+			<Metadata Name="AssemblyName" Value="control_table" />
+			<Metadata Name="PermissionSet" Value="SAFE" />
+			<Metadata Name="Owner" Value="" />
+			<Metadata Name="GenerateSqlClrDdl" Value="True" />
+			<Metadata Name="IsVisible" Value="True" />
+			<Metadata Name="IsModelAware" Value="True" />
+			<Metadata Name="SkipCreationIfEmpty" Value="True" />
+			<Metadata Name="AssemblySymbolsName" Value="/home/chi/Projects/azure/core/control_table/obj/Debug/control_table.pdb" />
+		</CustomData>
+		<CustomData Category="SqlCmdVariables" Type="SqlCmdVariable" />
+	</Header>
+	<Model>
+		<Element Type="SqlDatabaseOptions">
+			<Property Name="Collation" Value="SQL_Latin1_General_CP1_CI_AS" />
+			<Property Name="IsAnsiNullDefaultOn" Value="True" />
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Property Name="IsAnsiWarningsOn" Value="True" />
+			<Property Name="IsArithAbortOn" Value="True" />
+			<Property Name="IsConcatNullYieldsNullOn" Value="True" />
+			<Property Name="IsTornPageProtectionOn" Value="False" />
+			<Property Name="IsFullTextEnabled" Value="True" />
+			<Property Name="PageVerifyMode" Value="3" />
+			<Property Name="DefaultLanguage" Value="" />
+			<Property Name="DefaultFullTextLanguage" Value="" />
+			<Property Name="QueryStoreDesiredState" Value="0" />
+			<Property Name="QueryStoreCaptureMode" Value="1" />
+			<Property Name="QueryStoreStaleQueryThreshold" Value="367" />
+			<Property Name="MaxDop" Value="0" />
+			<Property Name="TemporalHistoryRetentionEnabled" Value="False" />
+		</Element>
+		<Element Type="SqlSchema" Name="[audit]">
+			<Relationship Name="Authorizer">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlTable" Name="[audit].[activity]">
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[audit].[activity].[activity_id]">
+						<Property Name="IsNullable" Value="False" />
+						<Property Name="IsIdentity" Value="True" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[audit].[activity].[run_id]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[uniqueidentifier]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[audit].[activity].[load_id]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[audit].[activity].[dataset_id]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[audit].[activity].[collection_id]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[audit].[activity].[dependencies]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[audit].[activity].[dataset_type]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="255" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[audit].[activity].[pipeline_name]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="255" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[audit].[activity].[pipeline_start]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[datetime]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[audit].[activity].[pipeline_end]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[datetime]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[audit].[activity].[pipeline_status]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="15" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Filegroup">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[PRIMARY]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References Name="[audit]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlProcedure" Name="[audit].[activity_end]">
+			<Property Name="BodyScript">
+				<Value><![CDATA[
+BEGIN
+
+    UPDATE [audit].[activity]
+    SET 
+        [pipeline_end]  = getdate()
+        ,[pipeline_status] = @State
+    WHERE [activity_id] = @ActivityID
+END]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="BodyDependencies">
+				<Entry>
+					<References Name="[audit].[activity]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[activity].[pipeline_end]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[activity].[pipeline_status]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[activity_end].[@State]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[activity].[activity_id]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[activity_end].[@ActivityID]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Parameters">
+				<Entry>
+					<Element Type="SqlSubroutineParameter" Name="[audit].[activity_end].[@ActivityID]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSubroutineParameter" Name="[audit].[activity_end].[@State]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References Name="[audit]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="CreateOffset" Value="1" />
+				<Property Name="Length" Value="239" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="&#xA;CREATE PROCEDURE [audit].[activity_end]&#xA;    @ActivityID INT,&#xA;    @State INT&#xA;AS" />
+			</Annotation>
+		</Element>
+		<Element Type="SqlProcedure" Name="[audit].[activity_start]">
+			<Property Name="BodyScript">
+				<Value><![CDATA[
+BEGIN
+
+    UPDATE [audit].[activity]
+    SET 
+        [pipeline_start]  = getdate()
+        ,[pipeline_status] = 'In Progress'
+    WHERE [activity_id] = @ActivityID
+END]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="BodyDependencies">
+				<Entry>
+					<References Name="[audit].[activity]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[activity].[pipeline_start]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[activity].[pipeline_status]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[activity].[activity_id]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[activity_start].[@ActivityID]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Parameters">
+				<Entry>
+					<Element Type="SqlSubroutineParameter" Name="[audit].[activity_start].[@ActivityID]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References Name="[audit]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="233" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="CREATE PROCEDURE [audit].[activity_start]&#xA;    @ActivityID INT&#xA;AS" />
+			</Annotation>
+		</Element>
+		<Element Type="SqlTable" Name="[audit].[collections]">
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[audit].[collections].[collection_id]">
+						<Property Name="IsNullable" Value="False" />
+						<Property Name="IsIdentity" Value="True" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[audit].[collections].[collection_name]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="50" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References Name="[audit]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlTable" Name="[audit].[datasets]">
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[audit].[datasets].[dataset_id]">
+						<Property Name="IsNullable" Value="False" />
+						<Property Name="IsIdentity" Value="True" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[audit].[datasets].[dataset_name]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="50" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[audit].[datasets].[collection_id]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="50" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[audit].[datasets].[is_enabled]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="10" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[audit].[datasets].[dataset_type]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="10" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References Name="[audit]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlTable" Name="[audit].[dependency]">
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[audit].[dependency].[dependency_id]">
+						<Property Name="IsNullable" Value="False" />
+						<Property Name="IsIdentity" Value="True" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[audit].[dependency].[dataset_id]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[audit].[dependency].[dependent_dataset_id]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[audit].[dependency].[dependency_type]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="10" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References Name="[audit]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlProcedure" Name="[audit].[get_activity]">
+			<Property Name="BodyScript">
+				<Value><![CDATA[
+BEGIN
+
+    SELECT
+        *
+    FROM [audit].[activity]
+END]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="BodyDependencies">
+				<Entry>
+					<References Name="[audit].[activity]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References Name="[audit]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="102" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="CREATE PROCEDURE [audit].[get_activity]&#xA;AS" />
+			</Annotation>
+		</Element>
+		<Element Type="SqlProcedure" Name="[audit].[setup]">
+			<Property Name="BodyScript">
+				<Value><![CDATA[
+BEGIN
+    -- Create audit.dataset if it does not exist---------------------------
+    IF OBJECT_ID(N'[audit].[collections]', 'U') IS NULL
+    BEGIN 
+        CREATE TABLE [audit].[collections] 
+        (
+            [collection_id] INT IDENTITY(1,1),
+            [collection_name] VARCHAR(50) not null,
+        )
+    END
+
+    -- Create audit.dataset if it does not exist---------------------------
+    IF OBJECT_ID(N'[audit].[datasets]', 'U') IS NULL
+    BEGIN 
+        CREATE TABLE [audit].[datasets] 
+        (
+            [dataset_id] INT IDENTITY(1,1),
+            [dataset_name] VARCHAR(50) not null,
+            [collection_id] VARCHAR(50) null,
+            [is_enabled] VARCHAR(10) not null,
+            [dataset_type] VARCHAR(10) not null
+        )
+    END
+    IF OBJECT_ID(N'[audit].[dependency]', 'U') IS NULL
+    BEGIN 
+        CREATE TABLE [audit].[dependency] 
+        (
+            [dependency_id]         INT IDENTITY(1,1),
+            [dataset_id]            INT not null,
+            [dependent_dataset_id]  INT null,
+            [dependency_type]       VARCHAR(10) not null
+        )
+    END
+
+
+
+    BEGIN
+
+        TRUNCATE TABLE [audit].[datasets]
+        TRUNCATE TABLE [audit].[collections]
+        TRUNCATE TABLE [audit].[dependency]
+
+        -- Populate COLLECTIONS from temp ---------------------------
+        INSERT INTO [audit].[collections] (
+            [collection_name]
+        )
+        SELECT DISTINCT 
+            [collection_code]
+        FROM [tmp].[datasets]
+
+        -- Populate dataset from temp ---------------------------
+        INSERT INTO [audit].[datasets] (
+            [dataset_name], 
+            [collection_id],
+            [is_enabled],
+            [dataset_type]
+        )
+        SELECT DISTINCT
+            D.[code],
+            C.[collection_id],
+            D.[is_enabled],
+            D.[type]
+        FROM [tmp].[datasets] D
+        LEFT JOIN [audit].[collections] C
+        ON D.[collection_code] = C.[collection_name]
+
+
+        -- Populate dependency from  ---------------------------
+        INSERT INTO [audit].[dependency] (
+            [dataset_id],
+            [dependent_dataset_id],
+            [dependency_type]
+        )
+        SELECT DISTINCT
+            D.[dataset_id],
+            DD.[dataset_id],
+            'Unknown'
+        FROM [tmp].[dependency] TD
+        --  dataset
+        LEFT JOIN [audit].[collections] C
+        ON TD.[collection_code] = C.[collection_name]      
+        LEFT JOIN [audit].[datasets] D
+        ON  TD.[dataset_code]   = D.[dataset_name]
+        AND D.[collection_id]  = C.[collection_id]
+        -- dependent dataset
+        LEFT JOIN [audit].[collections] DC
+        ON TD.[dependent_collection_code] = DC.[collection_name]      
+        LEFT JOIN [audit].[datasets] DD
+        ON  TD.[dependent_dataset_code]   = DD.[dataset_name]
+        AND DD.[collection_id]  = DC.[collection_id]
+
+
+
+
+
+
+        -- LOAD ACTIVITY ---------------------------------------
+        TRUNCATE TABLE [audit].[activity]
+        INSERT INTO [audit].[activity] (
+            run_id, 
+            load_id,
+            dataset_id,
+            collection_id,
+            dataset_type,
+            dependencies
+
+        )
+        SELECT 
+            NEWID()
+            ,-1
+            ,D.[dataset_id]
+            ,D.[collection_id]
+            ,D.[dataset_type]
+            ,0
+        FROM [audit].[datasets] D
+        WHERE [is_enabled] = 'true'
+
+
+        -- UPDATE ACTIVITY ---------------------------------------
+        UPDATE A
+        SET A.[dependencies] = COALESCE(G.[dependencies],0)
+        FROM [audit].[activity] A
+        LEFT JOIN (
+            SELECT
+                D.[dataset_id]
+                ,count(*) AS [dependencies]
+            FROM [audit].[dependency] D
+            JOIN [audit].[activity] A
+            ON A.[dataset_id] = D.[dependent_dataset_id]
+            GROUP BY D.[dataset_id]
+        ) G
+        ON  G.[dataset_id] = A.[dataset_id]
+    END
+
+END;]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="BodyDependencies">
+				<Entry>
+					<References Name="[audit].[collections]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[collections].[collection_id]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[int]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[collections].[collection_name]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[varchar]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[datasets]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[datasets].[dataset_id]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[int]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[datasets].[dataset_name]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[varchar]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[datasets].[collection_id]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[varchar]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[datasets].[is_enabled]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[varchar]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[datasets].[dataset_type]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[varchar]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[dependency]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[dependency].[dependency_id]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[int]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[dependency].[dataset_id]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[int]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[dependency].[dependent_dataset_id]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[int]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[dependency].[dependency_type]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[varchar]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[datasets]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[collections]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[dependency]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[collections]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[collections].[collection_name]" />
+				</Entry>
+				<Entry>
+					<References Name="[tmp].[datasets]" />
+				</Entry>
+				<Entry>
+					<References Name="[tmp].[datasets].[collection_code]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[datasets]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[datasets].[dataset_name]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[datasets].[collection_id]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[datasets].[is_enabled]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[datasets].[dataset_type]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[collections]" />
+				</Entry>
+				<Entry>
+					<References Name="[tmp].[datasets].[collection_code]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[collections].[collection_name]" />
+				</Entry>
+				<Entry>
+					<References Name="[tmp].[datasets].[code]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[collections].[collection_id]" />
+				</Entry>
+				<Entry>
+					<References Name="[tmp].[datasets].[is_enabled]" />
+				</Entry>
+				<Entry>
+					<References Name="[tmp].[datasets].[type]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[dependency]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[dependency].[dataset_id]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[dependency].[dependent_dataset_id]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[dependency].[dependency_type]" />
+				</Entry>
+				<Entry>
+					<References Name="[tmp].[dependency]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[collections]" />
+				</Entry>
+				<Entry>
+					<References Name="[tmp].[dependency].[collection_code]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[collections].[collection_name]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[datasets]" />
+				</Entry>
+				<Entry>
+					<References Name="[tmp].[dependency].[dataset_code]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[datasets].[dataset_name]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[datasets].[collection_id]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[collections].[collection_id]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[collections]" />
+				</Entry>
+				<Entry>
+					<References Name="[tmp].[dependency].[dependent_collection_code]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[collections].[collection_name]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[datasets]" />
+				</Entry>
+				<Entry>
+					<References Name="[tmp].[dependency].[dependent_dataset_code]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[datasets].[dataset_name]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[datasets].[collection_id]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[collections].[collection_id]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[datasets].[dataset_id]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[datasets].[dataset_id]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[activity]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[activity].[run_id]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[activity].[load_id]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[activity].[dataset_id]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[activity].[collection_id]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[activity].[dataset_type]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[activity].[dependencies]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[datasets]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[datasets].[dataset_id]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[datasets].[collection_id]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[datasets].[dataset_type]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[datasets].[is_enabled]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[dependency]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[activity].[dataset_id]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[dependency].[dependent_dataset_id]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[dependency].[dataset_id]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[dependency].[dataset_id]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[activity].[dataset_id]" />
+				</Entry>
+				<Entry>
+					<References Name="[audit].[activity].[dependencies]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References Name="[audit]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="3987" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="CREATE PROC [audit].[setup]&#xA;AS" />
+			</Annotation>
+		</Element>
+		<Element Type="SqlSchema" Name="[cln]">
+			<Relationship Name="Authorizer">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlSchema" Name="[raw]">
+			<Relationship Name="Authorizer">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlSchema" Name="[stg]">
+			<Relationship Name="Authorizer">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlSchema" Name="[tmp]">
+			<Relationship Name="Authorizer">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlTable" Name="[tmp].[datasets]">
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[tmp].[datasets].[code]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="50" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[tmp].[datasets].[collection_code]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="50" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[tmp].[datasets].[is_enabled]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="10" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[tmp].[datasets].[type]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="10" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Filegroup">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[PRIMARY]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References Name="[tmp]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlTable" Name="[tmp].[dependency]">
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[tmp].[dependency].[dataset_code]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="255" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[tmp].[dependency].[collection_code]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="255" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[tmp].[dependency].[dependent_dataset_code]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="255" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[tmp].[dependency].[dependent_collection_code]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="255" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[tmp].[dependency].[dependency_type]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="10" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References Name="[tmp]" />
+				</Entry>
+			</Relationship>
+		</Element>
+	</Model>
+</DataSchemaModel>

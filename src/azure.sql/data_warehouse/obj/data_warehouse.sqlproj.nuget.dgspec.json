@@ -1,0 +1,55 @@
+{
+  "format": 1,
+  "restore": {
+    "c:\\Users\\chiad\\Projects\\MDF\\src\\azure.sql\\data_warehouse\\data_warehouse.sqlproj": {}
+  },
+  "projects": {
+    "c:\\Users\\chiad\\Projects\\MDF\\src\\azure.sql\\data_warehouse\\data_warehouse.sqlproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "c:\\Users\\chiad\\Projects\\MDF\\src\\azure.sql\\data_warehouse\\data_warehouse.sqlproj",
+        "projectName": "data_warehouse",
+        "projectPath": "c:\\Users\\chiad\\Projects\\MDF\\src\\azure.sql\\data_warehouse\\data_warehouse.sqlproj",
+        "packagesPath": "C:\\Users\\chiad\\.nuget\\packages\\",
+        "outputPath": "c:\\Users\\chiad\\Projects\\MDF\\src\\azure.sql\\data_warehouse\\obj\\",
+        "projectStyle": "PackageReference",
+        "skipContentFileWrite": true,
+        "configFilePaths": [
+          "C:\\Users\\chiad\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net46"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net46": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "noWarn": [
+            "NU5128"
+          ]
+        }
+      },
+      "frameworks": {
+        "net46": {
+          "dependencies": {
+            "Microsoft.NETFramework.ReferenceAssemblies": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[1.0.0, )"
+            }
+          }
+        }
+      },
+      "runtimes": {
+        "win": {
+          "#import": []
+        }
+      }
+    }
+  }
+}

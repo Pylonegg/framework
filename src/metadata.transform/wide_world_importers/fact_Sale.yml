@@ -1,0 +1,104 @@
+dataset:
+    name: Sale
+    description: The Sale table
+    enabled: true
+    type: fact
+    load_style: default
+    load_method: default
+
+columns:
+  - sort_order: 1
+    name: Sale Key
+    data_type: bigint
+    is_primary_key: True
+  
+  - sort_order: 2
+    name: City Key
+    data_type: int
+  
+  - sort_order: 3
+    name: Customer Key
+    data_type: int
+  
+  - sort_order: 4
+    name: Bill To Customer Key
+    data_type: int
+  
+  - sort_order: 5
+    name: Stock Item Key
+    data_type: int
+  
+  - sort_order: 6
+    name: Invoice Date Key
+    data_type: int
+  
+  - sort_order: 7
+    name: Delivery Date Key
+    data_type: int
+  
+  - sort_order: 8
+    name: Salesperson Key
+    data_type: int
+  
+  - sort_order: 9
+    name: WWI Invoice ID
+    data_type: int
+  
+  - sort_order: 10
+    name: Description
+    data_type: nvarchar
+    length: 100
+  
+  - sort_order: 11
+    name: Package
+    data_type: nvarchar
+    length: 50
+  
+  - sort_order: 12
+    name: Quantity
+    data_type: int
+  
+  - sort_order: 13
+    name: Unit Price
+    data_type: decimal
+    precision: 18
+    scale: 2
+  
+  - sort_order: 14
+    name: Tax Rate
+    data_type: decimal
+    precision: 18
+    scale: 3
+  
+  - sort_order: 15
+    name: Total Excluding Tax
+    data_type: decimal
+    precision: 18
+    scale: 2
+  
+  - sort_order: 16
+    name: Tax Amount
+    data_type: decimal
+    precision: 18
+    scale: 2
+  
+  - sort_order: 17
+    name: Profit
+    data_type: decimal
+    precision: 18
+    scale: 2
+  
+  - sort_order: 18
+    name: Total Including Tax
+    data_type: decimal
+    precision: 18
+    scale: 2
+  
+  - sort_order: 19
+    name: Total Dry Items
+    data_type: int
+  
+  - sort_order: 20
+    name: Total Chiller Items
+    data_type: int
+  

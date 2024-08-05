@@ -1,0 +1,94 @@
+dataset:
+    name: Order
+    description: The Order table
+    enabled: true
+    type: fact
+    load_style: default
+    load_method: default
+
+columns:
+  - sort_order: 1
+    name: Order Key
+    data_type: bigint
+    is_primary_key: True
+  
+  - sort_order: 2
+    name: City Key
+    data_type: int
+  
+  - sort_order: 3
+    name: Customer Key
+    data_type: int
+  
+  - sort_order: 4
+    name: Stock Item Key
+    data_type: int
+  
+  - sort_order: 5
+    name: Order Date Key
+    data_type: int
+  
+  - sort_order: 6
+    name: Picked Date Key
+    data_type: int
+  
+  - sort_order: 7
+    name: Salesperson Key
+    data_type: int
+  
+  - sort_order: 8
+    name: Picker Key
+    data_type: int
+  
+  - sort_order: 9
+    name: WWI Order ID
+    data_type: int
+  
+  - sort_order: 10
+    name: WWI Backorder ID
+    data_type: int
+  
+  - sort_order: 11
+    name: Description
+    data_type: nvarchar
+    length: 100
+  
+  - sort_order: 12
+    name: Package
+    data_type: nvarchar
+    length: 50
+  
+  - sort_order: 13
+    name: Quantity
+    data_type: int
+  
+  - sort_order: 14
+    name: Unit Price
+    data_type: decimal
+    precision: 18
+    scale: 2
+  
+  - sort_order: 15
+    name: Tax Rate
+    data_type: decimal
+    precision: 18
+    scale: 3
+  
+  - sort_order: 16
+    name: Total Excluding Tax
+    data_type: decimal
+    precision: 18
+    scale: 2
+  
+  - sort_order: 17
+    name: Tax Amount
+    data_type: decimal
+    precision: 18
+    scale: 2
+  
+  - sort_order: 18
+    name: Total Including Tax
+    data_type: decimal
+    precision: 18
+    scale: 2
+  

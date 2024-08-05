@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "lZY/s1CG8J4=",
+  "success": true,
+  "projectFilePath": "/home/chi/Projects/azure/core/control_table/control_table.sqlproj",
+  "expectedPackageFiles": [
+    "/home/chi/.nuget/packages/microsoft.netframework.referenceassemblies/1.0.0/microsoft.netframework.referenceassemblies.1.0.0.nupkg.sha512",
+    "/home/chi/.nuget/packages/microsoft.netframework.referenceassemblies.net46/1.0.0/microsoft.netframework.referenceassemblies.net46.1.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

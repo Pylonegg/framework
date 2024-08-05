@@ -1,0 +1,55 @@
+collection:
+# data marts
+ - name: wide_world_importers
+   type: transform
+   is_enabled: True
+   system: database
+
+ - name: wide_world_importers
+   type: transform
+   is_enabled: false
+   system: synapse
+ 
+ - name: adventure_works
+   type: transform
+   is_enabled: False
+   system: databricks
+
+# data sources
+ - name: WideWorldImporters
+   type: ingest
+   is_enabled: True
+   system: sql_server
+ 
+ - name: adventure_works
+   type: ingest
+   is_enabled: False
+   system: sql_server
+
+
+pipeline_parameters:
+  # Control Resources to deloy
+  ctrlDeployControlDatabase   : true
+  ctrlDeployDataShare         : false
+  ctrlDeploySynapse           : false
+  ctrlDeploySynapseSQLPool    : false
+  ctrlDeploySynapseADXPool    : false
+  ctrlDeploySynapseSparkPool  : false
+  ctrlDeployDataFactory       : true
+  ctrlDeployDatabase          : false
+  ctrlDeployDatabricks        : false
+  ctrlDeployAnalysisServices  : false
+  ctrlDeployPurview           : false
+  ctrlDeployStreaming         : false
+  ctrlDeployPrivateDNSZones   : false
+  ctrlNewOrExistingVNet       : new   # [New, Existing]
+
+  resourceGroupName: dev-az-rg
+  resourceLocation: uksouth
+  uniqueName: 01x
+  environment: dev
+  warehouseDatabaseNames: 
+    - data_warehouse
+  controlDatabaseNames: 
+    - dev01xctrldb
+  controlEntraAdminObjectId: 57153cd2-4cbe-40d0-9556-a7339b92ac35

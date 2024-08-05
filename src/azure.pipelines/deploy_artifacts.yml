@@ -1,0 +1,130 @@
+trigger:
+- none
+
+pool:
+  vmImage: windows-2019
+
+stages:
+  - stage: Build
+    variables:
+    - group: DEV
+    jobs:
+    - job: BuildArtifacts
+      steps:
+      - task: Npm@1
+        displayName: 'Install npm package'
+        inputs:
+          command: 'install'
+          workingDir: '$(Build.Repository.LocalPath)\src\azure.datafactory'
+          verbose: true
+
+      - task: Npm@1
+        displayName: 'Generate ARM template DataFactory' 
+        inputs:
+          command: 'custom'
+          workingDir: '$(Build.Repository.LocalPath)\src\azure.datafactory'
+          customCommand: 'run build export $(Build.Repository.LocalPath)\src\azure.datafactory /subscriptions/$(SubscriptionId)/resourceGroups/$(ResourceGroup)/providers/Microsoft.DataFactory/factories/$(DataFactoryName) "ArmTemplate"'
+
+      - task: VSBuild@1
+        displayName: 'Build Control Database Artifacts' 
+        inputs:
+          solution: 'src/metadata.control/*.sqlproj'
+          msbuildArgs: '/p:Configuration=Release'
+          platform: 'Any CPU'
+          configuration: 'Release'
+
+      - task: VSBuild@1
+        displayName: 'Build SQL Project'
+        inputs:
+          solution: 'src/azure.sql/data_warehouse/*.sqlproj'
+          msbuildArgs: '/p:Configuration=Release'
+          platform: 'Any CPU'
+          configuration: 'Release'  
+
+      - task: CopyFiles@2
+        displayName: 'Copy Files'
+        inputs:
+          targetFolder: '$(Build.ArtifactStagingDirectory)'   
+
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish Files'
+        inputs:
+          targetPath: '$(Build.ArtifactStagingDirectory)'
+          artifact: drop
+
+
+  - stage: Dev
+    variables:
+    - group: DEV
+    dependsOn: Build
+    jobs:
+    - job: DeployArtifacts
+      steps:
+      - download: current
+        artifact: drop
+
+      # Deploy ADF
+      - task: AzureResourceManagerTemplateDeployment@3
+        displayName: 'Deploy Data Factory Artifacts' 
+        inputs:
+          deploymentName: 'PublishADF'
+          deploymentScope: 'Resource Group'
+          resourceGroupName: '$(ResourceGroup)'
+          azureResourceManagerConnection: 'azelia-dev-connection'
+          templateLocation: 'Linked artifact'
+          location: '$(Location)'
+          csmFile: '$(Pipeline.Workspace)/drop/src/azure.datafactory/ArmTemplate/ARMTemplateForFactory.json'
+          csmParametersFile: '$(Pipeline.Workspace)/drop/src/azure.datafactory/ArmTemplate/ARMTemplateParametersForFactory.json'
+          deploymentMode: Incremental
+
+
+      # Deploy Control DB
+#      - task: SqlAzureDacpacDeployment@1
+#        displayName: 'Deploy Control Database Artifacts' 
+#        inputs:
+#          azureSubscription: 'azelia-dev-connection'
+#          AuthenticationType: 'servicePrincipal'
+#          ServerName: '$(controlServerName).database.windows.net'
+#          DatabaseName: '$(controlDatabaseName)' 
+#          deployType: 'DacpacTask'
+#          DeploymentAction: 'Publish'
+#          DacpacFile: '$(Pipeline.Workspace)/drop/core/control_table/bin/debug/control_table.dacpac'
+#          # PublishProfile: '$(Pipeline.Workspace)/drop/core/control_table/control_table.publish.xml'
+#          IpDetectionMethod: 'AutoDetect'
+
+
+#      # Deploy SQL Database Warehouse
+#      - task: SqlAzureDacpacDeployment@1
+#        displayName: 'Deploy Data Warehouse' 
+#        inputs:
+#          azureSubscription: 'azelia-dev-connection'
+#          AuthenticationType: 'servicePrincipal'
+#          ServerName: '$(warehouseServerName).database.windows.net'
+#          DatabaseName: '$(warehouseDatabaseName)' 
+#          deployType: 'DacpacTask'
+#          DeploymentAction: 'Publish'
+#          DacpacFile: '$(Pipeline.Workspace)/drop/transform/databases/$(warehouseDatabaseName)/bin/debug/$(warehouseDatabaseName).dacpac'
+#          IpDetectionMethod: 'AutoDetect'
+#
+#
+#      # Get databricks token
+#      # Deploy Databricks cluster
+#      - task: DataThirstLtd.databricksDeployScriptsTasks.databricksDeployClusterTask.databricksClusterTask@0
+#        displayName: Deploy Databricks Cluster
+#        inputs:
+#          region: '$(Location)'
+#          bearerToken: $(databricksToken)
+#          sourcePath: $(Pipeline.Workspace)/drop/core/devops/pipelines/databricks_cluster.json
+#
+#      # Deploy Databricks Notebooks
+#      - task: DataThirstLtd.databricksDeployScriptsTasks.databricksDeployScriptsTask.databricksDeployScripts@0
+#        displayName: Deploy Databricks Notebooks
+#        inputs:
+#          bearerToken: $(databricksToken)
+#          region: '$(Location)'
+#          localPath: $(Pipeline.Workspace)/drop/transform/databricks
+#          clean: true
+#
+      # resume synapse
+      # deploy synapse
+      # pause synapse

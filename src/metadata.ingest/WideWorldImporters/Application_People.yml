@@ -1,0 +1,115 @@
+
+dataset:
+    name: Application_People
+    description: Staging table People
+    enabled: true
+    type: staging
+    load_sytle: default
+    load_method: default
+
+columns:
+  - sort_order: 1            
+    name: PersonID            
+    data_type: int                                                                        
+            
+  - sort_order: 2            
+    name: FullName            
+    data_type: nvarchar            
+    length: 50                                                            
+            
+  - sort_order: 3            
+    name: PreferredName            
+    data_type: nvarchar            
+    length: 50                                                            
+            
+  - sort_order: 4            
+    name: SearchName            
+    data_type: nvarchar            
+    length: 101                                                            
+            
+  - sort_order: 5            
+    name: IsPermittedToLogon            
+    data_type: bit                                                                        
+            
+  - sort_order: 6            
+    name: LogonName            
+    data_type: nvarchar            
+    length: 50                                    
+    is_nullable: true                        
+            
+  - sort_order: 7            
+    name: IsExternalLogonProvider            
+    data_type: bit                                                                        
+            
+  - sort_order: 8            
+    name: HashedPassword            
+    data_type: varbinary            
+    length: -1                                    
+    is_nullable: true                        
+            
+  - sort_order: 9            
+    name: IsSystemUser            
+    data_type: bit                                                                        
+            
+  - sort_order: 10            
+    name: IsEmployee            
+    data_type: bit                                                                        
+            
+  - sort_order: 11            
+    name: IsSalesperson            
+    data_type: bit                                                                        
+            
+  - sort_order: 12            
+    name: UserPreferences            
+    data_type: nvarchar            
+    length: -1                                    
+    is_nullable: true                        
+            
+  - sort_order: 13            
+    name: PhoneNumber            
+    data_type: nvarchar            
+    length: 20                                    
+    is_nullable: true                        
+            
+  - sort_order: 14            
+    name: FaxNumber            
+    data_type: nvarchar            
+    length: 20                                    
+    is_nullable: true                        
+            
+  - sort_order: 15            
+    name: EmailAddress            
+    data_type: nvarchar            
+    length: 256                                    
+    is_nullable: true                        
+            
+  - sort_order: 16            
+    name: Photo            
+    data_type: varbinary            
+    length: -1                                    
+    is_nullable: true                        
+            
+  - sort_order: 17            
+    name: CustomFields            
+    data_type: nvarchar            
+    length: -1                                    
+    is_nullable: true                        
+            
+  - sort_order: 18            
+    name: OtherLanguages            
+    data_type: nvarchar            
+    length: -1                                    
+    is_nullable: true                        
+            
+  - sort_order: 19            
+    name: LastEditedBy            
+    data_type: int                                                                        
+            
+  - sort_order: 20            
+    name: ValidFrom            
+    data_type: datetime2                                                                        
+            
+  - sort_order: 21            
+    name: ValidTo            
+    data_type: datetime2                                                                        
+            

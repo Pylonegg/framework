@@ -1,0 +1,73 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "ctrlDeployControlDatabase": {
+      "value": true
+    },
+    "ctrlDeployDataShare": {
+      "value": false
+    },
+    "ctrlDeploySynapse": {
+      "value": false
+    },
+    "ctrlDeploySynapseSQLPool": {
+      "value": false
+    },
+    "ctrlDeploySynapseADXPool": {
+      "value": false
+    },
+    "ctrlDeploySynapseSparkPool": {
+      "value": false
+    },
+    "ctrlDeployDataFactory": {
+      "value": true
+    },
+    "ctrlDeployDatabase": {
+      "value": false
+    },
+    "ctrlDeployDatabricks": {
+      "value": false
+    },
+    "ctrlDeployAnalysisServices": {
+      "value": false
+    },
+    "ctrlDeployPurview": {
+      "value": false
+    },
+    "ctrlDeployStreaming": {
+      "value": false
+    },
+    "ctrlDeployPrivateDNSZones": {
+      "value": false
+    },
+    "ctrlNewOrExistingVNet": {
+      "value": "new"
+    },
+    "resourceGroupName": {
+      "value": "dev-az-rg"
+    },
+    "resourceLocation": {
+      "value": "uksouth"
+    },
+    "uniqueName": {
+      "value": "01x"
+    },
+    "environment": {
+      "value": "dev"
+    },
+    "warehouseDatabaseNames": {
+      "value": [
+        "data_warehouse"
+      ]
+    },
+    "controlDatabaseNames": {
+      "value": [
+        "dev01xctrldb"
+      ]
+    },
+    "controlEntraAdminObjectId": {
+      "value": "57153cd2-4cbe-40d0-9556-a7339b92ac35"
+    }
+  }
+}

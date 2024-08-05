@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "DhxafLVX6KrjE9L1V+F3m+AAsu7orJ1t1lBS7I+ndWB3sUy8P8tEnBFFJoqill5Ms3LROruv9YOVogApy1aGUQ==",
+  "success": true,
+  "projectFilePath": "c:\\Users\\chiad\\Projects\\MDF\\src\\azure.sql\\data_warehouse\\data_warehouse.sqlproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\chiad\\.nuget\\packages\\microsoft.netframework.referenceassemblies\\1.0.0\\microsoft.netframework.referenceassemblies.1.0.0.nupkg.sha512",
+    "C:\\Users\\chiad\\.nuget\\packages\\microsoft.netframework.referenceassemblies.net46\\1.0.0\\microsoft.netframework.referenceassemblies.net46.1.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

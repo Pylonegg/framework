@@ -1,0 +1,73 @@
+$schema: "http://json-schema.org/draft-04/schema"
+dataset:
+    name: City
+    description: The City table
+    enabled: true
+    type: dimension
+    load_style: default
+    load_method: incremental
+
+columns:
+  - sort_order: 1
+    name: City Key
+    data_type: int
+    is_primary_key: True
+  
+  - sort_order: 2
+    name: WWI City ID
+    data_type: int
+    is_natural_key: True
+  
+  - sort_order: 3
+    name: City
+    data_type: nvarchar
+    length: 50
+  
+  - sort_order: 4
+    name: State Province
+    data_type: nvarchar
+    length: 50
+  
+  - sort_order: 5
+    name: Country
+    data_type: nvarchar
+    length: 60
+  
+  - sort_order: 6
+    name: Continent
+    data_type: nvarchar
+    length: 30
+  
+  - sort_order: 7
+    name: Sales Territory
+    data_type: nvarchar
+    length: 50
+  
+  - sort_order: 8
+    name: Region
+    data_type: nvarchar
+    length: 30
+  
+  - sort_order: 9
+    name: Subregion
+    data_type: nvarchar
+    length: 30
+  
+  - sort_order: 10
+    name: Location
+    data_type: nvarchar
+    length: -1
+  
+  - sort_order: 11
+    name: Latest Recorded Population
+    data_type: bigint
+
+depends_on:
+  - name: WideWorldImporters.Application_Cities
+    type: Hard
+  
+  - name: WideWorldImporters.Warehouse_Colors
+    type: Hard
+
+  - name: WideWorldImporters.Purchasing_Suppliers
+    type: Hard

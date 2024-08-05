@@ -1,0 +1,24 @@
+dataset:
+    name: PaymentMethod
+    description: The Payment Method table
+    enabled: true
+    type: dimension
+    load_style: default
+    load_method: default
+
+columns:
+  - sort_order: 1
+    name: Payment Method Key
+    data_type: int
+    is_primary_key: True
+  
+  - sort_order: 2
+    name: WWI Payment Method ID
+    data_type: int
+    is_natural_key: True
+  
+  - sort_order: 3
+    name: Payment Method
+    data_type: nvarchar
+    length: 50
+  

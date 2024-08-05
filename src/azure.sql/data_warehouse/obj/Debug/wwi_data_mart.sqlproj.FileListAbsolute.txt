@@ -1,0 +1,9 @@
+/home/chi/Projects/framework/transform/databases/wwi_data_mart/bin/Debug/wwi_data_mart.dacpac
+/home/chi/Projects/framework/transform/databases/wwi_data_mart/bin/Debug/wwi_data_mart.dll
+/home/chi/Projects/framework/transform/databases/wwi_data_mart/bin/Debug/wwi_data_mart.pdb
+/home/chi/Projects/framework/transform/databases/wwi_data_mart/obj/Debug/Model.xml
+/home/chi/Projects/framework/transform/databases/wwi_data_mart/obj/Debug/refactor.xml
+/home/chi/Projects/framework/transform/databases/wwi_data_mart/obj/Debug/postdeploy.sql
+/home/chi/Projects/framework/transform/databases/wwi_data_mart/obj/Debug/predeploy.sql
+/home/chi/Projects/framework/transform/databases/wwi_data_mart/obj/Debug/wwi_data_mart.dll
+/home/chi/Projects/framework/transform/databases/wwi_data_mart/obj/Debug/wwi_data_mart.pdb

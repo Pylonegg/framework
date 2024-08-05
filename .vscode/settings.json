@@ -1,0 +1,5 @@
+{
+    "dataworkspace.excludedProjects": [
+        "core/data_platform/data_platform.sqlproj"
+    ]
+}

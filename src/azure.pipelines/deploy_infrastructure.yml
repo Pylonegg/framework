@@ -1,0 +1,26 @@
+
+# Main
+
+trigger:
+- none
+pool:
+  vmImage: "ubuntu-latest"
+
+stages:
+  - stage: DEV
+    variables:
+    - group: DEV
+    jobs:
+    - job: DeployAzureArtifacts
+      steps:
+      - task: AzureResourceManagerTemplateDeployment@3
+        inputs:
+          deploymentScope: 'Subscription'
+          azureResourceManagerConnection: 'azelia-dev-connection'
+          templateLocation: 'Linked artifact'
+          location: '$(Location)'
+          csmFile: 'core/infrastructure/platform.bicep'
+          csmParametersFile: 'src/azure.pipelines/parameters.json'
+          deploymentMode: Incremental
+          deploymentName: 'InfrastructureDeployment'
+          overrideParameters: '-sqlAdminPassword $(sqlAdminPassword)'
